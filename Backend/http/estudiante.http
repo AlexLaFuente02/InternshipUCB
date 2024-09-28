@@ -1,0 +1,58 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+### GET ALL de Estudiante
+GET http://{{host}}/estudiante/
+Accept: application/json
+
+### GET de Estudiante
+GET http://{{host}}/estudiante/1
+Accept: application/json
+
+### POST de Estudiante
+POST http://{{host}}/estudiante/
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImVtYWlsIjoicXVpc3Blb3N2YWxkbzMxQGdtYWlsLmNvbTIiLCJpYXQiOjE3MDA0NTA5MjUsImV4cCI6MTcwMDQ1NDUyNX0.FiLnKHXguXMDzxum0z9O12HJf3MmKLIAGmSNCPuLy1Y
+
+{
+  "usuario_id": 3,
+  "nombres": "Juan",
+  "apellidopaterno": "Pérez",
+  "apellidomaterno": "Sanchez",
+  "carnetidentidad": "12345678912",
+  "correoelectronico": "juan.perez@email.com2",
+  "celularcontacto": "555-555-5555",
+  "graduado": true,
+  "carrera": { "id": 1 },
+  "semestre": { "id": 1 },
+  "sede": { "id": 1 },
+  "aniograduacion": 2022,
+  "linkcurriculumvitae": "http://example.com/juan_perez_cv.pdf"
+}
+
+### PUT de Estudiante
+PUT http://{{host}}/estudiante/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "usuario_id": 1,
+  "nombres": "Juan Modificado",
+  "apellidopaterno": "Pérez Modificado",
+  "apellidomaterno": "Sanchez Modificado",
+  "carnetidentidad": "987654321",
+  "correoelectronico": "juan.modificado@email.com",
+  "celularcontacto": "555-555-5556",
+  "graduado": false,
+  "carrera_id": 3,
+  "semestre_id": 2,
+  "sede_id": 1,
+  "aniograduacion": 2023,
+  "linkcurriculumvitae": "http://example.com/juan_modificado_cv.pdf"
+}
+
+### DELETE de Estudiante
+DELETE http://{{host}}/estudiante/21
+Accept: application/json
+

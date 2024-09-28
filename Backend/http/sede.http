@@ -1,0 +1,27 @@
+### GetAll de sede
+GET http://localhost:3000/sede/
+Accept: application/json
+
+### Get de sede por id
+GET http://localhost:3000/sede/1
+Accept: application/json
+
+### Post de sede
+POST http://localhost:3000/sede/
+Content-Type: application/json
+
+{
+    "nombresede": "Mexico"
+}
+
+### Put de sede
+PUT http://localhost:3000/sede/1
+Content-Type: application/json
+
+{
+    "nombresede": "Colombia"
+}
+
+### Delete de sede
+DELETE http://localhost:3000/sede/1
+Accept: application/json

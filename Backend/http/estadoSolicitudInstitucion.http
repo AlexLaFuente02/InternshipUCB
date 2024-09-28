@@ -1,0 +1,47 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+### GET ALL EstadoSolicitudInstitucion
+GET http://{{host}}/estadosolicitudinstitucion/
+Accept: application/json
+
+### GET EstadoSolicitudInstitucion by ID
+GET http://{{host}}/estadosolicitudinstitucion/1
+Accept: application/json
+
+### POST EstadoSolicitudInstitucion
+POST http://{{host}}/estadosolicitudinstitucion/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "fechaaprobacion": "2023-10-28",
+  "estadosolicitud": "Rechazado",
+  "adminusei": {
+    "id": 1
+  },
+  "institucion": {
+    "id": 1
+  }
+}
+
+### PUT EstadoSolicitudInstitucion
+PUT http://{{host}}/estadosolicitudinstitucion/2
+Content-Type: application/json
+Accept: application/json
+
+{
+  "fechaaprobacion": "2023-11-12",
+  "estadosolicitud": "Aprobado",
+  "adminusei": {
+    "id": 1
+  },
+  "institucion": {
+    "id": 1
+  }
+}
+
+### DELETE EstadoSolicitudInstitucion
+DELETE http://{{host}}/estadosolicitudinstitucion/2
+Accept: application/json

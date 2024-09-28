@@ -1,0 +1,44 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+### GET ALL de Institucion
+GET http://{{host}}/institucion/
+Accept: application/json
+
+### GET de Institucion por ID
+GET http://{{host}}/institucion/1
+Accept: application/json
+
+### Instituciones Destacadas
+GET http://{{host}}/institucion/destacadas
+Accept: application/json
+
+### POST de Institucion
+POST http://{{host}}/institucion/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nombreinstitucion": "Universidad XYZ",
+  "reseniainstitucion": "Una breve descripción de la universidad.",
+  "logoinstitucion": null,
+  "nombrecontacto": "Juan Pérez",
+  "correocontacto": "juan.perez@univez.com",
+  "celularcontacto": "12345678",
+  "estado": "RECHAZADO",
+  "usuario_id": null,
+  "sectorpertenencia_id": 3
+}
+
+### PUT de Institucion
+PUT http://{{host}}/institucion/8
+Content-Type: application/json
+Accept: application/json
+
+{
+    "estado": "RECHAZADO"
+}
+### DELETE de Institucion
+DELETE http://{{host}}/institucion/3
+Accept: application/json

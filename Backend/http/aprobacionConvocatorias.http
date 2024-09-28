@@ -1,0 +1,47 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+### GET ALL Aprobaciones
+GET http://{{host}}/aprobacionconvocatoria/
+Accept: application/json
+
+### GET Aprobacion by ID
+GET http://{{host}}/aprobacionconvocatoria/1
+Accept: application/json
+
+### POST Aprobacion
+POST http://{{host}}/aprobacionconvocatoria/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "fechaaprobacion": "2023-10-22",
+  "estado": "Aprobado",
+  "adminusei": {
+    "id": 1
+  },
+  "convocatoria": {
+    "id": 2
+  }
+}
+
+### PUT Aprobacion
+PUT http://{{host}}/aprobacionconvocatoria/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "fechaaprobacion": "2023-11-22",
+  "estado": "Rechazado",
+  "adminusei": {
+    "id": 1
+  },
+  "convocatoria": {
+    "id": 3
+  }
+}
+
+### DELETE Aprobacion
+DELETE http://{{host}}/aprobacionconvocatoria/2
+Accept: application/json

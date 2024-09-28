@@ -1,0 +1,289 @@
+/* Estilos generales */
+
+*,*::before,*::after:not(.passwordContainer){
+  margin: 0;
+  padding:0;
+  box-sizing: border-box;
+}
+#app{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  color: #515c66;
+  -webkit-font-smoothing: antialiased;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  background: linear-gradient(99deg, #f6f9fe 0%, #e8f1f8 100%);
+}
+
+input {
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  border: 1px solid #dfe7f1;
+  background-color: #fff;
+  width: 100%;
+}
+input:focus {
+  outline: none;
+  border-color: #a8c0ff;
+  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
+}
+input:hover {
+  border-color: #91c5ff;
+}
+
+select {
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  border: 1px solid #dfe7f1;
+  background-color: #fff;
+}
+select:focus {
+  outline: none;
+  border-color: #a8c0ff;
+  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
+}
+select:hover {
+  border-color: #91c5ff;
+}
+option {
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  border: 1px solid #dfe7f1;
+  background-color: #fff;
+}
+option:focus {
+  outline: none;
+  border-color: #a8c0ff;
+  box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
+}
+label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+
+/* Estilos para el tema oscuro del input*/
+.dark-theme input {
+  background-color: #2f363f;
+  color: #eff3f8;
+  border-color: #4a5568;
+}
+.dark-theme input:focus {
+  border-color: #63b3ed;
+  box-shadow: 0 0 0 0.2rem rgba(82, 196, 255, 0.25);
+}
+.dark-theme input:hover {
+  border-color: #63b3ed;
+}
+.dark-theme textarea {
+  background-color: #2f363f;
+  color: #eff3f8;
+  border-color: #4a5568;
+}
+.dark-theme textarea:focus {
+  border-color: #63b3ed;
+  box-shadow: 0 0 0 0.2rem rgba(82, 196, 255, 0.25);
+}
+.dark-theme textarea:hover {
+  border-color: #63b3ed;
+}
+.dark-theme select {
+  background-color: #2f363f;
+  color: #eff3f8;
+  border-color: #4a5568;
+}
+.dark-theme select:focus {
+  border-color: #63b3ed;
+  box-shadow: 0 0 0 0.2rem rgba(82, 196, 255, 0.25);
+}
+
+.dark-theme option {
+  background-color: #2f363f;
+  color: #eff3f8;
+  border-color: #4a5568;
+}
+.dark-theme option:focus {
+  border-color: #63b3ed;
+  box-shadow: 0 0 0 0.2rem rgba(82, 196, 255, 0.25);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+button{
+  text-decoration: none;
+}
+
+/* Estilos para el tema claro */
+body.main-body {
+  background: linear-gradient(99deg, #f6f9fe 0%, #e8f1f8 100%);
+  color: #515c67;
+}
+/* Estilos para el tema oscuro */
+.dark-theme {
+  background: #2f363f;
+  color: #eff3f8;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1.5rem 0 1rem 0;
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  color: inherit;
+}
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+/* Ajustar tamaños de fuente para pantallas más pequeñas */
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+  }
+
+  h5 {
+    font-size: 1rem;
+  }
+
+  h6 {
+    font-size: 0.8rem;
+  }
+  label {
+    font-size: 1rem;
+  }
+}
+/*Ajustar tamaños de fuente para pantallas más pequeñas*/
+@media screen and (max-width: 576px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+  }
+
+  h5 {
+    font-size: 0.9rem;
+  }
+
+  h6 {
+    font-size: 0.8rem;
+  }
+  label {
+    font-size: 0.7rem;
+  }
+}
+
+/**borrar si daña otras paginas, esto solo esat para modificar registro empresa*/
+.formVue10{
+  padding: 5%;
+  margin: 5%;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Añade sombra */
+}
+.dark-theme .formVue10{
+  background: #575d63;
+  border-radius: 10px #dfe7f1;
+  box-shadow: 0px 4px 8px rgba(225,225,225); /* Añade sombra */
+}
+.formVue100{
+  padding: 5%;
+  margin: 5%;
+  background: rgb(242, 242, 242);
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Añade sombra */
+}
+.dark-theme .formVue100{
+  background: #61686e;
+  border-radius: 10px #dfe7f1; 
+  box-shadow: 0px 4px 8px rgba(225,225,225); /* Añade sombra */
+}
+
+.buttons-container10 {
+  display: flex;
+  flex-direction: row;
+  max-width: 300px; /* Ajusta el tamaño máximo según tus necesidades */
+  margin-left: auto; /* Centra el contenedor */
+}
+
+
+

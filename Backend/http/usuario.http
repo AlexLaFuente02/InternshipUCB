@@ -1,0 +1,51 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+### GET ALL de Usuario
+GET http://{{host}}/usuario/
+Accept: application/json
+
+### GET de Usuario
+GET http://{{host}}/usuario/1
+Accept: application/json
+
+### POST de Usuario
+POST http://{{host}}/usuario/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "idusuario": "usei2",
+  "contrasenia": "usei2",
+  "tipousuario": {
+    "id": 3
+  }
+}
+
+### PUT de Usuario
+PUT http://{{host}}/usuario/3
+Content-Type: application/json
+Accept: application/json
+
+{
+  "idusuario": "usei1",
+  "contrasenia": "usei1",
+  "tipousuario": {
+    "id": 3
+  }
+}
+
+### DELETE de Usuario
+DELETE http://{{host}}/usuario/3
+Accept: application/json
+
+###PUT para actualizar contraseña
+PUT http://{{host}}/usuario/updatePassword
+Content-Type: application/json
+Accept: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDksImVtYWlsIjoianVuaXRvMTFAdWNiLmVkdS5ibyIsImlhdCI6MTcwMDcxNDc1MX0.Pn4jLKLFB3yx2Al-EYW9xf-6iKz520YVGIg7tea5kzI
+
+{
+  "contrasenia": "passupdated"
+}
+

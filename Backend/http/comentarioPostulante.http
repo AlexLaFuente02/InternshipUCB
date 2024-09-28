@@ -1,0 +1,45 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+### GET ALL Comentarios
+GET http://{{host}}/comentariopostulante/
+Accept: application/json
+
+### GET Comentario by ID
+GET http://{{host}}/comentariopostulante/2
+Accept: application/json
+
+### POST Comentario
+POST http://{{host}}/comentariopostulante/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "comentario": "Este es un comentario de prueba",
+  "postulacion": {
+    "id": 1
+  },
+  "convocatoria": {
+    "id": 2
+  }
+}
+
+### PUT Comentario
+PUT http://{{host}}/comentariopostulante/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "comentario": "Comentario actualizado",
+  "postulacion": {
+    "id": 1
+  },
+  "convocatoria": {
+    "id": 3
+  }
+}
+
+### DELETE Comentario
+DELETE http://{{host}}/comentariopostulante/2
+Accept: application/json

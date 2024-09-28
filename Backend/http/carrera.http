@@ -1,0 +1,31 @@
+@base_url = http://localhost:3000/carrera
+
+###GET ALL DE Carrera
+GET {{base_url}}/
+Accept: application/json
+
+###GET BY ID DE Carrera
+GET {{base_url}}/1
+Accept: application/json
+
+###POST DE Carrera
+POST {{base_url}}/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nombrecarrera": "Carrera 4"
+}
+
+###PUT DE Carrera
+PUT {{base_url}}/2
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nombrecarrera": "Carrera 2"
+}
+
+###DELETE DE Carrera
+DELETE {{base_url}}/4
+Accept: application/json

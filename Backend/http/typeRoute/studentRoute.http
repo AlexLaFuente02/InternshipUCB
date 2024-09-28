@@ -1,0 +1,122 @@
+@baseURL = http://localhost:3000/student
+
+
+### GET ALL CONVOCATORIAS
+GET {{baseURL}}/convocatoria/
+Accept: application/json
+
+### GET CONVOCATORIAS POR ID
+@convocatoriaID = 1
+GET {{baseURL}}/convocatoria/{{convocatoriaID}}
+Accept: application/json
+###GET de Convoctorias activas
+GET {{baseURL}}/convocatorias/activas
+Accept: application/json
+
+###Get convocatorias populares
+GET {{baseURL}}/convocatorias/populares
+Accept: application/json
+
+###GET ALL DE Carrera
+GET {{baseURL}}/carrera/
+Accept: application/json
+
+### POST de Usuario
+POST {{baseURL}}/usuario
+Content-Type: application/json
+Accept: application/json
+
+{
+  "idusuario": "3",
+  "contrasenia": "3",
+  "tipousuario": {
+    "id": 1
+  }
+}
+
+### Obtener todos los historicos de postulaciones
+GET {{baseURL}}/historicoPostulaciones
+
+
+### Crear una nueva postulación (proporciona los datos de la postulación en el cuerpo de la solicitud)
+POST {{baseURL}}/postulacion
+Content-Type: application/json
+Accept: application/json
+
+{
+    "fechapostulacion": "2023-10-25",
+    "estadopostulacion": { "id": 1 },
+    "estudiante": { "id": 1 },
+    "convocatoria": { "id": 1 }  
+}
+
+###GET ALL DE SEDE
+GET {{baseURL}}/sede/
+Accept: application/json
+
+###ENDPOINTS ESPECIFICOS:
+
+
+
+
+@studentID = 2
+###GET Postulaciones por estudiante
+GET {{baseURL}}/{{studentID}}/postulaciones
+Accept: application/json
+
+###GET Postulaciones de estudiante segun estadopostulacion
+@estadopostulacionID = 2
+###StudentID = 1-Aprobadas, 2-Pendientes, 3-Rechazadas
+GET {{baseURL}}/{{studentID}}/postulaciones/{{estadopostulacionID}}
+Accept: application/json
+
+
+
+
+
+@sectorID = 1
+###Get instituciones por el sector de pertenencia
+### ID: 1-Ingenieria, 2-ArteYDiseño, 3-AdministacionyEconomia, 4-CienciasSalud, 5-otros
+GET {{baseURL}}/sectores/{{sectorID}}/instituciones
+Accept: application/json
+
+###Get todas las instituciones
+GET {{baseURL}}/institucion
+Accept: application/json
+
+###GET de institucion por ID
+@institucionID = 3
+GET {{baseURL}}/institucion/{{institucionID}}
+
+
+
+### GET de Student por ID
+@studentID = 1
+GET {{baseURL}}/{{studentID}}
+Accept: application/json
+
+
+### GET Postulacion por PostulacionID
+@postulacionID = 18
+GET {{baseURL}}/postulacion/{{postulacionID}}
+Accept: application/json
+
+
+### POST ComentarioPostulante
+POST {{baseURL}}/comentariopostulante
+Content-Type: application/json
+Accept: application/json
+
+{
+  "comentario": "Aaaa",
+  "postulacion": {
+    "id": 1
+  },
+  "convocatoria": {
+    "id": 3
+  }
+}
+
+### GET ComentarioPostulante por ConvocatoriaID
+@convocatoriaaID = 3
+GET {{baseURL}}/comentariopostulante/{{convocatoriaaID}}

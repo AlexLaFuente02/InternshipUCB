@@ -1,0 +1,33 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+### GET ALL DE ESTADO POSTULACION
+GET http://{{host}}/estadoPostulacion/
+Accept: application/json
+
+### GET ESTADO POSTULACION BY ID
+GET http://{{host}}/estadoPostulacion/2
+Accept: application/json
+
+### POST ESTADO POSTULACION
+POST http://{{host}}/estadoPostulacion/
+Content-Type: application/json
+Accept: application/json
+
+{
+    "nombreestadopostulacion": "NO ENVIADO"
+}
+
+### PUT ESTADO POSTULACION
+PUT http://{{host}}/estadoPostulacion/3
+Content-Type: application/json
+Accept: application/json
+
+{
+    "nombreestadopostulacion": "RECHAZO"
+}
+
+### DELETE ESTADO POSTULACION
+DELETE http://{{host}}/estadoPostulacion/2
+Accept: application/json

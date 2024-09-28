@@ -1,0 +1,177 @@
+@baseURL = http://localhost:3000/institution
+
+### POST Convocatoria
+POST {{baseURL}}/convocatoria/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "areapasantia": "Área de prueba",
+  "descripcionfunciones": "Descripción de funciones",
+  "requisitoscompetencias": "Requisitos y competencias",
+  "horario_inicio": "08:00",
+  "horario_fin": "17:00",
+  "fechasolicitud": "2023-10-22",
+  "fechaseleccionpasante": "2025-12-12",
+  "estadoconvocatoria": {
+    "id": 2
+  },
+  "institucion": {
+    "id": 1
+  },
+  "tiempoacumplir": {
+    "id": 2
+  }
+}
+
+### GET ALL EstadoSolicitudInstitucion
+GET {{baseURL}}/estadosolicitudinstitucion/
+Accept: application/json
+
+### Obtener todos los registros históricos
+GET {{baseURL}}/historicoConvocatorias
+
+### POST de Institucion
+POST {{baseURL}}/crear
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nombreinstitucion": "Universidad XYZ",
+  "reseniainstitucion": "Una breve descripción de la universidad.",
+  "logoinstitucion": null,
+  "nombrecontacto": "Juan Pérez",
+  "correocontacto": "juan.perez@univez.com",
+  "celularcontacto": "12345678",
+  "estado": "PENDIENTE",
+  "usuario_id": 1,
+  "sectorpertenencia_id": 1
+}
+
+### Obtener todas las postulacion
+GET {{baseURL}}/postulacion
+Accept: application/json
+
+### Obtener una postulación por ID (reemplaza {id} con un ID válido)
+GET {{baseURL}}/postulacion/1
+Accept: application/json
+
+
+
+###ENDPOINT para obtener INSTITUCIONID por USUARIOID
+@userID = 1
+GET {{baseURL}}/institucion/user/{{userID}}
+Accept: application/json
+
+
+###ENDPOINT para obtener Institucion by InstituionID
+@institucionID = 1
+GET {{baseURL}}/institucion/{{institucionID}}
+Accept: application/json
+
+@institutionID = 1
+### ENDPOINT Convocatoria by ID Institucion
+GET {{baseURL}}/convocatorias/institucion/{{institutionID}}
+Accept: application/json
+
+@convocatoriaID = 3
+### ENDPOINT Postulaciones by ID Convocatoria
+GET {{baseURL}}/postulaciones/convocatoria/{{convocatoriaID}}
+Accept: application/json
+
+### ENDPOINT Instituciones por cantidad de postulaciones
+GET {{baseURL}}/destacadas
+Accept: application/json
+
+### ENDPOINT Postulaciones by ID Institucion
+GET {{baseURL}}/postulaciones/{{institucionID}}
+Accept: application/json
+
+###ENDPOINT de Convoctorias activas
+GET {{baseURL}}/convocatorias/activas/{{institutionID}}
+Accept: application/json
+
+### ENDPOINT de Convoctorias pendientes
+GET {{baseURL}}/convocatorias/pendientes/{{institutionID}}
+Accept: application/json
+
+
+###ENDPOINT de Convoctorias inactivas
+GET {{baseURL}}/convocatorias/inactivas/{{institutionID}}
+Accept: application/json
+
+###ENDPOINT de cantidad de convocatorias activas e inactivas
+GET {{baseURL}}/convocatorias/sumatorias/{{institutionID}}
+Accept: application/json
+
+###ENDPOINT de cantidad de convocatorias activas e inactivas
+GET {{baseURL}}/institucion/{{institutionID}}/postulaciones
+Accept: application/json
+
+
+###ENDPOINT para obtener POSTULACIONES APROBADAS por INSTITUCIONID
+@institutioonID = 1
+GET {{baseURL}}/institucion/{{institutioonID}}/postulaciones/activas
+Accept: application/json
+
+
+
+###ENDPOINT para obtener POSTULACIONES PENDIENTES por INSTITUCIONID
+@instiID = 1
+GET {{baseURL}}/institucion/{{instiID}}/postulaciones/pendientes
+Accept: application/json
+
+
+###ENDPOINT para obtener POSTULACIONES RECHAZADAS por INSTITUCIONID
+@institutiionID = 1
+GET {{baseURL}}/institucion/{{institutiionID}}/postulaciones/rechazadas
+Accept: application/json
+
+###ENDPOINT para obtener POSTULACIONES PENDIENTES por CONVOCATORIAID
+@convocatoriaID=1
+GET {{baseURL}}/postulaciones/{{convocatoriaID}}/pendientes
+Accept: application/json
+
+###ENDPOINT para obtener Perfil de Estudiante por ID
+@estudianteID=1
+GET {{baseURL}}/perfil-estudiante/{{estudianteID}}
+Accept: application/json
+
+###ENDPOINT para obtener sumatoria de postulaciones por InstitucionID
+GET {{baseURL}}/institucion/{{institutiionID}}/postulaciones/sumatoria
+Accept: application/json
+
+
+
+###ENDPOINT para actualizar estado de postulación a APROBADO por POSTULACIONID
+@postulacionID = 1
+PUT {{baseURL}}/postulaciones/{{postulacionID}}/aprobar
+Content-Type: application/json
+Accept: application/json
+
+###ENDPOINT para actualizar estado de postulación a RECHAZADO por POSTULACIONID
+PUT {{baseURL}}/postulaciones/{{postulacionID}}/rechazar
+Content-Type: application/json
+Accept: application/json
+
+
+### POST ComentarioConvocatoria
+POST {{baseURL}}/comentarioconvocatoria
+Content-Type: application/json
+Accept: application/json
+
+{
+  "comentario": "El estudiante fue un buen sujeto de pruebas",
+  "postulacion": {
+    "id": 1
+  },
+  "convocatoria": {
+    "id": 3
+  }
+}
+
+
+### GET ComentarioConvocatoria por ConvocatoriaID
+@convocatoriaaID = 3
+GET {{baseURL}}/comentarioconvocatoria/{{convocatoriaaID}}
+Accept: application/json

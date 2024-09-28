@@ -1,0 +1,9 @@
+@baseURL = http://localhost:3000/historicoUsuario
+
+### GET ALL USERS HISTORY
+GET {{baseURL}}/
+Accept: application/json
+
+### GET USER HISTORY BY ID
+GET {{baseURL}}/4
+Accept: application/json

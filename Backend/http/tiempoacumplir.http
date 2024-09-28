@@ -1,0 +1,33 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+### GET ALL TiempoAcumplir
+GET http://{{host}}/tiempoacumplir/
+Accept: application/json
+
+### GET TiempoAcumplir by ID
+GET http://{{host}}/tiempoacumplir/1
+Accept: application/json
+
+### POST TiempoAcumplir
+POST http://{{host}}/tiempoacumplir/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "descripcion": "Tiempo de prueba"
+}
+
+### PUT TiempoAcumplir
+PUT http://{{host}}/tiempoacumplir/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "descripcion": "Tiempo actualizado"
+}
+
+### DELETE TiempoAcumplir
+DELETE http://{{host}}/tiempoacumplir/1
+Accept: application/json

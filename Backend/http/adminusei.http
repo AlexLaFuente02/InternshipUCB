@@ -1,0 +1,35 @@
+@baseURL = http://localhost:3000/adminUSEI
+
+### GET ALL USEI ADMINS 
+GET {{baseURL}}/
+Accept: application/json
+
+### GET USEI ADMIN BY ID
+GET {{baseURL}}/1
+Accept: application/json
+
+### POST A NEW USEI ADMIN
+POST {{baseURL}}/
+Accept: application/json
+Content-Type: application/json
+
+{
+    "usuario": {
+        "id": 2
+    }
+}
+
+### PUT A USEI ADMIN DATA
+PUT {{baseURL}}/2
+Accept: application/json
+Content-Type: application/json
+
+{
+    "usuario": {
+        "id": 3
+    }
+}
+
+### DELETE A USEI ADMIN
+DELETE {{baseURL}}/3
+Accept: application/json

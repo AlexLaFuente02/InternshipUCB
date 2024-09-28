@@ -1,0 +1,105 @@
+@baseURL = http://localhost:3000/usei
+
+### GET ALL de Institucion
+GET {{baseURL}}/institucion/
+Accept: application/json
+
+### GET de Institucion por ID
+GET {{baseURL}}/institucion/1
+Accept: application/json
+
+
+### GET ALL Convocatorias
+GET {{baseURL}}/convocatoria/
+Accept: application/json
+
+### GET Convocatoria by ID
+GET {{baseURL}}/convocatoria/1
+Accept: application/json
+
+### PUT Convocatoria
+PUT {{baseURL}}/convocatoria/2
+Content-Type: application/json
+Accept: application/json
+
+{
+  "areapasantia": "Area actualizada",
+  "descripcionfunciones": "Descripción actualizada",
+  "requisitoscompetencias": "Requisitos y competencias",
+  "horario_inicio": "08:00",
+  "horario_fin": "17:00",
+  "fechasolicitud": "2023-10-22",
+  "fechaseleccionpasante": "2025-12-12",
+  "estadoconvocatoria": {
+    "id": 5
+  },
+  "institucion": {
+    "id": 1
+  },
+  "tiempoacumplir": {
+    "id": 2
+  }
+}
+
+
+### ENDPOINTS DE FRONTEND
+
+### GET ALL de Institucion Activas
+GET {{baseURL}}/instituciones/activas
+Accept: application/json
+
+### GET ALL de Institucion Pendientes
+GET {{baseURL}}/instituciones/pendientes
+Accept: application/json
+
+### GET ALL de Institucion Rechazadas
+GET {{baseURL}}/instituciones/rechazadas
+Accept: application/json
+
+### GET ALL de Convocatorias Activas
+GET {{baseURL}}/convocatorias/activas
+Accept: application/json
+
+### GET ALL de Convocatorias Pendientes
+GET {{baseURL}}/convocatorias/pendientes
+Accept: application/json
+
+### GET ALL de Convocatorias Inactiva
+GET {{baseURL}}/convocatorias/inactivas
+Accept: application/json
+
+
+### PUT para ACTIVAR una INSTITUCION
+@institucionID = 3
+PUT {{baseURL}}/institucion/activate/{{institucionID}}
+Accept: application/json
+
+
+### PUT para RECHAZAR una INSTITUCION
+@institucioonID = 2
+PUT {{baseURL}}/institucion/reject/{{institucioonID}}
+Accept: application/json
+
+
+###PUT para volver PENDIENTE una INSTITUCION
+@instituciionID = 2
+PUT {{baseURL}}/institucion/pending/{{instituciionID}}
+Accept: application/json
+
+
+### PUT para ACTIVAR una CONVOCATORIA
+@convocatoriaaID = 2
+PUT {{baseURL}}/convocatoria/activate/{{convocatoriaaID}}
+Accept: application/json
+
+
+### PUT para RECHAZAR una CONVOCATORIA
+@convocatoriaID = 1
+PUT {{baseURL}}/convocatoria/reject/{{convocatoriaID}}
+Accept: application/json
+
+
+###PUT para volver PENDIENTE una CONVOCATORIA
+@convocatoriiaID = 3
+PUT {{baseURL}}/convocatoria/pending/{{convocatoriiaID}}
+Accept: application/json

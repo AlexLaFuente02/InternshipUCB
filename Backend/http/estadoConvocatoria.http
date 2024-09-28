@@ -1,0 +1,33 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+### GET ALL EstadoConvocatoria
+GET http://{{host}}/estadoconvocatoria/
+Accept: application/json
+
+### GET EstadoConvocatoria by ID
+GET http://{{host}}/estadoconvocatoria/1
+Accept: application/json
+
+### POST EstadoConvocatoria
+POST http://{{host}}/estadoconvocatoria/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nombreestadoconvocatoria": "ACTIVO"
+}
+
+### PUT EstadoConvocatoria
+PUT http://{{host}}/estadoconvocatoria/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nombreestadoconvocatoria": "Finalizado"
+}
+
+### DELETE EstadoConvocatoria
+DELETE http://{{host}}/estadoconvocatoria/1
+Accept: application/json

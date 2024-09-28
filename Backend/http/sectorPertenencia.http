@@ -1,0 +1,31 @@
+@base_url = http://localhost:3000/sectorPertenencia
+
+###GET ALL DE sectorPertenencia
+GET {{base_url}}/
+Accept: application/json
+
+###GET BY ID DE sectorPertenencia
+GET {{base_url}}/1
+Accept: application/json
+
+###POST DE sectorPertenencia
+POST {{base_url}}/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nombresectorpertenencia": "Sector 4"
+}
+
+###PUT DE sectorPertenencia
+PUT {{base_url}}/2
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nombresectorpertenencia": "Sector 2"
+}
+
+###DELETE DE sectorPertenencia
+DELETE {{base_url}}/4
+Accept: application/json

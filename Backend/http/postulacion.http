@@ -1,0 +1,39 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+### Obtener todas las postulacion
+GET http://{{host}}/postulacion
+Accept: application/json
+
+### Obtener una postulación por ID (reemplaza {id} con un ID válido)
+GET http://{{host}}/postulacion/12
+Accept: application/json
+
+### Crear una nueva postulación (proporciona los datos de la postulación en el cuerpo de la solicitud)
+POST http://{{host}}/postulacion
+Content-Type: application/json
+Accept: application/json
+
+{
+    "fechapostulacion": "2023-10-25",
+    "estadopostulacion": { "id": 1 },
+    "estudiante": { "id": 1 },
+    "convocatoria": { "id": 3 }  
+}
+
+### Actualizar una postulación por ID (reemplaza {id} con un ID válido y proporciona los datos actualizados en el cuerpo de la solicitud)
+PUT http://{{host}}/postulacion/1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "fechapostulacion": "2023-10-26",
+    "estadopostulacion_id": 1,
+    "estudiante_id": 1,
+    "convocatoria_id": 1  
+}
+
+### Eliminar una postulación por ID (reemplaza {id} con un ID válido)
+DELETE http://{{host}}/postulacion/12
+Accept: application/json

@@ -1,0 +1,33 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+### GET ALL DE SEMESTRE
+GET http://{{host}}/semestre/
+Accept: application/json
+
+### GET SEMESTRE BY ID
+GET http://{{host}}/semestre/2
+Accept: application/json
+
+### POST SEMESTRE
+POST http://{{host}}/semestre/
+Content-Type: application/json
+Accept: application/json
+
+{
+    "codigosemestre": "2-2025"
+}
+
+### PUT SEMESTRE
+PUT http://{{host}}/semestre/3
+Content-Type: application/json
+Accept: application/json
+
+{
+    "codigosemestre": "1-2026"
+}
+
+### DELETE SEMESTRE
+DELETE http://{{host}}/semestre/1
+Accept: application/json
