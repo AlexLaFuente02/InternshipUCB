@@ -21,6 +21,7 @@
                     <li>Mínimo 1 letra minúscula</li>
                     <li>Mínimo 1 letra mayúscula</li>
                     <li>Mínimo 1 número</li>
+                    <li>Mínimo 1 caracter especial</li>
                     <li>Mínimo 8 caracteres</li>
                 </ul>
             </template>
@@ -52,6 +53,11 @@ export default {
 }
 </script>
 <style scoped>
+/* Ocultar solo la barra de progreso */
+.p-password-panel .p-progressbar {
+    display: none !important;  /* Ocultamos solo la barra de progreso */
+}
+
 .formpass{
     width: 100%;
     display: flex;

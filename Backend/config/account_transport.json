@@ -1,10 +1,7 @@
 {
-    "service": "gmail",
-    "auth": {
-      "type": "OAuth2",
-      "user": "wind.no.reply.beta@gmail.com",
-      "clientId": "990000457047-t6ph30pvbnkrrhv4h5mfogmvc8if8fnm.apps.googleusercontent.com",
-      "clientSecret": "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",
-      "refreshToken": "1//048QsSlH1MskzCgYIARAAGAQSNwF-L9Irp1fzxEekoEO--H0YrCu8yDuhqdQ2pJ2t50TpuOzlD0xUD0zYvsk2Pl9UyMSOTiXnGuU"
-    }
+  "service": "gmail",
+  "auth": {
+      "user": "alexlafuentelp@gmail.com",  
+      "pass": "ypym idqj vlpc xttk"      
   }
+}

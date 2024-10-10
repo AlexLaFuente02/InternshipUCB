@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS internshipdb;
+CREATE DATABASE IF NOT EXISTS internshipucb;
 
-USE internshipdb;
+USE internshipucb;
 
 CREATE TABLE tipousuario (
     id INT AUTO_INCREMENT PRIMARY KEY,

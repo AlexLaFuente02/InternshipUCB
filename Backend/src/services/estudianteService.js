@@ -9,10 +9,10 @@ const Sede = require('../ENT/SedeENT');
 const Semestre = require('../ENT/semestreENT');
 /*Importaciones para los correos*/
 const nodemailer = require('nodemailer');
-const {google} = require('googleapis');
-const OAuth2 = google.auth.OAuth2;
+//const {google} = require('googleapis');
+//const OAuth2 = google.auth.OAuth2;
 const accountTransport = require('../../config/account_transport.json');
-const { books } = require('googleapis/build/src/apis/books');
+//const { books } = require('googleapis/build/src/apis/books');
 /*Importaciones para los tokens*/
 const jwt = require('jsonwebtoken');
 const SECRET_KEY_CODES = require('../../config/secretKey.js');
@@ -260,48 +260,51 @@ const generateCode = (email) => {
 const deleteExpiredCodes = () => {
     codes = codes.filter(c => c.expiration > new Date().getTime());
 };
-/*Funcion para enviar correo*/
+
+const transport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: accountTransport.auth.user,  // Tu correo electrónico
+        pass: accountTransport.auth.pass   // Tu App Password
+    },
+    secure: true, // Usa SSL/TLS
+    port: 465,    // Puerto para SMTP seguro
+    tls: {
+        rejectUnauthorized: false // Opcional, pero útil en ciertos entornos para evitar problemas de certificados
+    }
+});
+/*Función para enviar correo*/
 const sendEmail = async (email) => {
     const subject = "Código de validación";
     const text = `Su código de validación es: ${generateCode(email)}`;
-    const oauth2Client = new OAuth2(
-        accountTransport.auth.clientId,
-        accountTransport.auth.clientSecret,
-        "https://developers.google.com/oauthplayground"
-    );
-    oauth2Client.setCredentials({
-        refresh_token: accountTransport.auth.refreshToken
-    });
-    const accessToken = await oauth2Client.getAccessToken();
-    const transport = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            type: 'OAuth2',
-            user: accountTransport.auth.user,
-            clientId: accountTransport.auth.clientId,
-            clientSecret: accountTransport.auth.clientSecret,
-            refreshToken: accountTransport.auth.refreshToken,
-            accessToken: accessToken
-        }
-    });
+
+    // Configurar las opciones del correo
     const mailOptions = {
-        from: accountTransport.auth.user,
-        to: email,
+        from: accountTransport.auth.user,  // El correo desde el que se envía
+        to: email,                         // El correo del destinatario
         subject: subject,
         text: text
     };
-    const result = await transport.sendMail(mailOptions);
-    return result;
+
+    // Enviar el correo
+    try {
+        const result = await transport.sendMail(mailOptions);
+        console.log('Correo enviado', result);
+        return result;
+    } catch (error) {
+        console.error('Error enviando el correo:', error);
+        throw error;
+    }
 };
-/*Funcion para enviar el codigo de validacion*/
+/*Función para enviar el código de validación*/
 const sendCode = async (email) => {
-    /*Verificar que el correo acabe en @ucb.edu.bo*/
+    /*Verificar que el correo termine en @ucb.edu.bo*/
     const testCorreo = /@ucb.edu.bo$/;
     if (!testCorreo.test(email)) {
         return new ResponseDTO('E-1006', null, 'El correo debe ser el institucional de la UCB');
     }
     const result = await sendEmail(email);
-    const response = new ResponseDTO('E-0000', result, 'Codigo de validacion enviado correctamente');
+    const response = new ResponseDTO('E-0000', result, 'Código de validación enviado correctamente');
     return response;
 };
 /*Funcion para validar el codigo de validacion*/
