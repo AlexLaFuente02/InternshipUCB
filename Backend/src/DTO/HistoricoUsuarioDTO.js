@@ -34,12 +34,16 @@
  */
 
 class HistoricoUsuarioDTO {
-  constructor(id_h, id_u, idusuario, contrasenia, tipousuario_id) {
+  constructor(id_h, id_u, idusuario, contrasenia, tipousuario_id, numero_intentos, estado, creado, accion) {
     this.id_h = id_h;
     this.id_u = id_u;
     this.idusuario = idusuario;
     this.contrasenia = contrasenia;
     this.tipousuario_id = tipousuario_id;
+    this.numero_intentos = numero_intentos;
+    this.estado = estado;
+    this.creado = creado;
+    this.accion = accion;
   }
 }
 

@@ -20,6 +20,15 @@ const UsuarioENT = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    numero_intentos:{
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 3
+    },
+    estado:{
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     tableName: "usuario",

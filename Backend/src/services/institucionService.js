@@ -43,7 +43,10 @@ const getAllInstitutions = async () => {
       if (institucion.usuario) {
         usuarioDTO = new UsuarioDTO(
           institucion.usuario.id,
-          institucion.usuario.idusuario
+          institucion.usuario.idusuario,
+          institucion.usuario.tipousuario,
+          institucion.usuario.numero_intentos,
+          institucion.usuario.estado
         );
       }
       const imageUrl = institucion.logoinstitucion
@@ -59,7 +62,10 @@ const getAllInstitutions = async () => {
         institucion.celularcontacto,
         institucion.estado, 
         usuarioDTO,
-        sectorPertenenciaDTO
+        sectorPertenenciaDTO,
+        institucion.totalPostulaciones,
+        institucion.habilitado_convocatoria,
+        institucion.habilitado_postulacion
       );
     });
     console.log("Instituciones obtenidas correctamente.");
@@ -105,7 +111,10 @@ const getInstitutionById = async (id) => {
     if (institucion.usuario) {
       usuarioDTO = new UsuarioDTO(
         institucion.usuario.id,
-        institucion.usuario.idusuario
+        institucion.usuario.idusuario,
+        institucion.usuario.tipousuario,
+        institucion.usuario.numero_intentos,
+        institucion.usuario.estado
       );
     }
 
@@ -123,7 +132,10 @@ const getInstitutionById = async (id) => {
       institucion.celularcontacto,
       institucion.estado,
       usuarioDTO,
-      sectorPertenenciaDTO
+      sectorPertenenciaDTO,
+      institucion.totalPostulaciones,
+      institucion.habilitado_convocatoria,
+      institucion.habilitado_postulacion
     );
 
     console.log("Institución obtenida correctamente.");
@@ -175,6 +187,8 @@ const createInstitution = async (institutionData) => {
       correocontacto: institutionData.correocontacto,
       celularcontacto: institutionData.celularcontacto,
       estado: institutionData.estado,
+      habilitado_convocatoria: institutionData.habilitado_convocatoria,
+      habilitado_postulacion: institutionData.habilitado_postulacion
     });
 
     const imageUrl = fileName ? `${baseURL}/images/${fileName}` : null;
@@ -191,7 +205,10 @@ const createInstitution = async (institutionData) => {
       nuevaInstitucion.celularcontacto,
       nuevaInstitucion.estado,
       usuarioDTO,
-      sectorPertenenciaDTO
+      sectorPertenenciaDTO,
+      nuevaInstitucion.totalPostulaciones,
+      nuevaInstitucion.habilitado_convocatoria,
+      nuevaInstitucion.habilitado_postulacion
     );
 
     console.log("Institución creada correctamente.");
@@ -229,6 +246,8 @@ const updateInstitution = async (id, institutionData) => {
       correocontacto: institutionData.correocontacto,
       celularcontacto: institutionData.celularcontacto,
       estado: institutionData.estado,
+      habilitado_convocatoria: institutionData.habilitado_convocatoria,
+      habilitado_postulacion: institutionData.habilitado_postulacion
     });
     const sectorPertenenciaDTO = new SectorPertenenciaDTO(
       institutionData.sectorpertenencia_id,
@@ -247,7 +266,10 @@ const updateInstitution = async (id, institutionData) => {
       institucion.celularcontacto,
       institucion.estado,
       usuarioDTO,
-      sectorPertenenciaDTO
+      sectorPertenenciaDTO,
+      institucion.totalPostulaciones,
+      institucion.habilitado_convocatoria,
+      institucion.habilitado_postulacion
     );
     console.log("Institución actualizada correctamente.");
     return new ResponseDTO(

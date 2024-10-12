@@ -32,10 +32,12 @@
  */
 
 class UsuarioDTO {
-  constructor(id, idusuario, tipousuario) {
+  constructor(id, idusuario, tipousuario, numero_intentos, estado) {
     this.id = id;
     this.idusuario = idusuario;
     this.tipousuario = tipousuario;
+    this.numero_intentos = numero_intentos;
+    this.estado = estado;
   }
 }
 

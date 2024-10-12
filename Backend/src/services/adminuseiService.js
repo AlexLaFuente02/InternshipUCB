@@ -14,9 +14,11 @@ const getAllAdminsUSEI = async () => {
       const usuarioDTO = new UsuarioDTO(
         adminusei.usuario.id,
         adminusei.usuario.idusuario,
-        adminusei.usuario.tipousuario
+        adminusei.usuario.tipousuario,
+        adminusei.usuario.numero_intentos,
+        adminusei.usuario.estado
       );
-      return new AdminuseiDTO(adminusei.id, usuarioDTO);
+      return new AdminuseiDTO(adminusei.id, usuarioDTO, adminusei.habilitado_ver, adminusei.habilitado_modific);
     });
     console.log("Administradores USEI obtenidos correctamente.");
     return new ResponseDTO(
@@ -51,9 +53,11 @@ const getAdminUSEIById = async (id) => {
     const usuarioDTO = new UsuarioDTO(
       adminUSEI.usuario.id,
       adminUSEI.usuario.idusuario,
-      adminUSEI.usuario.tipousuario
+      adminUSEI.usuario.tipousuario,
+      adminUSEI.usuario.numero_intentos,
+      adminUSEI.usuario.estado,
     );
-    const adminUSEIDTO = new AdminuseiDTO(adminUSEI.id, usuarioDTO);
+    const adminUSEIDTO = new AdminuseiDTO(adminUSEI.id, usuarioDTO, adminUSEI.habilitado_ver, adminUSEI.habilitado_modific);
     console.log("Administrador USEI obtenido correctamente.");
     return new ResponseDTO(
       "AUSEI-0000",
@@ -81,9 +85,11 @@ const createAdminUSEI = async (adminUSEIData) => {
     const usuarioDTO = new UsuarioDTO(
       adminUSEIData.usuario.id,
       adminUSEIData.usuario.idusuario,
-      adminUSEIData.usuario.tipousuario
+      adminUSEIData.usuario.tipousuario,
+      adminUSEIData.usuario.numero_intentos,
+      adminUSEIData.usuario.estado
     );
-    const nuevoAdminUSEIDTO = new AdminuseiDTO(nuevoAdminUSEI.id, usuarioDTO);
+    const nuevoAdminUSEIDTO = new AdminuseiDTO(nuevoAdminUSEI.id, usuarioDTO, nuevoAdminUSEI.habilitado_ver, nuevoAdminUSEI.habilitado_modific);
     console.log("Administrador USEI creado correctamente.");
     return new ResponseDTO(
       "AUSEI-0000",
@@ -114,6 +120,8 @@ const updateAdminUSEI = async (id, adminUSEIData) => {
     }
     await adminUSEI.update({
       usuario_id: adminUSEIData.usuario.id,
+      habilitado_ver: adminUSEIData.habilitado_ver,
+      habilitado_modific: adminUSEIData.habilitado_modific,
     });
     console.log(
       `Administrador USEI con ID: '${id}' actualizado correctamente.`

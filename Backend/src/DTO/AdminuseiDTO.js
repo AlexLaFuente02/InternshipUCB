@@ -19,9 +19,11 @@
  */
 
 class AdminuseiDTO {
-  constructor(id, usuario_id) {
+  constructor(id, usuario_id, habilitado_ver, habilitado_modific) {
     this.id = id;
     this.usuario_id = usuario_id;
+    this.habilitado_ver = habilitado_ver;
+    this.habilitado_modific = habilitado_modific;
   }
 }
 

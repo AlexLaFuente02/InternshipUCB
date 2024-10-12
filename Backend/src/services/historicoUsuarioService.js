@@ -9,6 +9,10 @@ const insertHistoricoUsuario = async (userData) => {
       idusuario: userData.idusuario,
       contrasenia: userData.contrasenia,
       tipousuario_id: userData.tipousuario_id,
+      numero_intentos: userData.numero_intentos,
+      estado: userData.estado,
+      creado: userData.creado,
+      accion: userData.accion,
     });
     console.log("Usuario registrado en historico_usuario correctamente.");
   } catch (error) {
@@ -29,7 +33,11 @@ const getAllUserHistory = async () => {
         userHistory.idusuario,
         userHistory.contrasenia,
         // Aquí puedes convertir el id del tipo de usuario en un DTO si es necesario
-        userHistory.tipousuario_id
+        userHistory.tipousuario_id,
+        userHistory.numero_intentos,
+        userHistory.estado,
+        userHistory.creado,
+        userHistory.accion
       )),
       message: "Registros históricos de usuarios obtenidos correctamente.",
     };
@@ -53,7 +61,11 @@ const getUserHistoryById = async (id_h) => {
       userHistory.idusuario,
       userHistory.contrasenia,
       // Aquí también puedes convertir el id del tipo de usuario en un DTO
-      userHistory.tipousuario_id
+      userHistory.tipousuario_id,
+      userHistory.numero_intentos,
+      userHistory.estado,
+      userHistory.creado,
+      userHistory.accion
     );
   } catch (error) {
     console.error(`Error al obtener el Historial de Usuario con ID: '${id_h}': ${error}`);
