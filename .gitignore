@@ -33,3 +33,6 @@ my-specific-file.js
 
 ### VS Code ###
 .vscode/
+Backend/package.json
+Frontend/package.json
+Backend/images/

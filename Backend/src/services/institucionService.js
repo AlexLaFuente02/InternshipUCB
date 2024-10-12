@@ -9,9 +9,7 @@ const sequelize = require("../../database/db");
 
 const UsuarioService = require('./usuarioService'); 
 const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
-const OAuth2 = google.auth.OAuth2;
-const accountTransport = require('../../config/account_transport.json'); // Asegúrate de que la ruta sea correcta
+const accountTransport = require('../../config/account_transport.json'); 
 
 
 
@@ -745,43 +743,37 @@ const getInstitutionRejected = async () => {
 
 //ACTIVAR CUENTA - USEI
 // Función para enviar correo
+
+// Configuración del transporte SMTP usando App Password
+const transport = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+      user: accountTransport.auth.user,  // Correo electrónico
+      pass: accountTransport.auth.pass   // Contraseña de aplicación
+  },
+  secure: true, // Usa SSL/TLS
+  port: 465,    // Puerto para SMTP seguro
+  tls: {
+      rejectUnauthorized: false // Opcional, pero útil en ciertos entornos para evitar problemas de certificados
+  }
+});
+
+// Función para enviar correo
 const sendEmail = async (email, subject, text) => {
-  const oauth2Client = new OAuth2(
-      accountTransport.auth.clientId,
-      accountTransport.auth.clientSecret,
-      "https://developers.google.com/oauthplayground"
-  );
-
-  oauth2Client.setCredentials({
-      refresh_token: accountTransport.auth.refreshToken
-  });
-
-  const accessToken = await oauth2Client.getAccessToken();
-
-  const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-          type: 'OAuth2',
-          user: accountTransport.auth.user,
-          clientId: accountTransport.auth.clientId,
-          clientSecret: accountTransport.auth.clientSecret,
-          refreshToken: accountTransport.auth.refreshToken,
-          accessToken: accessToken.token
-      }
-  });
-
   const mailOptions = {
-      from: accountTransport.auth.user,
-      to: email,
+      from: accountTransport.auth.user,  // Correo desde el que se envía
+      to: email,                         // Correo del destinatario
       subject: subject,
       text: text
   };
 
   try {
-      await transporter.sendMail(mailOptions);
+      const result = await transport.sendMail(mailOptions);
       console.log('Correo enviado correctamente a', email);
+      return result;
   } catch (error) {
       console.error('Error al enviar correo:', error);
+      throw error;
   }
 };
 
