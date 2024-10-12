@@ -23,7 +23,7 @@ const getAllUsers = async () => {
         });
         const usuariosDTO = usuarios.map(usuario => {
             const tipoUsuarioDTO = new TipoUsuarioDTO(usuario.tipousuario.id, usuario.tipousuario.tipo);
-            return new UsuarioDTO(usuario.id, usuario.idusuario, tipoUsuarioDTO);
+            return new UsuarioDTO(usuario.id, usuario.idusuario, tipoUsuarioDTO, usuario.numero_intentos, usuario.estado);
         });
         console.log('Usuarios obtenidos correctamente.');
         return new ResponseDTO('U-0000', usuariosDTO, 'Usuarios obtenidos correctamente');
@@ -44,7 +44,7 @@ const getUserById = async (id) => {
             return new ResponseDTO('U-1002', null, 'Usuario no encontrado');
         }
         const tipoUsuarioDTO = new TipoUsuarioDTO(usuario.tipousuario.id, usuario.tipousuario.tipo);
-        const usuarioDTO = new UsuarioDTO(usuario.id, usuario.idusuario, tipoUsuarioDTO);
+        const usuarioDTO = new UsuarioDTO(usuario.id, usuario.idusuario, tipoUsuarioDTO, usuario.numero_intentos, usuario.estado);
         console.log('Usuario obtenido correctamente.');
         return new ResponseDTO('U-0000', usuarioDTO, 'Usuario obtenido correctamente');
     } catch (error) {
@@ -63,9 +63,11 @@ const createUser = async (userData) => {
             idusuario: userData.idusuario,
             contrasenia: hashedPassword, // Almacenamos la contraseña hasheada
             tipousuario_id: userData.tipousuario.id,
+            numero_intentos: 3, //Valores por defecto
+            estado: 'Activo' //Valores por defecto
         });
         const tipoUsuarioDTO = new TipoUsuarioDTO(userData.tipousuario.id, userData.tipousuario.tipo);
-        const nuevoUsuarioDTO = new UsuarioDTO(nuevoUsuario.id, nuevoUsuario.idusuario, tipoUsuarioDTO);
+        const nuevoUsuarioDTO = new UsuarioDTO(nuevoUsuario.id, nuevoUsuario.idusuario, tipoUsuarioDTO, nuevoUsuario.numero_intentos, nuevoUsuario.estado);
         await HistoricoUsuarioService.insertHistoricoUsuario(nuevoUsuario.dataValues);
         console.log('Usuario creado correctamente.');
         return new ResponseDTO('U-0000', nuevoUsuarioDTO, 'Usuario creado correctamente');
@@ -91,6 +93,8 @@ const updateUser = async (id, userData) => {
             idusuario: userData.idusuario,
             contrasenia: hashedPassword, // Actualizamos con la contraseña hasheada
             tipousuario_id: userData.tipousuario.id,
+            numero_intentos: userData.numero_intentos,
+            estado: userData.estado
         });
         console.log('Usuario actualizado correctamente.');
         return new ResponseDTO('U-0000', null, 'Usuario actualizado correctamente');

@@ -10,6 +10,14 @@ const AdminuseiENT = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
+    habilitado_ver: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    habilitado_modific: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     tableName: "adminusei",
