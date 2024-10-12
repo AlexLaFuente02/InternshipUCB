@@ -63,7 +63,7 @@ const createUser = async (userData) => {
             idusuario: userData.idusuario,
             contrasenia: hashedPassword, // Almacenamos la contraseña hasheada
             tipousuario_id: userData.tipousuario.id,
-            numero_intentos: 3, //Valores por defecto
+            numero_intentos: 0, //Valores por defecto
             estado: 'Activo' //Valores por defecto
         });
         const tipoUsuarioDTO = new TipoUsuarioDTO(userData.tipousuario.id, userData.tipousuario.tipo);

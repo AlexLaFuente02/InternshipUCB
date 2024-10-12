@@ -185,8 +185,8 @@ const createInstitution = async (institutionData) => {
       correocontacto: institutionData.correocontacto,
       celularcontacto: institutionData.celularcontacto,
       estado: institutionData.estado,
-      habilitado_convocatoria: institutionData.habilitado_convocatoria,
-      habilitado_postulacion: institutionData.habilitado_postulacion
+      habilitado_convocatoria: 1,
+      habilitado_postulacion: 1
     });
 
     const imageUrl = fileName ? `${baseURL}/images/${fileName}` : null;
@@ -819,7 +819,9 @@ const activateInstitution = async (id) => {
     const userData = {
       idusuario: institucion.correocontacto,
       contrasenia: institucion.celularcontacto,
-      tipousuario: { id: 2 }
+      tipousuario: { id: 2 },
+      numero_intentos: 0,
+      estado: 'ACTIVO',
     };
     const resultadoUsuario = await UsuarioService.createUser(userData);
     if (resultadoUsuario.code !== 'U-0000') {

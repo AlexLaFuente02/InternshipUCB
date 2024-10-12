@@ -24,9 +24,9 @@ CREATE TABLE usuario (
     CONSTRAINT usuario_tipousuario FOREIGN KEY (tipousuario_id) REFERENCES tipousuario (id)
 );
 
-INSERT INTO `usuario` VALUES (1, 'estudiante1', '$2b$10$tT5EWhx1Trs1WbPVm.KDMeBM/ty1MYKtUjMbWlpm3xVzVP/5NeAOK', 1, 3, 'ACTIVO');
-INSERT INTO `usuario` VALUES (2, 'institucion1', '$2b$10$1RMjfOcuR85pkJi6olNixexJtZiP7E0N92R3p9tposg/UkitNbusm', 2, 3, 'ACTIVO');
-INSERT INTO `usuario` VALUES (3, 'usei1', '$2b$10$79bFUNK4r4DAiWDFjTb1yuyWeTDaKJB8QQBfzhY2N9IytxuU2AO5q', 3, 3, 'ACTIVO');
+INSERT INTO `usuario` VALUES (1, 'estudiante1', '$2b$10$tT5EWhx1Trs1WbPVm.KDMeBM/ty1MYKtUjMbWlpm3xVzVP/5NeAOK', 1, 0, 'ACTIVO');
+INSERT INTO `usuario` VALUES (2, 'institucion1', '$2b$10$1RMjfOcuR85pkJi6olNixexJtZiP7E0N92R3p9tposg/UkitNbusm', 2, 0, 'ACTIVO');
+INSERT INTO `usuario` VALUES (3, 'usei1', '$2b$10$79bFUNK4r4DAiWDFjTb1yuyWeTDaKJB8QQBfzhY2N9IytxuU2AO5q', 3, 0, 'ACTIVO');
 #insertar el resto de un request la contrasenia porque la contraseña debe estar hasheada
 
 CREATE TABLE estadopostulacion (
@@ -259,7 +259,7 @@ CREATE TABLE historico_usuario (
     idusuario varchar(50) NOT NULL,
     contrasenia varchar(255) NOT NULL,
     tipousuario_id int NOT NULL,
-    creado date NOT NULL,
+    creado datetime NOT NULL,
     accion varchar(255) NOT NULL,
     numero_intentos int NOT NULL,
     estado varchar(30) NOT NULL

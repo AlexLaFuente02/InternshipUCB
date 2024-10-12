@@ -11,8 +11,8 @@ const insertHistoricoUsuario = async (userData) => {
       tipousuario_id: userData.tipousuario_id,
       numero_intentos: userData.numero_intentos,
       estado: userData.estado,
-      creado: userData.creado,
-      accion: userData.accion,
+      creado: new Date(),
+      accion: "Inserción de Usuario",
     });
     console.log("Usuario registrado en historico_usuario correctamente.");
   } catch (error) {
