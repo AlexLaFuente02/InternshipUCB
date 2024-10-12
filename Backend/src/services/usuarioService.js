@@ -53,29 +53,92 @@ const getUserById = async (id) => {
     }
 };
 
+const { Op } = require('sequelize'); // Importar operadores
+
 const createUser = async (userData) => {
     console.log('Creando un nuevo usuario...');
+    
     try {
         // Hashea la contraseña antes de almacenarla en la base de datos
         const hashedPassword = await bcrypt.hash(userData.contrasenia, 10);
 
+        // Función para obtener la secuencia del último usuario creado basado en el tipo
+        const obtenerSiguienteSecuencia = async (tipoUsuarioId) => {
+            let prefijo = '';
+            switch (tipoUsuarioId) {
+                case 1: // Estudiante
+                    prefijo = 'EST';
+                    break;
+                case 2: // Institución
+                    prefijo = 'INS';
+                    break;
+                case 3: // USEI
+                    prefijo = 'USEI';
+                    break;
+                default:
+                    throw new Error('Tipo de usuario no válido');
+            }
+
+            let secuencia = 1; // Comenzar desde 1 si no hay usuarios previos
+
+            // Buscar el último usuario del tipo correspondiente que siga el formato correcto
+            const ultimoUsuario = await Usuario.findOne({
+                where: {
+                    tipousuario_id: tipoUsuarioId,
+                    idusuario: {
+                        [Op.regexp]: `^${prefijo}-\\d{4}$`  // Buscar usuarios que sigan el formato correcto como EST-0001
+                    }
+                },
+                order: [['idusuario', 'DESC']] // Ordenar por idusuario para obtener el último de este tipo
+            });
+
+            console.log(`Último usuario encontrado: ${ultimoUsuario ? ultimoUsuario.idusuario : 'Ninguno'}`);
+
+            if (ultimoUsuario && ultimoUsuario.idusuario) {
+                // Extraer la secuencia numérica del último ID de usuario
+                const partesIdUsuario = ultimoUsuario.idusuario.split('-');
+                const numeroSecuencia = parseInt(partesIdUsuario[1], 10);
+                console.log(`Número de secuencia extraído: ${numeroSecuencia}`);
+                
+                // Incrementar la secuencia si es válida
+                if (!isNaN(numeroSecuencia)) {
+                    secuencia = numeroSecuencia + 1;
+                }
+            }
+
+            // Retornar el nuevo ID de usuario con el formato adecuado
+            const nuevoIdUsuario = `${prefijo}-${String(secuencia).padStart(4, '0')}`;
+            console.log(`Nuevo ID de usuario generado: ${nuevoIdUsuario}`);
+            return nuevoIdUsuario;
+        };
+
+        // Obtener la secuencia para este tipo de usuario
+        const idUsuarioGenerado = await obtenerSiguienteSecuencia(userData.tipousuario.id);
+
+        // Crear el nuevo usuario en la base de datos
         const nuevoUsuario = await Usuario.create({
-            idusuario: userData.idusuario,
-            contrasenia: hashedPassword, // Almacenamos la contraseña hasheada
+            idusuario: idUsuarioGenerado,  // Asignamos el ID generado
+            contrasenia: hashedPassword,   // Almacenamos la contraseña hasheada
             tipousuario_id: userData.tipousuario.id,
-            numero_intentos: 0, //Valores por defecto
-            estado: 'Activo' //Valores por defecto
+            numero_intentos: 0,            // Valores por defecto
+            estado: 'ACTIVO'               // Valores por defecto
         });
+
         const tipoUsuarioDTO = new TipoUsuarioDTO(userData.tipousuario.id, userData.tipousuario.tipo);
         const nuevoUsuarioDTO = new UsuarioDTO(nuevoUsuario.id, nuevoUsuario.idusuario, tipoUsuarioDTO, nuevoUsuario.numero_intentos, nuevoUsuario.estado);
-        await HistoricoUsuarioService.insertHistoricoUsuario(nuevoUsuario.dataValues);
+        
+        await HistoricoUsuarioService.insertHistoricoUsuario(nuevoUsuario.dataValues, 'Inserción de usuario');
+        
         console.log('Usuario creado correctamente.');
         return new ResponseDTO('U-0000', nuevoUsuarioDTO, 'Usuario creado correctamente');
+    
     } catch (error) {
         console.error('Error al crear el usuario:', error);
         return new ResponseDTO('U-1003', null, `Error al crear el usuario: ${error}`);
     }
 };
+
+
 
 const updateUser = async (id, userData) => {
     console.log(`Actualizando el usuario con ID: ${id}...`);
@@ -97,6 +160,10 @@ const updateUser = async (id, userData) => {
             estado: userData.estado
         });
         console.log('Usuario actualizado correctamente.');
+
+        await HistoricoUsuarioService.insertHistoricoUsuario(usuario.dataValues, 'Actualización de usuario');
+        console.log('Actualización de usuario registrada en historico_usuario correctamente.');
+
         return new ResponseDTO('U-0000', null, 'Usuario actualizado correctamente');
     } catch (error) {
         console.error(`Error al actualizar el usuario con ID: ${id}.`, error);
@@ -120,6 +187,10 @@ const updatePassword = async (req) => {
             contrasenia: hashedPassword, // Actualizamos con la contraseña hasheada
         });
         console.log('Usuario actualizado correctamente.');
+
+        await HistoricoUsuarioService.insertHistoricoUsuario(usuario.dataValues, 'Actualización de contraseña');
+        console.log('Actualización de usuario registrada en historico_usuario correctamente.');
+
         return new ResponseDTO('U-0000', null, 'Usuario actualizado correctamente');
     } catch (error) {
         console.error(`Error al actualizar el usuario con ID: ${req.body.id}.`, error);

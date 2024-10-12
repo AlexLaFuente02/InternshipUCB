@@ -27,14 +27,37 @@ passport.use(new LocalStrategy(
         return done(null, false, new ResponseDTO('AUTH-1001', null, 'Usuario no encontrado'));
       }
 
+      // Verificar si el usuario está bloqueado
+      if (usuario.estado === 'BLOQUEADO') {
+        console.log(`Usuario ${idusuario} está bloqueado`);
+        return done(null, false, new ResponseDTO('AUTH-1004', null, 'Usuario bloqueado'));
+      }
+
       console.log(`Comparando contraseñas para el usuario: ${idusuario}`);
       const isPasswordValid = await bcrypt.compare(password, usuario.contrasenia);
 
       if (!isPasswordValid) {
         console.log('Contraseña incorrecta');
+        
+        // Aumentar el número de intentos fallidos
+        usuario.numero_intentos += 1;
+
+        // Verificar si el número de intentos fallidos es 3 o más
+        if (usuario.numero_intentos >= 3) {
+          console.log(`Usuario ${idusuario} ha sido bloqueado por superar los intentos permitidos`);
+          usuario.estado = 'BLOQUEADO';
+        }
+
+        // Guardar los cambios en la base de datos
+        await usuario.save();
+
         return done(null, false, new ResponseDTO('AUTH-1002', null, 'Contraseña incorrecta'));
       }
 
+      // Si la contraseña es correcta, reiniciamos el contador de intentos
+      usuario.numero_intentos = 0;
+      await usuario.save();
+      
       // Aquí almacenamos la información en la sesión
       req.session.user = {
         id: usuario.id,

@@ -1,7 +1,7 @@
 const HistoricoUsuarioENT = require("../ENT/HistoricoUsuarioENT");
 const HistoricoUsuarioDTO = require("../DTO/HistoricoUsuarioDTO");
 
-const insertHistoricoUsuario = async (userData) => {
+const insertHistoricoUsuario = async (userData, accion) => {
   try {
     console.log("Insertando en historico_usuario...");
     await HistoricoUsuarioENT.create({
@@ -12,7 +12,7 @@ const insertHistoricoUsuario = async (userData) => {
       numero_intentos: userData.numero_intentos,
       estado: userData.estado,
       creado: new Date(),
-      accion: "Inserción de Usuario",
+      accion: accion
     });
     console.log("Usuario registrado en historico_usuario correctamente.");
   } catch (error) {

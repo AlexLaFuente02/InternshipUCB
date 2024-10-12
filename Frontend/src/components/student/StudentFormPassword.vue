@@ -68,7 +68,7 @@ export default {
             if (this.passwordlabel === this.confirmPasswordlabel)
             {
                 //Validar que la contraseña cumpla con los requisitos
-                if (this.passwordlabel.length >= 8 && this.passwordlabel.match(/[a-z]/g) && this.passwordlabel.match(/[A-Z]/g) && this.passwordlabel.match(/[0-9]/g) && this.passwordlabel.match(/[!@#$%^&*(),.?":{}|<>]/g))
+                if (this.passwordlabel.length >= 8 && this.passwordlabel.match(/[a-z]/g) && this.passwordlabel.match(/[A-Z]/g) && this.passwordlabel.match(/[0-9]/g) && this.passwordlabel.match(/[_!@#$%^&*(),.?":{}|<>]/g))
                 {
                     
                     this.loaderStore.activateLoader();
