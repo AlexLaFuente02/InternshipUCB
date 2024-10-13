@@ -165,6 +165,17 @@ router.put('/:id', async (req, res) => {
 }
 );
 
+router.put('/changeEstado/:id', async (req, res) => {
+    console.log(`PUT request received for changeEstado with ID: ${req.params.id}`);
+    const response = await usuarioService.changeEstado(req.params.id);
+    res.json({
+        method: 'changeEstado',
+        code: response.code,
+        result: response.result,
+        message: response.message,
+    });
+})
+
 //PUT para actualizar la contraseña de un usuario
 router.put('/updatePassword', async (req, res) => {
     console.log(`PUT request received for updatePassword with ID: PTM`);
