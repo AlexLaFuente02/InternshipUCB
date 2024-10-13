@@ -113,7 +113,7 @@ CREATE TABLE institucion (
 INSERT INTO `institucion` VALUES (1, 'EMAPA', 'Somos la institucion de agua de la ciudad de La Paz', NULL, 'Juan Pérez', 'juan.perez@utech.edu', '123-456-7890', 'ACTIVO', 1, 2, 1);
 INSERT INTO `institucion` VALUES (2, 'PIL', 'Empresa de lacteos en Bolivia', 0x6C6F676F696E737469747563696F6E2D313730313034353837373239352E706E67, 'Edward', 'edu@gmail.com', '61123636', 'PENDIENTE', 1, NULL, 3);
 INSERT INTO `institucion` VALUES (3, 'ENTEL', 'Empresa de telecomuncaciones en Bolivia.', 0x6C6F676F696E737469747563696F6E2D313730313034363738383739362E6A706567, 'Axel', 'axel@gmail.comds', '61123636', 'PENDIENTE', 1, NULL, 2);
-INSERT INTO `institucion` VALUES (4, 'OscarBusiness', 'es la empresa del osqui', 0x6C6F676F696E737469747563696F6E2D313730313039333130323233302E6A7067, 'Oscar Men', 'osqui.menacho2002@gmail.com', '77596520', 'PENDIENTE', 1, NULL, 2);
+INSERT INTO `institucion` VALUES (4, 'OscarBusiness', 'es la empresa del osqui', 0x6C6F676F696E737469747563696F6E2D313730313039333130323233302E6A7067, 'Oscar Men', 'osqui.me@gmail.com', '77596520', 'PENDIENTE', 1, NULL, 2);
 
 
 CREATE TABLE estadoconvocatoria (
