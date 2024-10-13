@@ -53,3 +53,34 @@ export const logout = async () => {
 }
     
 
+//LLAMADOS API
+export const getUserHistory = async () => {
+    try {
+        const response = await axios.get(`${rutaApi}/historicoUsuario`);
+        const data = response.data;
+        if (data.code === "HU-0000") {
+            return data.result;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error("Hubo un error al cargar el historial de usuarios: ", error);
+        throw error; 
+    }
+};
+
+
+export const getAllUsers = async () => {
+    try {
+        const response = await axios.get(`${rutaApi}/usuario`);
+        const data = response.data;
+        if (data.code === "U-0000") {
+            return data.result;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error("Hubo un error al cargar todos los usuarios: ", error);
+        throw error; 
+    }
+};

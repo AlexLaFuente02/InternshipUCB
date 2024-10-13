@@ -48,6 +48,11 @@ import UseiAnalyticsDashboard from "@/views/usei/UseiAnalyticsDashboard.vue";
 import UseiBusinessRejected  from '@/views/usei/UseiBusinessRejected.vue';
 import UseiInternshipRejected  from '@/views/usei/UseiInternshipRejected.vue';
 
+
+import UnlockUsers from "@/views/adminuser/UnlockUsers.vue";
+import ModifyRole from "@/views/adminuser/ModifyRoles.vue";
+import ActivityLog from "@/views/adminuser/ShowActivity.vue";
+
 // Librerías de Animate & SweetAlert2
 import "../node_modules/animate.css/animate.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
@@ -111,7 +116,13 @@ const routes = [
     {name: 'UseiInternshipApplications', path : '/usei/InternshipApp', component:UseiInternshipApplications},
     {name: "UseiAnalyticsDashboard", path: "/usei/AnalyticsDashboard", component: UseiAnalyticsDashboard},
     {name: 'UseiBusinessRejected', path : '/usei/Business/Rejected', component:UseiBusinessRejected},
-    {name: 'UseiInternshipRejected', path : '/usei/Internship/Rejected', component:UseiInternshipRejected},  
+    {name: 'UseiInternshipRejected', path : '/usei/Internship/Rejected', component:UseiInternshipRejected},
+
+
+    {name: "UnlockUsers", path: "/admin/unlock-users", component: UnlockUsers}, 
+    {name: "ModifyRole", path: "/admin/modifiy-rol", component: ModifyRole}, 
+    {name: "ActivityLog", path: "/admin/activity-log", component: ActivityLog},
+
 ];
 
 // Router

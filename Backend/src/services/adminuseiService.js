@@ -174,10 +174,99 @@ const deleteAdminUSEI = async (id) => {
   }
 };
 
+const changeHabilitadoVer = async (id) => {
+  console.log(`Cambiando permisos de Administrador con ID: ${id}...`);
+  try {
+    const adminUSEI = await AdminuseiENT.findByPk(id, {
+      include: [
+        { model: UsuarioENT, as: "usuario"},
+      ],
+    });
+    if (!adminUSEI) {
+      console.log(`Administrador con ID: ${id} no encontrada.`);
+      return new ResponseDTO("I-1004", null, "Administrador no encontrado");
+    }
+
+    // Actualizar el estado de la institución a 'RECHAZADO'
+    if (adminUSEI.habilitado_ver == 0) {
+      await adminUSEI.update({
+        habilitado_ver: 1,
+      });
+    } else if (adminUSEI.habilitado_ver == 1) {
+      await adminUSEI.update({
+        habilitado_ver: 0,
+      });
+    }
+    
+    console.log(
+      `Permiso de administrador USEI con ID: '${id}' actualizado correctamente.`
+    );
+    return new ResponseDTO(
+      "AUSEI-0000",
+      adminUSEI,
+      `Permiso de administrador USEI con ID: '${id}' actualizado correctamente.`
+    );
+  } catch (error) {
+    console.error(
+      `Error al actualizar el Permiso de Administrador USEI con ID: '${id}': ${error}`
+    );
+    return new ResponseDTO(
+      "AUSEI-4000",
+      null,
+      `Error al actualizar el Permiso de Administrador USEI con ID: '${id}': ${error}`
+    );
+  }
+};
+
+const changeHabilitadoModific = async (id) => {
+  console.log(`Cambiando permisos de Administrador con ID: ${id}...`);
+  try {
+    const adminUSEI = await AdminuseiENT.findByPk(id, {
+      include: [
+        { model: UsuarioENT, as: "usuario"},
+      ],
+    });
+    if (!adminUSEI) {
+      console.log(`Administrador con ID: ${id} no encontrada.`);
+      return new ResponseDTO("I-1004", null, "Administrador no encontrado");
+    }
+
+    // Actualizar el estado de la institución a 'RECHAZADO'
+    if (adminUSEI.habilitado_modific == 0) {
+      await adminUSEI.update({
+        habilitado_modific: 1,
+      });
+    } else if (adminUSEI.habilitado_modific == 1) {
+      await adminUSEI.update({
+        habilitado_modific: 0,
+      });
+    }
+    console.log(
+      `Permiso de administrador USEI con ID: '${id}' actualizado correctamente.`
+    );
+    return new ResponseDTO(
+      "AUSEI-0000",
+      adminUSEI,
+      `Permiso de administrador USEI con ID: '${id}' actualizado correctamente.`
+    );
+  } catch (error) {
+    console.error(
+      `Error al actualizar el Permiso de Administrador USEI con ID: '${id}': ${error}`
+    );
+    return new ResponseDTO(
+      "AUSEI-4000",
+      null,
+      `Error al actualizar el Permiso de Administrador USEI con ID: '${id}': ${error}`
+    );
+  }
+};
+
 module.exports = {
   getAllAdminsUSEI,
   getAdminUSEIById,
   createAdminUSEI,
   updateAdminUSEI,
   deleteAdminUSEI,
+  changeHabilitadoVer,
+  changeHabilitadoModific,
 };
