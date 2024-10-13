@@ -33,6 +33,12 @@ passport.use(new LocalStrategy(
         return done(null, false, new ResponseDTO('AUTH-1004', null, 'Usuario bloqueado'));
       }
 
+      // Verificar si el usuario está eliminado
+      if (usuario.estado === 'ELIMINADO') {
+        console.log(`Usuario ${idusuario} está eliminado`);
+        return done(null, false, new ResponseDTO('AUTH-1005', null, 'Usuario eliminado'));
+      }
+
       console.log(`Comparando contraseñas para el usuario: ${idusuario}`);
       const isPasswordValid = await bcrypt.compare(password, usuario.contrasenia);
 
