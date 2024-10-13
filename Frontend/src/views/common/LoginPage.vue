@@ -131,7 +131,10 @@ export default {
               Accept: "application/json",
             },
           });
-
+          // Suponiendo que tu backend responde con un código en el cuerpo de la respuesta con el codigo de cuenta bloqueada
+          if (response.data.code === "AUTH-1004") {
+            this.loginMessages.loginMessage = "Tu cuenta esta bloqueda, contactate con un administrador para desbloquearla";
+          }
           // Suponiendo que tu backend responde con un código en el cuerpo de la respuesta
           if (response.data.code === "AUTH-0000") {
             var result = response.data.result;
