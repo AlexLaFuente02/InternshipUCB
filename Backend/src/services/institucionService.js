@@ -809,14 +809,19 @@ const activateInstitution = async (id) => {
     // Actualizar el estado de la institución a 'ACTIVO'
     await institucion.update({ estado: 'ACTIVO' });
 
+    // Crear la contraseña usando la primera palabra de nombrecontacto + _ + celularcontacto
+    const firstWordNombreContacto = institucion.nombrecontacto.split(' ')[0];
+    const contraseniaGenerada = `${firstWordNombreContacto}_${institucion.celularcontacto}`;
+
     // Preparar los datos del usuario y crear el usuario
     const userData = {
-      idusuario: institucion.correocontacto,
-      contrasenia: institucion.celularcontacto,
-      tipousuario: { id: 2 },
+      idusuario: institucion.correocontacto,   // El correo será el idusuario
+      contrasenia: contraseniaGenerada,        // La contraseña generada
+      tipousuario: { id: 2 },                  // Tipo de usuario para institución
       numero_intentos: 0,
       estado: 'ACTIVO',
     };
+
     const resultadoUsuario = await UsuarioService.createUser(userData);
     if (resultadoUsuario.code !== 'U-0000') {
       throw new Error('Error al crear el usuario para la institución.');
@@ -858,8 +863,8 @@ const activateInstitution = async (id) => {
     // MENSAJE DE CORREO ELECTRONICO
     const emailSubject = "Activación de Cuenta en Internship by UCB";
     const emailBody = `Su solicitud de adición a la página de Internship by UCB fue aceptada por la USEI. Sus credenciales para iniciar sesión son:
-    idusuario: ${institucion.correocontacto}
-    contraseña: ${institucion.celularcontacto}`;
+idusuario: ${resultadoUsuario.result.idusuario}
+contraseña: ${contraseniaGenerada}`;
 
     // Enviar correo electrónico
     await sendEmail(institucion.correocontacto, emailSubject, emailBody);
