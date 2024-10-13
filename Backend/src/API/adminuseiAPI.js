@@ -157,6 +157,30 @@ router.put("/:id", async (req, res) => {
   });
 });
 
+router.put('/changeHabilitadoVer/:id', async (req, res) => {
+  console.log(
+    `PUT request received to update the data of a USEI Administrator with ID: '${req.params.id}'`);
+  const response = await adminuseiService.updateHabilitadoVerAdminUSEI(req.params.id);
+  res.json({
+    method: "changeHabilitadoVer",
+    code: response.code,
+    result: response.result,
+    message: response.message,
+  });
+})
+
+router.put('/changeHabilitadoModific/:id', async (req, res) => {
+  console.log(
+    `PUT request received to update the data of a USEI Administrator with ID: '${req.params.id}'`);
+  const response = await adminuseiService.updateHabilitadoVerAdminUSEI(req.params.id);
+  res.json({
+    method: "changeHabilitadoModific",
+    code: response.code,
+    result: response.result,
+    message: response.message,
+  });
+})
+
 /**
  * @swagger
  * /adminUSEI/{id}:
