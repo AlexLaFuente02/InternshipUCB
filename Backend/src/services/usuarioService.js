@@ -271,34 +271,6 @@ const sendEmail = async (email, subject, text) => {
         console.error('Error al enviar correo:', error);
         throw error;
     }
-    // Hashea la contraseña antes de actualizarla en la base de datos
-    console.log(req.body.contrasenia);
-    const hashedPassword = await bcrypt.hash(req.body.contrasenia, 10);
-    await usuario.update({
-      contrasenia: hashedPassword, // Actualizamos con la contraseña hasheada
-    });
-    console.log("Usuario actualizado correctamente.");
-
-    await HistoricoUsuarioService.insertHistoricoUsuario(
-      usuario.dataValues,
-      "Actualización de contraseña"
-    );
-    console.log(
-      "Actualización de usuario registrada en historico_usuario correctamente."
-    );
-
-    return new ResponseDTO("U-0000", null, "Usuario actualizado correctamente");
-  } catch (error) {
-			console.error(
-				`Error al actualizar el usuario con ID: ${req.body.id}.`,
-				error
-			);
-			return new ResponseDTO(
-				"U-1004",
-				null,
-				`Error al actualizar el usuario: ${error}`
-			);
-  }
 };
 
 // Función para validar el token
