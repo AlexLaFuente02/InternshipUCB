@@ -2,9 +2,8 @@
   <div class="container">
     <h1>Modificar Roles</h1>
     <div class="info">
-      <p>Lista de usuarios:</p>
+      <p>Lista de USEI:</p>
     </div>
-    <!-- Tabla para mostrar usuarios -->
     <table>
       <thead>
         <tr>
@@ -16,78 +15,96 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Iterar sobre los usuarios -->
         <tr v-for="usuario in usuarios" :key="usuario.id">
           <td>{{ usuario.id }}</td>
-          <td>{{ usuario.idusuario }}</td>
-          <td>{{ getTipoUsuario(usuario.tipousuario.id) }}</td>
+          <td>{{ usuario.usuario_id.idusuario }}</td>
+          <td>USEI</td> <!-- Dado que todos son administradores USEI -->
           <td>
-            <input type="checkbox" v-model="usuario.habilitarVer" @change="toggleVer(usuario.id)" />
+            <input
+              type="checkbox"
+              v-model="usuario.habilitarVer"
+              @change="toggleVer(usuario.id)"
+              :id="'ver-' + usuario.id"
+            />
           </td>
           <td>
-            <input type="checkbox" v-model="usuario.habilitarModificar" @change="toggleModificar(usuario.id)" />
+            <input
+              type="checkbox"
+              v-model="usuario.habilitarModificar"
+              @change="toggleModificar(usuario.id)"
+              :id="'modificar-' + usuario.id"
+            />
           </td>
         </tr>
       </tbody>
     </table>
+
+    <div class="info">
+      <p>Lista de USEI:</p>
+    </div>
   </div>
 </template>
 
 <script>
-import { getAllUsers } from "@/services/common.js";
+import { actualizarPermisoModificar,actualizarPermisoVer, obtenerTodosUsuariosUsei } from "../../services/usei";
 
 export default {
   name: "ModifyRoles",
   data() {
     return {
-      usuarios: [] // Inicia vacía y se llenará con los datos obtenidos
+      usuarios: [] // Cambiado a array
     };
   },
   methods: {
     async fetchUsuarios() {
       try {
-        const users = await getAllUsers();
-        if (users) {
-          // Inicializar los checkboxes de habilitar ver y modificar con valores por defecto
-          this.usuarios = users.map((usuario) => ({
+        const response = await obtenerTodosUsuariosUsei(); // Asegúrate de que este método sea el correcto
+        if (response && response.result) {
+          this.usuarios = response.result.map((usuario) => ({
             ...usuario,
-            habilitarVer: false, // Valor por defecto
-            habilitarModificar: false // Valor por defecto
+            habilitarVer: usuario.habilitado_ver === 1, // Convertir a booleano
+            habilitarModificar: usuario.habilitado_modific === 1 // Convertir a booleano
           }));
         }
       } catch (error) {
         console.error("Error al obtener los usuarios:", error);
       }
     },
-    toggleVer(id) {
+    async fetchUsuariosInstituciones() {
+      try {
+        const response = await obtenerTodosUsuariosUsei(); // Asegúrate de que este método sea el correcto
+        if (response && response.result) {
+          this.usuarios = response.result.map((usuario) => ({
+            ...usuario,
+            habilitarVer: usuario.habilitado_ver === 1, // Convertir a booleano
+            habilitarModificar: usuario.habilitado_modific === 1 // Convertir a booleano
+          }));
+        }
+      } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+      }
+    },
+    async toggleVer(id) {
       const usuario = this.usuarios.find((u) => u.id === id);
       if (usuario) {
         console.log(`Usuario con ID ${id} - Habilitar Ver: ${usuario.habilitarVer}`);
-        // Implementar la lógica para habilitar o deshabilitar la opción "Ver"
+        await actualizarPermisoVer(id);
       }
     },
-    toggleModificar(id) {
-      const usuario = this.usuarios.find((u) => u.id === id);
-      if (usuario) {
-        console.log(`Usuario con ID ${id} - Habilitar Modificar: ${usuario.habilitarModificar}`);
-        // Implementar la lógica para habilitar o deshabilitar la opción "Modificar"
-      }
-    },
-    getTipoUsuario(id) {
-      switch (id) {
-        case 1:
-          return "Estudiante";
-        case 2:
-          return "Institución";
-        case 3:
-          return "Administrador";
-        default:
-          return "Desconocido";
+    async toggleModificar(id) {
+      try {
+        const usuario = this.usuarios.find((u) => u.id === id);
+        if (usuario) {
+          console.log(`Usuario con ID ${id} - Habilitar Modificar: ${usuario.habilitarModificar}`);
+          await actualizarPermisoModificar(id);
+        }
+      } catch (error){
+        console.error("Error al cambiar el permiso:", error);
       }
     }
   },
   mounted() {
-    this.fetchUsuarios(); // Cargar los usuarios al montar el componente
+    this.fetchUsuarios();
   }
 };
 </script>
@@ -103,12 +120,13 @@ export default {
 .info {
   width: 80%; /* Alinea el texto con el inicio de la tabla */
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 table {
   width: 80%; /* Cambia este valor para ajustar el ancho deseado */
   border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
 th {

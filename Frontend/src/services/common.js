@@ -84,3 +84,51 @@ export const getAllUsers = async () => {
         throw error; 
     }
 };
+
+export const changeEstadoActivado = async (idUsuario) => {
+    try {
+        const response = await axios.put(`${rutaApi}/usuario/changeEstadoActivado/${idUsuario}`);
+        const data = response.data;
+        if (data.code === "U-0000") {
+            return data.result;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        // Manejar el error aquí, por ejemplo:
+        console.error("Hubo un error al cargar el usuario: ", error);
+        throw error; // O reenviar el error para manejarlo en otro lugar
+    }
+}
+
+export const changeEstadoBloqueado = async (idUsuario) => {
+    try {
+        const response = await axios.put(`${rutaApi}/usuario/changeEstadoBloqueado/${idUsuario}`);
+        const data = response.data;
+        if (data.code === "U-0000") {
+            return data.result;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        // Manejar el error aquí, por ejemplo:
+        console.error("Hubo un error al cargar el usuario: ", error);
+        throw error; // O reenviar el error para manejarlo en otro lugar
+    }
+}
+
+export const changeEstadoEliminado = async (idUsuario) => {
+    try {
+        const response = await axios.put(`${rutaApi}/usuario/changeEstadoEliminado/${idUsuario}`);
+        const data = response.data;
+        if (data.code === "U-0000") {
+            return data.result;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        // Manejar el error aquí, por ejemplo:
+        console.error("Hubo un error al cargar el usuario: ", error);
+        throw error; // O reenviar el error para manejarlo en otro lugar
+    }
+}

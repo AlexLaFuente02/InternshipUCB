@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { rutaApi } from '../assets/apiConfig';
 import { rutaUsei } from '../assets/apiConfig';
+import { rutaAdminUsei } from '../assets/apiConfig';
 export const loadUseiInstitution = async () => {
     /*Cambiar por la ruta de la api que corresponda*/
     //Se esta usando la ruta de la api de prueba
@@ -88,6 +89,55 @@ export const rechazarInternship = async (internshipId) => {
 export const pendienteInternship = async (internshipId) => {
   try {
     const response = await axios.put(`${rutaUsei}/convocatoria/pending/${internshipId}`);
+    return response.data;
+  } catch (error) {
+    // Manejar errores aquí si es necesario
+    throw error;
+  }
+};
+
+export const actualizarPermisoVer = async (internshipId) => {
+  try {
+    const response = await axios.put(`${rutaAdminUsei}/changeHabilitadoVer/${internshipId}`);
+    return response.data;
+  } catch (error) {
+    // Manejar errores aquí si es necesario
+    throw error;
+  }
+};
+
+export const actualizarPermisoModificar = async (internshipId) => {
+  try {
+    const response = await axios.put(`${rutaAdminUsei}/changeHabilitadoModific/${internshipId}`);
+    return response.data;
+  } catch (error) {
+    // Manejar errores aquí si es necesario
+    throw error;
+  }
+};
+
+
+export const obtenerTodosUsuariosUsei = async () => {
+  try {
+    const response = await axios.get(`${rutaAdminUsei}/`);
+    const data = response.data;
+
+    // Verifica el código correcto que esperas
+    if (data && data.code === "AUSEI-0000") {
+        return data; // Devuelve toda la respuesta para que puedas acceder al resultado en tu componente
+    } else {
+        console.error("Código de respuesta inesperado:", data.code);
+        throw new Error("Código de respuesta inesperado"); // Lanza un error para manejarlo en el componente
+    }
+  } catch (error) {
+      console.error("Hubo un error al cargar todos los usuarios:", error);
+      throw error; // Lanza el error para que pueda ser manejado en el componente
+  }
+}
+
+export const actualizarEstado = async (internshipId) => {
+  try {
+    const response = await axios.put(`${rutaAdminUsei}/changeHabilitadoModific/${internshipId}`);
     return response.data;
   } catch (error) {
     // Manejar errores aquí si es necesario

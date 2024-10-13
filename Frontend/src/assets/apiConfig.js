@@ -7,3 +7,6 @@ export const studentAPIRoute = "http://localhost:3000/student";
 export const institutionAPIRoute = "http://localhost:3000/institution";
 
 export const rutaUsei = "http://localhost:3000/usei";
+
+export const rutaAdminUsei = "http://localhost:3000/adminUSEI";
+ 

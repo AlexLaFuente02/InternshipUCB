@@ -167,7 +167,7 @@ router.put('/:id', async (req, res) => {
 
 router.put('/changeEstadoActivado/:id', async (req, res) => {
     console.log(`PUT request received for changeEstado with ID: ${req.params.id}`);
-    const response = await usuarioService.changeEstado(req.params.id);
+    const response = await usuarioService.changeEstadoActivado(req.params.id);
     res.json({
         method: 'changeEstadoActivado',
         code: response.code,
@@ -178,7 +178,7 @@ router.put('/changeEstadoActivado/:id', async (req, res) => {
 
 router.put('/changeEstadoBloqueado/:id', async (req, res) => {
     console.log(`PUT request received for changeEstado with ID: ${req.params.id}`);
-    const response = await usuarioService.changeEstado(req.params.id);
+    const response = await usuarioService.changeEstadoBloqueado(req.params.id);
     res.json({
         method: 'changeEstadoBloqueado',
         code: response.code,
@@ -189,7 +189,7 @@ router.put('/changeEstadoBloqueado/:id', async (req, res) => {
 
 router.put('/changeEstadoEliminado/:id', async (req, res) => {
     console.log(`PUT request received for changeEstado with ID: ${req.params.id}`);
-    const response = await usuarioService.changeEstado(req.params.id);
+    const response = await usuarioService.changeEstadoEliminado(req.params.id);
     res.json({
         method: 'changeEstadoEliminado',
         code: response.code,

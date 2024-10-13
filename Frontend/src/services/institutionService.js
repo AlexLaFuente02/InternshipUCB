@@ -196,3 +196,19 @@ export const createcomentarioConvocatoria = async (formData) => {
       throw error; // O reenviar el error para manejarlo en otro lugar
   }
 }
+
+export const getAllInstituciones = async () => {
+  try {
+      const response = await axios.get(`${rutaApi}/usuario`);
+      const data = response.data;
+      if (data.code === "U-0000") {
+          return data.result;
+      } else {
+          return null;
+      }
+  } catch (error) {
+      console.error("Hubo un error al cargar todos los usuarios: ", error);
+      throw error; 
+  }
+};
+
