@@ -161,7 +161,7 @@ const createUser = async (userData) => {
       contrasenia: hashedPassword, // Almacenamos la contraseña hasheada
       tipousuario_id: userData.tipousuario.id,
       numero_intentos: 0, // Valores por defecto
-      estado: "ACTIVO", // Valores por defecto
+      estado: "ACTIVADO", // Valores por defecto
     });
 
     const tipoUsuarioDTO = new TipoUsuarioDTO(
@@ -477,7 +477,7 @@ const getAdmiUseiByIdUsuario = async (idusuario) => {
   }
 };
 
-const changeEstado = async (id) => {
+const changeEstadoActivado = async (id) => {
   console.log(`Actualizando Estado del usuario con ID: ${id}...`);
   try {
     const usuario = await Usuario.findByPk(id);
@@ -486,16 +486,10 @@ const changeEstado = async (id) => {
       return new ResponseDTO("U-1004", null, "Usuario no encontrado");
     }
 
-    // Actualizar el estado de la institución a 'RECHAZADO'
-    if (usuario.estado == "ACTIVO") {
-      await usuario.update({
-        estado: "DESHABILITADO",
-      });
-    } else if (usuario.estado == "DESHABILITADO") {
-      await usuario.update({
-        estado: "ACTIVO",
-      });
-    }
+    await usuario.update({
+        estado: "ACTIVADO",
+    });
+
     console.log("Estado de Usuario actualizado correctamente.");
 
     await HistoricoUsuarioService.insertHistoricoUsuario(
@@ -517,6 +511,74 @@ const changeEstado = async (id) => {
   }
 };
 
+const changeEstadoBloqueado = async (id) => {
+    console.log(`Actualizando Estado del usuario con ID: ${id}...`);
+    try {
+      const usuario = await Usuario.findByPk(id);
+      if (!usuario) {
+        console.log(`Usuario con ID: ${id} no encontrado.`);
+        return new ResponseDTO("U-1004", null, "Usuario no encontrado");
+      }
+  
+      await usuario.update({
+          estado: "BLOQUEADO",
+      });
+  
+      console.log("Estado de Usuario actualizado correctamente.");
+  
+      await HistoricoUsuarioService.insertHistoricoUsuario(
+        usuario.dataValues,
+        "Actualización de usuario"
+      );
+      console.log(
+        "Actualización de usuario registrada en historico_usuario correctamente."
+      );
+  
+      return new ResponseDTO("U-0000", null, "Usuario actualizado correctamente");
+    } catch (error) {
+      console.error(`Error al actualizar el usuario con ID: ${id}.`, error);
+      return new ResponseDTO(
+        "U-1004",
+        null,
+        `Error al actualizar el usuario: ${error}`
+      );
+    }
+  };
+
+  const changeEstadoEliminado = async (id) => {
+    console.log(`Actualizando Estado del usuario con ID: ${id}...`);
+    try {
+      const usuario = await Usuario.findByPk(id);
+      if (!usuario) {
+        console.log(`Usuario con ID: ${id} no encontrado.`);
+        return new ResponseDTO("U-1004", null, "Usuario no encontrado");
+      }
+  
+      await usuario.update({
+          estado: "ELIMINADO",
+      });
+  
+      console.log("Estado de Usuario actualizado correctamente.");
+  
+      await HistoricoUsuarioService.insertHistoricoUsuario(
+        usuario.dataValues,
+        "Actualización de usuario"
+      );
+      console.log(
+        "Actualización de usuario registrada en historico_usuario correctamente."
+      );
+  
+      return new ResponseDTO("U-0000", null, "Usuario actualizado correctamente");
+    } catch (error) {
+      console.error(`Error al actualizar el usuario con ID: ${id}.`, error);
+      return new ResponseDTO(
+        "U-1004",
+        null,
+        `Error al actualizar el usuario: ${error}`
+      );
+    }
+  };
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -525,5 +587,7 @@ module.exports = {
   deleteUser,
   updatePassword,
   getUserByIdUsuario,
-  changeEstado,
+  changeEstadoActivado,
+  changeEstadoBloqueado,
+  changeEstadoEliminado
 };
