@@ -62,8 +62,7 @@ const getAllInstitutions = async () => {
         usuarioDTO,
         sectorPertenenciaDTO,
         institucion.totalPostulaciones,
-        institucion.habilitado_convocatoria,
-        institucion.habilitado_postulacion
+        institucion.habilitado_agregarconvocatoria
       );
     });
     console.log("Instituciones obtenidas correctamente.");
@@ -132,8 +131,7 @@ const getInstitutionById = async (id) => {
       usuarioDTO,
       sectorPertenenciaDTO,
       institucion.totalPostulaciones,
-      institucion.habilitado_convocatoria,
-      institucion.habilitado_postulacion
+      institucion.habilitado_agregarconvocatoria
     );
 
     console.log("Institución obtenida correctamente.");
@@ -185,8 +183,7 @@ const createInstitution = async (institutionData) => {
       correocontacto: institutionData.correocontacto,
       celularcontacto: institutionData.celularcontacto,
       estado: institutionData.estado,
-      habilitado_convocatoria: 1,
-      habilitado_postulacion: 1
+      habilitado_agregarconvocatoria: 1
     });
 
     const imageUrl = fileName ? `${baseURL}/images/${fileName}` : null;
@@ -205,8 +202,7 @@ const createInstitution = async (institutionData) => {
       usuarioDTO,
       sectorPertenenciaDTO,
       nuevaInstitucion.totalPostulaciones,
-      nuevaInstitucion.habilitado_convocatoria,
-      nuevaInstitucion.habilitado_postulacion
+      nuevaInstitucion.habilitado_agregarconvocatoria
     );
 
     console.log("Institución creada correctamente.");
@@ -244,8 +240,7 @@ const updateInstitution = async (id, institutionData) => {
       correocontacto: institutionData.correocontacto,
       celularcontacto: institutionData.celularcontacto,
       estado: institutionData.estado,
-      habilitado_convocatoria: institutionData.habilitado_convocatoria,
-      habilitado_postulacion: institutionData.habilitado_postulacion
+      habilitado_agregarconvocatoria: institutionData.habilitado_agregarconvocatoria
     });
     const sectorPertenenciaDTO = new SectorPertenenciaDTO(
       institutionData.sectorpertenencia_id,
@@ -266,8 +261,7 @@ const updateInstitution = async (id, institutionData) => {
       usuarioDTO,
       sectorPertenenciaDTO,
       institucion.totalPostulaciones,
-      institucion.habilitado_convocatoria,
-      institucion.habilitado_postulacion
+      institucion.habilitado_agregarconvocatoria
     );
     console.log("Institución actualizada correctamente.");
     return new ResponseDTO(

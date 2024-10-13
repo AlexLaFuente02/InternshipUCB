@@ -11,7 +11,8 @@ CREATE TABLE tipousuario (
 INSERT INTO tipousuario (tipo) VALUES
 ('Estudiante'),
 ('Institución'),
-('Administrador');
+('Administrador'), 
+('AdministradorUsuarios');
 
 CREATE TABLE usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,7 +48,8 @@ CREATE TABLE semestre (
 INSERT INTO semestre (codigosemestre) VALUES
 ("2 - 2022"),
 ("1 - 2023"),
-("2 - 2023");
+("2 - 2023"),
+("1 - 2024");
 
 CREATE TABLE sectorpertenencia (
     id int AUTO_INCREMENT PRIMARY KEY,
@@ -101,20 +103,17 @@ CREATE TABLE institucion (
     correocontacto varchar(100) NOT NULL,
     celularcontacto varchar(15) NOT NULL,
     estado varchar(15) NOT NULL,
-    habilitado_convocatoria int NOT NULL,
-    habilitado_postulacion int NOT NULL,
+    habilitado_agregarconvocatoria tinyint NOT NULL,
     usuario_id int NULL,
     sectorpertenencia_id int NOT NULL,
     CONSTRAINT instituciones_sectorpertenencia FOREIGN KEY (sectorpertenencia_id) REFERENCES sectorpertenencia (id),
     CONSTRAINT institucion_usuario FOREIGN KEY (usuario_id) REFERENCES usuario (id)
 );
 
-INSERT INTO `institucion` VALUES (1, 'EMAPA', 'Somos la institucion de agua de la ciudad de La Paz', NULL, 'Juan Pérez', 'juan.perez@utech.edu', '123-456-7890', 'ACTIVO', 1, 1, 2, 1);
-INSERT INTO `institucion` VALUES (2, 'PIL', 'Empresa de lacteos en Bolivia', 0x6C6F676F696E737469747563696F6E2D313730313034353837373239352E706E67, 'Edward', 'edu@gmail.com', '61123636', 'PENDIENTE', 1, 1, NULL, 3);
-INSERT INTO `institucion` VALUES (3, 'ENTEL', 'Empresa de telecomuncaciones en Bolivia.', 0x6C6F676F696E737469747563696F6E2D313730313034363738383739362E6A706567, 'Axel', 'axel@gmail.comds', '61123636', 'PENDIENTE', 1, 1, NULL, 2);
-INSERT INTO `institucion` VALUES (4, 'OscarBusiness', 'es la empresa del osqui', 0x6C6F676F696E737469747563696F6E2D313730313039333130323233302E6A7067, 'Oscar Men', 'osqui.menacho2002@gmail.com', '77596520', 'PENDIENTE', 1, 1, NULL, 2);
-
-#Hacer trigger para asignar valor a usuario_id cuando USEI aprobar institucion
+INSERT INTO `institucion` VALUES (1, 'EMAPA', 'Somos la institucion de agua de la ciudad de La Paz', NULL, 'Juan Pérez', 'juan.perez@utech.edu', '123-456-7890', 'ACTIVO', 1, 2, 1);
+INSERT INTO `institucion` VALUES (2, 'PIL', 'Empresa de lacteos en Bolivia', 0x6C6F676F696E737469747563696F6E2D313730313034353837373239352E706E67, 'Edward', 'edu@gmail.com', '61123636', 'PENDIENTE', 1, NULL, 3);
+INSERT INTO `institucion` VALUES (3, 'ENTEL', 'Empresa de telecomuncaciones en Bolivia.', 0x6C6F676F696E737469747563696F6E2D313730313034363738383739362E6A706567, 'Axel', 'axel@gmail.comds', '61123636', 'PENDIENTE', 1, NULL, 2);
+INSERT INTO `institucion` VALUES (4, 'OscarBusiness', 'es la empresa del osqui', 0x6C6F676F696E737469747563696F6E2D313730313039333130323233302E6A7067, 'Oscar Men', 'osqui.menacho2002@gmail.com', '77596520', 'PENDIENTE', 1, NULL, 2);
 
 
 CREATE TABLE estadoconvocatoria (
@@ -130,7 +129,6 @@ CREATE TABLE adminusei (
 );
 
 INSERT INTO adminusei (usuario_id, habilitado_ver, habilitado_modific) VALUES (3, 1, 1);
-
 
 
 INSERT INTO estadoconvocatoria (nombreestadoconvocatoria) VALUES
