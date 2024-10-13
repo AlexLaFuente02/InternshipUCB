@@ -27,8 +27,9 @@
             >
               <li class="dropdown-item">Tus Convocatorias</li>
             </router-link>
-
+            <!-- Mostrar solo si tiene el permiso agregar -->
             <router-link
+              v-if="canAddConvocatoria"
               to="/institution/addConvocatoria"
               class="dropdown-link"
               @click="showDropdownCallList"
@@ -129,6 +130,12 @@ export default {
     };
   },
   methods: {
+    canAddConvocatoria() {
+      // Obtener el valor de la cookie 'permiso_agregar'
+      const permisoAgregar = this.$cookies.get('permiso_agregar');
+      console.log(permisoAgregar === true)
+      return permisoAgregar === true; // Retorna true si la cookie es true
+    },
     toggleDarkMode() {
       const darkModeStore = useThemeStore();
       this.isDarkMode = !this.isDarkMode;
@@ -141,6 +148,7 @@ export default {
       $cookies.remove("connect.sid");
       $cookies.remove("username");
       $cookies.remove("institutionID");
+      $cookies.remove("permiso_agregar");
       useLoginStore().setLogin(0);
       this.$router.push("/");
       this.closeMobileMenu();
