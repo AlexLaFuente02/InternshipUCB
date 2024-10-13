@@ -39,12 +39,8 @@ const InstitucionENT = sequelize.define(
       type: DataTypes.STRING(15),
       allowNull: true,
     },
-    habilitado_convocatoria: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    habilitado_postulacion: {
-      type: DataTypes.INTEGER,
+    habilitado_agregarconvocatoria: {
+      type: DataTypes.BOOLEAN,
       allowNull: true,
     }
   },

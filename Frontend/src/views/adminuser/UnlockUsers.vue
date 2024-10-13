@@ -26,6 +26,7 @@
           <td>{{ usuario.estado }}</td>
           <td>
             <button @click="desbloquearUsuario(usuario.id)">Desbloquear</button>
+            <button @click="bloquearUsuario(usuario.id)">Bloquear</button>
             <button @click="eliminarUsuario(usuario.id)">Eliminar</button>
           </td>
         </tr>
@@ -36,6 +37,7 @@
 
 <script>
 import { getAllUsers } from "@/services/common.js";
+import { changeEstadoActivado, changeEstadoEliminado, changeEstadoBloqueado} from "../../services/common";
 
 export default {
   name: "UnlockUsers",
@@ -55,13 +57,20 @@ export default {
         console.error('Error al obtener los usuarios:', error);
       }
     },
-    desbloquearUsuario(id) {
+    async desbloquearUsuario(id) {
       console.log(`Desbloquear usuario con ID: ${id}`);
-      // Implementar la lógica de desbloquear
+      await changeEstadoActivado(id);
+      this.fetchUsuarios();
     },
-    eliminarUsuario(id) {
+    async bloquearUsuario(id) {
+      console.log(`Bloquear usuario con ID: ${id}`);
+      await changeEstadoBloqueado(id);
+      this.fetchUsuarios();
+    },
+    async eliminarUsuario(id) {
       console.log(`Eliminar usuario con ID: ${id}`);
-      // Implementar la lógica de eliminar
+      await changeEstadoEliminado(id);
+      this.fetchUsuarios();
     },
     getTipoUsuario(id) {
       switch (id) {

@@ -58,6 +58,7 @@
               to="/institution/addConvocatoria"
               class="dropdown-link"
               @click="handleClick"
+              v-if="canAddConvocatoria"
             >
               <li class="dropdown-item">Agregar Convocatoria</li>
             </router-link>
@@ -152,6 +153,12 @@ export default {
     };
   },
   methods: {
+    canAddConvocatoria() {
+      // Obtener el valor de la cookie 'permiso_agregar'
+      const permisoAgregar = this.$cookies.get('permiso_agregar');
+      console.log(permisoAgregar === true)
+      return permisoAgregar === true; // Retorna true si la cookie es true
+    },
     toggleMobileMenuL() {
       useMobileMenuStore().toggleMenuLeft();
       useMobileMenuStore().toggleMobileMenu();

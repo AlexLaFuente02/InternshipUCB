@@ -12,9 +12,13 @@ const Institucion = require("../ENT/InstitucionENT");
 
 // TRIGGER
 const HistoricoUsuarioService = require("../services/historicoUsuarioService");
-const SECRET_KEY_CODES = require("../../config/secretKey.js");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const SECRET_KEY_CODES = require('../../config/secretKey.js');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+const nodemailer = require('nodemailer');
+const accountTransport = require('../../config/account_transport.json'); 
+
 const getAllUsers = async () => {
   console.log("Obteniendo todos los usuarios...");
   try {
@@ -237,63 +241,96 @@ const updateUser = async (id, userData) => {
   }
 };
 //Funcion para cambiar la contraseña de un usuario
-const updatePassword = async (req) => {
-  try {
-    const decoded = validateToken(req);
-    console.log(
-      `Actualizando la contraseña del usuario con ID: ${decoded.id}...`
-    );
-    const usuario = await Usuario.findByPk(decoded.id);
-    if (!usuario) {
-      console.log(`Usuario con ID: ${req.body.id} no encontrado.`);
-      return new ResponseDTO("U-1004", null, "Usuario no encontrado");
+const transport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: accountTransport.auth.user,  // Tu correo electrónico
+        pass: accountTransport.auth.pass   // Tu App Password
+    },
+    secure: true, // Usa SSL/TLS
+    port: 465,    // Puerto para SMTP seguro
+    tls: {
+        rejectUnauthorized: false // Opcional, pero útil en ciertos entornos para evitar problemas de certificados
     }
-    // Hashea la contraseña antes de actualizarla en la base de datos
-    console.log(req.body.contrasenia);
-    const hashedPassword = await bcrypt.hash(req.body.contrasenia, 10);
-    await usuario.update({
-      contrasenia: hashedPassword, // Actualizamos con la contraseña hasheada
-    });
-    console.log("Usuario actualizado correctamente.");
+});
 
-    await HistoricoUsuarioService.insertHistoricoUsuario(
-      usuario.dataValues,
-      "Actualización de contraseña"
-    );
-    console.log(
-      "Actualización de usuario registrada en historico_usuario correctamente."
-    );
+// Función para enviar el correo electrónico
+const sendEmail = async (email, subject, text) => {
+    const mailOptions = {
+        from: accountTransport.auth.user,  // El correo desde el que se envía
+        to: email,                         // El correo del destinatario
+        subject: subject,
+        text: text
+    };
 
-    return new ResponseDTO("U-0000", null, "Usuario actualizado correctamente");
-  } catch (error) {
-    console.error(
-      `Error al actualizar el usuario con ID: ${req.body.id}.`,
-      error
-    );
-    return new ResponseDTO(
-      "U-1004",
-      null,
-      `Error al actualizar el usuario: ${error}`
-    );
-  }
+    try {
+        const result = await transport.sendMail(mailOptions);
+        console.log('Correo enviado correctamente a', email);
+        return result;
+    } catch (error) {
+        console.error('Error al enviar correo:', error);
+        throw error;
+    }
 };
-/*Funcion para validar el token*/
+
+// Función para validar el token
 const validateToken = (req) => {
-  const token = req.headers.authorization;
-  if (!token || !token.startsWith("Bearer ")) {
-    console.error("No se ha encontrado el token.");
-    return null;
-  }
-  const tokenWithoutBearer = token.substring(7, token.length);
-  try {
-    console.log("Validando el token...");
-    const decoded = jwt.verify(tokenWithoutBearer, SECRET_KEY_CODES.SECRET_KEY);
-    return decoded;
-  } catch (error) {
-    console.error(`Error al validar el token: ${error}`);
-    return null;
-  }
+    const token = req.headers.authorization;
+    if (!token || !token.startsWith('Bearer ')) {
+        console.error('Token no proporcionado o formato incorrecto.');
+        return null;
+    }
+    const tokenWithoutBearer = token.substring(7, token.length);
+    try {
+        console.log('Validando el token...');
+        const decoded = jwt.verify(tokenWithoutBearer, SECRET_KEY_CODES.SECRET_KEY);
+        return decoded;
+    } catch (error) {
+        console.error('Error al validar el token:', error);
+        return null;
+    }
 };
+
+// Función para cambiar la contraseña de un usuario
+const updatePassword = async (req) => {
+    try {
+        const decoded = validateToken(req); // Decodifica el token y obtiene el email
+        if (!decoded) {
+            return new ResponseDTO('U-1004', null, 'Token no válido o expirado');
+        }
+        
+        console.log(`Actualizando la contraseña del usuario con ID: ${decoded.id} y email: ${decoded.email}...`);
+        
+        const usuario = await Usuario.findByPk(decoded.id);
+        if (!usuario) {
+            console.log(`Usuario con ID: ${decoded.id} no encontrado.`);
+            return new ResponseDTO('U-1004', null, 'Usuario no encontrado');
+        }
+
+        // Hashea la nueva contraseña antes de actualizarla en la base de datos
+        const hashedPassword = await bcrypt.hash(req.body.contrasenia, 10);
+        await usuario.update({
+            contrasenia: hashedPassword, // Actualizamos con la contraseña hasheada
+        });
+
+        console.log('Usuario actualizado correctamente.');
+        await HistoricoUsuarioService.insertHistoricoUsuario(usuario.dataValues, 'Actualización de contraseña');
+
+        // Enviar correo electrónico con la nueva contraseña en texto plano
+        const emailSubject = "Tu contraseña ha sido actualizada en Internship by UCB";
+        const emailBody = `Hola ${usuario.idusuario},\n\nTu contraseña ha sido actualizada exitosamente. Tus credenciales son:\n\nidusuario: ${usuario.idusuario}\ncontraseña: ${req.body.contrasenia}\n\nPor favor, mantén esta información segura.`;
+        
+        await sendEmail(decoded.email, emailSubject, emailBody); // Enviar el correo con la nueva contraseña
+        console.log(`Correo enviado a ${decoded.email} con las nuevas credenciales.`);
+
+        return new ResponseDTO('U-0000', null, 'Contraseña actualizada correctamente y correo enviado');
+    } catch (error) {
+        console.error(`Error al actualizar la contraseña del usuario con ID: ${req.body.id}.`, error);
+        return new ResponseDTO('U-1004', null, `Error al actualizar la contraseña: ${error}`);
+    }
+};
+
+
 const deleteUser = async (id) => {
   console.log(`Eliminando el usuario con ID: ${id}...`);
   try {

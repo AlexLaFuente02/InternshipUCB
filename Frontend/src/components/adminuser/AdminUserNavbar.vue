@@ -51,7 +51,10 @@
 </template>
 
 <script>
+import { useThemeStore } from "@/store/common/useThemeStore";
 import Button from "@/components/common/Button.vue";
+import { useLoginStore } from "@/store/common/loginStore";
+
 export default {
   name: "NavbarCommon",
   components: {
