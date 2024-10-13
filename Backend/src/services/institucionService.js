@@ -992,6 +992,83 @@ const rejectInstitution = async (id) => {
   }
 };
 
+const changeHabilitadoAgregarConvocatoria = async (id) => {
+  console.log(`Cambiando permisos de Institucion con ID: ${id}...`);
+  try {
+    const institucion = await Institucion.findByPk(id, {
+      include: [
+        { model: SectorPertenencia, as: "sectorpertenencia" },
+        { model: Usuario, as: "usuario"},
+      ],
+    });
+    if (!institucion) {
+      console.log(`Institución con ID: ${id} no encontrada.`);
+      return new ResponseDTO("I-1004", null, "Institución no encontrada");
+    }
+
+    // Actualizar los permisos de institución
+    if (institucion.habilitado_agregarconvocatoria == 0) {
+      await institucion.update({
+        habilitado_agregarconvocatoria: 1,
+      });
+    } else if (institucion.habilitado_agregarconvocatoria == 1) {
+      await institucion.update({
+        habilitado_agregarconvocatoria: 0,
+      });
+    }
+
+    // Convertir el logoinstitucion en URL
+    const imageUrl = getImageUrl(institucion.logoinstitucion);
+
+    // Crear DTO para sector pertenencia
+    let sectorPertenenciaDTO = null;
+    if (institucion.sectorpertenencia) {
+      sectorPertenenciaDTO = new SectorPertenenciaDTO(
+        institucion.sectorpertenencia.id,
+        institucion.sectorpertenencia.nombresectorpertenencia
+      );
+    }
+
+    // Crear DTO para el usuario
+    let usuarioDTO = null;
+    if (institucion.usuario) {
+      usuarioDTO = new UsuarioDTO(
+        institucion.usuario.id,
+        institucion.usuario.idusuario
+      );
+    }
+
+    // Crear DTO para la institución, incluyendo el usuario actualizado
+    const actulizadoInstitucionDTO = new InstitucionDTO(
+      institucion.id,
+      institucion.nombreinstitucion,
+      institucion.reseniainstitucion,
+      imageUrl,
+      institucion.nombrecontacto,
+      institucion.correocontacto,
+      institucion.celularcontacto,
+      institucion.estado,
+      usuarioDTO,
+      sectorPertenenciaDTO
+    );
+    console.log(
+      `Permiso de Institucion con ID: '${id}' actualizado correctamente.`
+    );
+    return new ResponseDTO(
+      "I-0000",
+      actulizadoInstitucionDTO,
+      "Institución rechazada."
+    );
+  } catch (error) {
+    console.error(`Error al rechazar la institución con ID: ${id}.`, error);
+    return new ResponseDTO(
+      "I-1004",
+      null,
+      `Error al rechazar la institución: ${error}`
+    );
+  }
+};
+
 const pendingInstitution = async (id) => {
   console.log(`Poniendo en pendiente la institución con ID: ${id}...`);
   try {
@@ -1080,4 +1157,5 @@ module.exports = {
   rejectInstitution,
   pendingInstitution,
   getPostulationsCountByInstitutionId,
+  changeHabilitadoAgregarConvocatoria,
 };

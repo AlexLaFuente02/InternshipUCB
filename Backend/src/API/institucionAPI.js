@@ -257,4 +257,16 @@ router.delete('/:id', async (req, res) => {
     });
 });
 
+router.put('/changeHabilitadoAgregarConvocatoria/:id', async (req, res) => {
+    console.log(
+      `PUT request received to update the data of a Institucion with ID: '${req.params.id}'`);
+    const response = await institucionService.changeHabilitadoAgregarConvocatoria(req.params.id);
+    res.json({
+      method: "changeHabilitadoAgregarConvocatoria",
+      code: response.code,
+      result: response.result,
+      message: response.message,
+    });
+  })
+
 module.exports = router;
