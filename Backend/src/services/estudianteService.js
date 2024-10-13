@@ -332,7 +332,7 @@ const generateToken = (idUser,email) => {
 
 /*Funcion que valida el codigo y genera el token*/
 const validateCodeAndGenerateToken = async (code) => {
-    try{
+    try {
         const emailValid = validateCode(code);
         if (emailValid != null) {
             const body = {
@@ -343,7 +343,8 @@ const validateCodeAndGenerateToken = async (code) => {
                 }
             };
             const response = await usuarioService.createUser(body);
-            const token = generateToken(response.result.id, emailValid);
+            const token = generateToken(response.result.id, emailValid); // Incluye email en el token
+
             return new ResponseDTO('E-0000', token, 'Token generado correctamente');
         }
         return new ResponseDTO('E-1006', null, 'Codigo de validacion incorrecto');
@@ -352,6 +353,7 @@ const validateCodeAndGenerateToken = async (code) => {
         return new ResponseDTO('E-1006', null, `Error al validar el codigo de validacion: ${error}`);
     }
 };
+
 /*Funcion para validar el token*/
 const validateToken = (req) => {
     const token = req.headers.authorization;
