@@ -31,6 +31,9 @@ import InstitutionNavbarMobile from "@/components/institution/InstitutionNavbarM
 import UseiNavbar from "@/components/usei/UseiNavbar.vue";
 import UseiNavbarMovile from "@/components/usei/UseiNavbarMovile.vue";
 
+import AdminUserNavbar from "@/components/adminuser/AdminUserNavbar.vue";  
+import AdminUserNavbarMobile from "@/components/adminuser/AdminUserNavbarMobile.vue"; 
+
 import { useMobileMenuStore } from "./store/common/mobileMenuStore";
 import { useThemeStore } from "@/store/common/useThemeStore"; 
 import { useLoginStore } from "@/store/common/loginStore";
@@ -57,7 +60,8 @@ export default {
         } else if (useLoginStore().isLogged== 2){
           return "InstitutionNavbar";
         } else if (useLoginStore().isLogged == 3){
-          return "UseiNavbar";
+          //return "UseiNavbar";
+          return "AdminUserNavbar";
         } else {
           return "NavbarCommon";
         }
@@ -68,7 +72,8 @@ export default {
         } else if (useLoginStore().isLogged== 2){
           return "InstitutionNavbarMobile";
         } else if (useLoginStore().isLogged == 3){
-          return "UseiNavbarMovile";
+          //return "UseiNavbarMovile";
+          return "AdminUserNavbarMobile"
         } else {
           return "NavbarCommonMobile";
         }
@@ -87,6 +92,8 @@ export default {
     UseiNavbar,
     UseiNavbarMovile,
     StudentNavbarMobile,
+    AdminUserNavbar,
+    AdminUserNavbarMobile
   },
   created() {
     window.addEventListener("resize", this.handleResize);
