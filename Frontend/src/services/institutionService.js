@@ -1,6 +1,7 @@
 import axios from "axios";
 import { institutionAPIRoute } from "../assets/apiConfig";
 import { publicAPIRoute } from "../assets/apiConfig";
+import { rutaApi } from "../assets/apiConfig";
 
 export const getInstitutionById = async (institution_id) => {
   const response = await axios.get(
@@ -199,15 +200,26 @@ export const createcomentarioConvocatoria = async (formData) => {
 
 export const getAllInstituciones = async () => {
   try {
-      const response = await axios.get(`${rutaApi}/usuario`);
+      const response = await axios.get(`${rutaApi}/institucion`);
       const data = response.data;
-      if (data.code === "U-0000") {
-          return data.result;
-      } else {
-          return null;
-      }
+        
+      return data.result;
+
   } catch (error) {
-      console.error("Hubo un error al cargar todos los usuarios: ", error);
+      console.error("Hubo un error al cargar todas las instituciones: ", error);
+      throw error; 
+  }
+};
+
+
+export const actualizarAgregarConv = async (institution_id) => {
+  try {
+      const response = await axios.put(`${rutaApi}/institucion/changeHabilitadoAgregarConvocatoria/${institution_id}`);
+      const data = response.data;
+      return data.result;
+
+  } catch (error) {
+      console.error("Hubo un error al cambiar el permiso: ", error);
       throw error; 
   }
 };

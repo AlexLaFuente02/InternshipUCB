@@ -153,7 +153,10 @@ export default {
             } else if (result.tipousuario.id === 3) {
               useLoginStore().setLogin(3);
               this.$router.push("/usei/principal");
-            }
+            } else if (result.tipousuario.id === 4) {
+              useLoginStore().setLogin(4);
+              this.$router.push("/admin/unlock-users");
+            } 
           } else {
             // Manejo de respuesta no exitosa
             this.loginMessages.loginMessage = "Usuario o contraseña incorrectos.";

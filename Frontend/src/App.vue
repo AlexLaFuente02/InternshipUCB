@@ -60,7 +60,8 @@ export default {
         } else if (useLoginStore().isLogged== 2){
           return "InstitutionNavbar";
         } else if (useLoginStore().isLogged == 3){
-          //return "UseiNavbar";
+          return "UseiNavbar";
+        } else if (useLoginStore().isLogged == 4){
           return "AdminUserNavbar";
         } else {
           return "NavbarCommon";
@@ -72,7 +73,8 @@ export default {
         } else if (useLoginStore().isLogged== 2){
           return "InstitutionNavbarMobile";
         } else if (useLoginStore().isLogged == 3){
-          //return "UseiNavbarMovile";
+          return "UseiNavbarMovile";
+        } else if (useLoginStore().isLogged == 4){
           return "AdminUserNavbarMobile"
         } else {
           return "NavbarCommonMobile";
@@ -131,6 +133,9 @@ export default {
       } else if (userType == 3){
         this.isFooterVisible = true;
         useLoginStore().setLogin(3);
+      } else if (userType == 4){
+        this.isFooterVisible = true;
+        useLoginStore().setLogin(4);
       } else {
         this.isFooterVisible = true;
         useLoginStore().setLogin(0);

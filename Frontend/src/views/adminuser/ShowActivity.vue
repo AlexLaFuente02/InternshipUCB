@@ -61,6 +61,8 @@ export default {
           return "Institución";
         case 3:
           return "Administrador";
+        case 4:
+          return "Administrador Usuarios";
         default:
           return "Desconocido";
       }
@@ -80,6 +82,7 @@ export default {
   flex-direction: column;
   align-items: center; /* Centra el contenido horizontalmente */
   padding-top: 50px;
+  padding-bottom: 100px;
 }
 
 table {
