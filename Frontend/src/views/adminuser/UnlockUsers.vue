@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <h1>Desbloqueo de Usuarios</h1>
+    <h1>Acciones para Usuarios</h1>
     <div class="info">
-      <p>Lista de usuarios bloqueados:</p>
+      <p>Lista de usuarios:</p>
     </div>
     <!-- Tabla para mostrar usuarios -->
     <table>

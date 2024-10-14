@@ -13,7 +13,7 @@
         <!-- Desbloqueo de usuarios -->
         <router-link class="link" to="/admin/unlock-users">
           <font-awesome-icon :icon="['fas', 'lock-open']" size="xl" />
-          <span class="nav-direction">Desbloqueo de Usuarios</span>
+          <span class="nav-direction">Acciones para Usuarios</span>
         </router-link>
 
         <!-- Modificar roles with dropdown -->
@@ -26,6 +26,12 @@
         <router-link class="link" to="/admin/activity-log">
           <font-awesome-icon :icon="['fas', 'clipboard-list']" size="xl" />
           <span class="nav-direction">Mostrar Actividad</span>
+        </router-link>
+
+        <!-- Agregar USEI -->
+        <router-link class="link" to="/admin/add-usei">
+          <font-awesome-icon :icon="['fas', 'file-pen']" size="xl" />
+          <span class="nav-direction">Agregar Administrador USEI</span>
         </router-link>
       </div>
       <div class="navbar__buttons">

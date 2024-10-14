@@ -201,6 +201,8 @@ const changeHabilitadoVer = async (id) => {
     console.log(
       `Permiso de administrador USEI con ID: '${id}' actualizado correctamente.`
     );
+
+    
     return new ResponseDTO(
       "AUSEI-0000",
       adminUSEI,

@@ -25,10 +25,15 @@ CREATE TABLE usuario (
     CONSTRAINT usuario_tipousuario FOREIGN KEY (tipousuario_id) REFERENCES tipousuario (id)
 );
 
-INSERT INTO `usuario` VALUES (1, 'estudiante1', '$2b$10$tT5EWhx1Trs1WbPVm.KDMeBM/ty1MYKtUjMbWlpm3xVzVP/5NeAOK', 1, 0, 'ACTIVO');
-INSERT INTO `usuario` VALUES (2, 'institucion1', '$2b$10$1RMjfOcuR85pkJi6olNixexJtZiP7E0N92R3p9tposg/UkitNbusm', 2, 0, 'ACTIVO');
-INSERT INTO `usuario` VALUES (3, 'usei1', '$2b$10$79bFUNK4r4DAiWDFjTb1yuyWeTDaKJB8QQBfzhY2N9IytxuU2AO5q', 3, 0, 'ACTIVO');
-#insertar el resto de un request la contrasenia porque la contraseña debe estar hasheada
+INSERT INTO `usuario` VALUES (1, 'EST-0001', '$2b$10$BiqzcypYx94lzEt8o6.9ce3y1PomOGnR.km4MOSqW0Oj.BQ53D3gu', 1, 0, 'ACTIVO');
+INSERT INTO `usuario` VALUES (2, 'INS-0001', '$2b$10$vAno6vX3PQExYjVW1PyLWewvH1OD3xyXB7A1WPnQZy00Hl8nmtnTi', 2, 0, 'ACTIVO');
+INSERT INTO `usuario` VALUES (3, 'USEI-0001', '$2b$10$DEi.7OFAGKj81j8Bp4gGZ.Rarf6tu1cOIZnV21I8XoiUBDxeiVPh6'   , 3, 0, 'ACTIVO');
+INSERT INTO `usuario` VALUES (4, 'ADMUS-0001', '$2b$10$exiPcnlwrhG.UdK0ayArvO4k9DhumI7k4CqBWNdWkKYgoEDPeqtWC', 4 , 0,'ACTIVO');
+
+#la contra de EST-0001 es Estudiante_1
+#la contra de INS-0001 es Institucion_1
+#la contra de USEI-0001 es Useiadmin_1
+#la contra de ADMINUSER-0001 es Adminuser_1
 
 CREATE TABLE estadopostulacion (
     id int AUTO_INCREMENT PRIMARY KEY,
