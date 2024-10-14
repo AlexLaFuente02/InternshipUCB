@@ -531,7 +531,7 @@ const changeEstadoActivado = async (id) => {
 
     await HistoricoUsuarioService.insertHistoricoUsuario(
       usuario.dataValues,
-      "Actualización de usuario"
+      "Desbloqueo/activación de usuario"
     );
     console.log(
       "Actualización de usuario registrada en historico_usuario correctamente."
@@ -565,7 +565,7 @@ const changeEstadoBloqueado = async (id) => {
   
       await HistoricoUsuarioService.insertHistoricoUsuario(
         usuario.dataValues,
-        "Actualización de usuario"
+        "Bloqueo de usuario"
       );
       console.log(
         "Actualización de usuario registrada en historico_usuario correctamente."
@@ -599,7 +599,7 @@ const changeEstadoBloqueado = async (id) => {
   
       await HistoricoUsuarioService.insertHistoricoUsuario(
         usuario.dataValues,
-        "Actualización de usuario"
+        "Eliminación de usuario"
       );
       console.log(
         "Actualización de usuario registrada en historico_usuario correctamente."
