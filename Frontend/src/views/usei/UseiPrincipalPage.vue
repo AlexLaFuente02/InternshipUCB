@@ -145,6 +145,7 @@
   import { useLoaderStore } from "@/store/common/loaderStore";
   import {UseUseiInternshipStore }from "@/store/usei/UseiInternshipStore";
   import { UseUseiInstitutionStore } from "@/store/usei/UseiInstitutionStore";
+  import { loadUseiInformation } from '../../services/usei';
   export default {
     components: {
       Carousel,
@@ -181,6 +182,32 @@
       };
     },
     methods: {
+      getPermissions(id) {
+        // Llamamos al método para cargar la información USEI
+        loadUseiInformation(id)
+          .then(response => {
+            // Verificamos que la respuesta contiene el formato esperado
+            if (response && response.result) {
+              const { habilitado_ver, habilitado_modific } = response.result;
+              
+              // Guardamos habilitado_ver y habilitado_modific en cookies
+              if (habilitado_ver !== undefined) {
+                this.$cookies.set('permiso_ver', habilitado_ver); // La cookie dura 1 día
+              }
+
+              if (habilitado_modific !== undefined) {
+                this.$cookies.set('permiso_editar', habilitado_modific);
+              }
+
+              console.log('Permisos guardados en cookies:', habilitado_ver, habilitado_modific);
+            } else {
+              console.error('Error en la estructura de respuesta:', response);
+            }
+          })
+          .catch(error => {
+            console.error('Error al cargar la información de USEI:', error);
+          });
+      },
       createAccount(option) {
         if (option) {
           console.log("createAccount");
@@ -220,6 +247,7 @@ useLoaderStore().desactivateLoader();
     },
     created() {
       this.getData();
+      this.getPermissions($cookies.get("id"));
     },
   };
 </script>

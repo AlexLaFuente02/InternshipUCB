@@ -35,6 +35,7 @@
         <li
           class="container__menu--options__item--dropdown"
           @click="showDropdownViewsList"
+          v-if="canView"
         >
           <span class="link">
             <font-awesome-icon :icon="['fas', 'briefcase']" size="xl" />
@@ -45,6 +46,7 @@
               to="/usei/Companies"
               class="dropdown-link"
               @click="handleClickForViewsList"
+              v-if="canView"
             >
               <li class="dropdown-item">Empresas</li>
             </router-link>
@@ -53,6 +55,7 @@
               to="/usei/Internships"
               class="dropdown-link"
               @click="handleClickForViewsList"
+              v-if="canView"
             >
               <li class="dropdown-item">Pasant&iacute;as</li>
             </router-link>
@@ -61,6 +64,7 @@
         <li
           class="container__menu--options__item--dropdown"
           @click="showDropdownRequestsList"
+          v-if="canEdit"
         >
           <span class="link">
             <font-awesome-icon :icon="['fas', 'file']" size="xl" />
@@ -74,6 +78,7 @@
               to="/usei/Business"
               class="dropdown-link"
               @click="handleClickForRequestsList"
+              v-if="canEdit"
             >
               <li class="dropdown-item">Solicitudes de empresas</li>
             </router-link>
@@ -82,6 +87,7 @@
               to="/usei/InternshipApp"
               class="dropdown-link"
               @click="handleClickForRequestsList"
+              v-if="canEdit"
             >
               <li class="dropdown-item">Solicitudes de Pasant&iacute;as</li>
             </router-link>
@@ -89,6 +95,7 @@
               to="/usei/Business/Rejected"
               class="dropdown-link"
               @click="handleClickForRequestsList"
+              v-if="canEdit"
             >
               <li class="dropdown-item">Solicitudes rechazadas</li>
             </router-link>
@@ -200,6 +207,18 @@ export default {
   computed: {
     showMobileMenu() {
       return useMobileMenuStore().mobileMenu;
+    },
+    canView() {
+      // Obtener el valor de la cookie 'permiso_agregar'
+      const permisoVer = this.$cookies.get('permiso_ver');
+      console.log(permisoVer === '1')
+      return permisoVer === '1'; // Retorna true si la cookie es 1
+    },
+    canEdit() {
+      // Obtener el valor de la cookie 'permiso_agregar'
+      const permisoModificar = this.$cookies.get('permiso_editar');
+      console.log(permisoModificar === '1')
+      return permisoModificar === '1'; // Retorna true si la cookie es 1
     },
   },
 };

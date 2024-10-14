@@ -130,13 +130,8 @@ export default {
     };
   },
   methods: {
-    canAddConvocatoria() {
-      // Obtener el valor de la cookie 'permiso_agregar'
-      const permisoAgregar = this.$cookies.get('permiso_agregar');
-      console.log(permisoAgregar === true)
-      return permisoAgregar === true; // Retorna true si la cookie es true
-    },
     toggleDarkMode() {
+      console.log("permiso: "+this.$cookies.get('permiso_agregar') === true);
       const darkModeStore = useThemeStore();
       this.isDarkMode = !this.isDarkMode;
       darkModeStore.toggleDarkMode();
@@ -172,6 +167,12 @@ export default {
   computed: {
     showMobileMenu() {
       return useMobileMenuStore().mobileMenu;
+    },
+    canAddConvocatoria() {
+      // Obtener el valor de la cookie 'permiso_agregar'
+      const permisoAgregar = this.$cookies.get('permiso_agregar');
+      console.log(permisoAgregar === 'true');
+      return permisoAgregar === 'true'; // Retorna true si la cookie es true
     },
   },
 };

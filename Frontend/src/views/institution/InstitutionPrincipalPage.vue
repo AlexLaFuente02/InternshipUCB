@@ -222,11 +222,7 @@ export default {
       console.log("Todas las postulaciones:", this.allPostulationsByInstitution);
       this.companyInformationIsLoaded = true;
       useLoaderStore().desactivateLoader();
-      this.$cookies.set("permiso_agregar", this.institutionByIdStore.institution.result.habilitado_agregarconvocatoria, {
-                expires: "1d",   // Establece la duración de la cookie
-                path: "/",       // Asegura que esté disponible en toda la app
-                sameSite: "Lax", // Controla el uso entre dominios
-      });
+      this.$cookies.set("permiso_agregar", this.institutionByIdStore.institution.result.habilitado_agregarconvocatoria);
     },
     filterInternships(key) {
       // Puedes mapear las claves con el nombre del estado si difieren

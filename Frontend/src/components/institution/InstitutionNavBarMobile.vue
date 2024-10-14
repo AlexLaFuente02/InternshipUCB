@@ -153,12 +153,7 @@ export default {
     };
   },
   methods: {
-    canAddConvocatoria() {
-      // Obtener el valor de la cookie 'permiso_agregar'
-      const permisoAgregar = this.$cookies.get('permiso_agregar');
-      console.log(permisoAgregar === true)
-      return permisoAgregar === true; // Retorna true si la cookie es true
-    },
+    
     toggleMobileMenuL() {
       useMobileMenuStore().toggleMenuLeft();
       useMobileMenuStore().toggleMobileMenu();
@@ -202,6 +197,12 @@ export default {
     },
     showMobileMenuRight() {
       return useMobileMenuStore().menuRight;
+    },
+    canAddConvocatoria() {
+      // Obtener el valor de la cookie 'permiso_agregar'
+      const permisoAgregar = this.$cookies.get('permiso_agregar');
+      console.log(permisoAgregar === 'true');
+      return permisoAgregar === 'true'; // Retorna true si la cookie es true
     },
   },
 };

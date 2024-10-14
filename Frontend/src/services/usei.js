@@ -17,6 +17,11 @@ export const loadUseiInstitutionRechazado = async () => {
   const response = await axios.get(`${rutaUsei}/instituciones/rechazadas`);
   return response.data;
 }
+
+export const loadUseiInformation = async (userId) => {
+  const response = await axios.get(`${rutaAdminUsei}//usuarioAdmin/${userId}`);
+  return response.data;
+}
 //para cambiar de estados instituciones
 export const activateInstitution = async (institutionId) => {
     try {

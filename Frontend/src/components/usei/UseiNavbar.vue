@@ -14,31 +14,35 @@
           <font-awesome-icon :icon="['fas', 'house']" size="xl" />
           <span class="nav-direction">Inicio</span>
         </router-link>
-        <span class="link" @click="showDropdownViewsList">
+        <span class="link" @click="showDropdownViewsList" v-if="canView">
           <font-awesome-icon :icon="['fas', 'briefcase']" size="xl" />
           <span class="nav-direction">Componentes</span>
         </span>
         <ul
           class="dropdown-menu-components"
-          v-if="dropdownButton.showViewsDropdownMenu"
+          v-if="dropdownButton.showViewsDropdownMenu" 
         >
           <router-link
+            v-if="canView"
             to="/usei/Companies"
             class="dropdown-link"
             @click="showDropdownViewsList"
+            
           >
             <li class="dropdown-item">Empresas</li>
           </router-link>
           <router-link
+            v-if="canView"
             to="/usei/Internships"
             class="dropdown-link"
             @click="showDropdownViewsList"
+            
           >
             <li class="dropdown-item">Pasant&iacute;as</li>
           </router-link>
 
         </ul>
-        <span class="link" @click="showDropdownRequestsList">
+        <span class="link" @click="showDropdownRequestsList"  v-if="canEdit">
           <font-awesome-icon :icon="['fas', 'file']" size="xl" />
           <span class="nav-direction">Solicitudes</span>
         </span>
@@ -47,6 +51,7 @@
           v-if="dropdownButton.showRequestsDropdownMenu"
         >
           <router-link
+            v-if="canEdit"
             to="/usei/Business"
             class="dropdown-link"
             @click="showDropdownRequestsList"
@@ -54,6 +59,7 @@
             <li class="dropdown-item">Solicitudes de empresas</li>
           </router-link>
           <router-link
+            v-if="canEdit"
             to="/usei/InternshipApp"
             class="dropdown-link"
             @click="showDropdownRequestsList"
@@ -61,6 +67,7 @@
             <li class="dropdown-item">Solicitudes de pasant&iacute;as</li>
           </router-link>
           <router-link
+            v-if="canEdit"
             to="/usei/Business/Rejected"
             class="dropdown-link"
             @click="showDropdownRequestsList"
@@ -142,6 +149,20 @@ export default {
         !this.dropdownButton.showRequestsDropdownMenu;
     },
   },
+  computed: {
+    canView() {
+      // Obtener el valor de la cookie 'permiso_agregar'
+      const permisoVer = this.$cookies.get('permiso_ver');
+      console.log(permisoVer === '1')
+      return permisoVer === '1'; // Retorna true si la cookie es 1
+    },
+    canEdit() {
+      // Obtener el valor de la cookie 'permiso_agregar'
+      const permisoModificar = this.$cookies.get('permiso_editar');
+      console.log(permisoModificar === '1')
+      return permisoModificar === '1'; // Retorna true si la cookie es 1
+    },
+  }
 };
 </script>
 
