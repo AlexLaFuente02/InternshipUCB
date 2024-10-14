@@ -66,6 +66,19 @@ router.get("/:id", async (req, res) => {
   });
 });
 
+router.get("/usuarioAdmin/:userId", async (req, res) => {
+  console.log(
+    `GET request received to get a USEI Administrator by ID: '${req.params.userId}'.`
+  );
+  const response = await adminuseiService.getAdminUSEIByUserId(req.params.userId);
+  res.json({
+    method: "getAdminUSEIByUserId",
+    code: response.code,
+    result: response.result,
+    message: response.message,
+  });
+});
+
 /**
  * @swagger
  * /adminUSEI/:

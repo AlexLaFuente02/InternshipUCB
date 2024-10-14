@@ -261,6 +261,53 @@ const changeHabilitadoModific = async (id) => {
   }
 };
 
+const getAdminUSEIByUserId = async (userId) => {
+  console.log(`Obteniendo el administrador USEI con ID de Usuario: '${userId}'...`);
+  try {
+    const adminUSEI = await AdminuseiENT.findOne({
+      where: { usuario_id: userId },
+      include: [{ model: UsuarioENT, as: "usuario" }],
+    });
+    if (!adminUSEI) {
+      console.log(`El administrador USEI con ID de Usuario: '${userId}' no existe.`);
+      return new ResponseDTO(
+        "AUSEI-2000",
+        null,
+        `El administrador USEI con ID de Usuario: '${userId}' no existe.`
+      );
+    }
+    const usuarioDTO = new UsuarioDTO(
+      adminUSEI.usuario.id,
+      adminUSEI.usuario.idusuario,
+      adminUSEI.usuario.tipousuario,
+      adminUSEI.usuario.numero_intentos,
+      adminUSEI.usuario.estado,
+    );
+    const adminUSEIDTO = new AdminuseiDTO(
+      adminUSEI.id,
+      usuarioDTO,
+      adminUSEI.habilitado_ver,
+      adminUSEI.habilitado_modific
+    );
+    console.log("Administrador USEI obtenido correctamente.");
+    return new ResponseDTO(
+      "AUSEI-0000",
+      adminUSEIDTO,
+      "Administradores USEI obtenidos correctamente."
+    );
+  } catch (error) {
+    console.error(
+      `Error al obtener el Administrador USEI con ID de Usuario: '${userId}': ${error}.`
+    );
+    return new ResponseDTO(
+      "AUSEI-2000",
+      null,
+      `Error al obtener el Administrador USEI con ID de Usuario: '${userId}': ${error}.`
+    );
+  }
+};
+
+
 module.exports = {
   getAllAdminsUSEI,
   getAdminUSEIById,
@@ -269,4 +316,5 @@ module.exports = {
   deleteAdminUSEI,
   changeHabilitadoVer,
   changeHabilitadoModific,
+  getAdminUSEIByUserId,
 };
