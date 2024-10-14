@@ -524,6 +524,7 @@ const changeEstadoActivado = async (id) => {
     }
 
     await usuario.update({
+        numero_intentos: 0,
         estado: "ACTIVADO",
     });
 

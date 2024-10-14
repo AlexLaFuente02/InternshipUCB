@@ -5,19 +5,19 @@
         <!-- ID del Usuario -->
         <div class="input-group">
           <label for="IDUsuario">Usuario:</label>
-          <input type="text" v-model="usuario.IDUsuario" id="IDUsuario" required />
+          <input type="text" id="TipoUsuario" value="Asignado por estandarización" readonly />
         </div>
   
         <!-- Contraseña del Usuario -->
         <div class="input-group">
           <label for="Contraseña">Contraseña:</label>
-          <input type="password" v-model="usuario.Contrasenia" id="Contraseña" required />
+          <InputPassword @input-emit="handlePasswordInput" />
         </div>
   
         <!-- Tipo de Usuario fijo -->
         <div class="input-group">
           <label for="TipoUsuario">Tipo de Usuario:</label>
-          <input type="text" id="TipoUsuario" value="Administrador" readonly />
+          <input type="text" id="TipoUsuario" value="USEI" readonly />
         </div>
   
         <!-- Permisos para ver y modificar en contenedores separados -->
@@ -44,42 +44,67 @@
   </template>
   
   <script>
-  import axios from 'axios';
+  import { createAdminUsei } from '../../services/usei'; // Importa tu capa de servicio
+  import InputPassword from '@/components/common/InputPassword.vue'; // Ajusta el path basado en tu estructura
   
   export default {
     data() {
       return {
         usuario: {
-          IDUsuario: '',
-          Contrasenia: '',
-          TipoUsuario_ID: 2, 
-          estado: 'ACTIVADO',  
+          Contrasenia: '', // La contraseña del usuario
         },
         adminUSEI: {
-          habilitado_ver: false,
-          habilitado_modific: false,
+          habilitado_ver: false, // Estado del checkbox "Habilitar Ver"
+          habilitado_modific: false, // Estado del checkbox "Habilitar Modificar"
         },
       };
+    },
+    components: {
+      InputPassword,
     },
     methods: {
       async submitForm() {
         try {
-          const newUser = {
-            ...this.usuario,
-            habilitado_ver: this.adminUSEI.habilitado_ver ? 1 : 0,
-            habilitado_modific: this.adminUSEI.habilitado_modific ? 1 : 0,
-          };
+          // Validar que la contraseña cumpla con los requisitos
+          if (this.validatePassword(this.usuario.Contrasenia)) {
+            // Preparar el payload para enviar a la API
+            const newAdminUsei = {
+              usuario: {
+                contrasenia: this.usuario.Contrasenia, // Solo la contraseña del usuario
+              },
+              habilitado_ver: this.adminUSEI.habilitado_ver ? 1 : 0, // Convertir a 1 o 0
+              habilitado_modific: this.adminUSEI.habilitado_modific ? 1 : 0, // Convertir a 1 o 0
+            };
   
-          // Llamada a la API para crear el usuario
-          const response = await axios.post('/api/adminUSEI', newUser);
-          console.log('Usuario creado:', response.data);
+            // Llamar al servicio que hace la solicitud POST
+            const response = await createAdminUsei(newAdminUsei);
+            console.log('Administrador USEI creado:', response);
+          } else {
+            // Mostrar alerta si la contraseña no cumple los requisitos
+            alert("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial");
+          }
         } catch (error) {
-          console.error('Error al crear el usuario:', error);
+          console.error('Error al crear el Administrador USEI:', error);
         }
+      },
+      handlePasswordInput(password) {
+        this.usuario.Contrasenia = password;
+      },
+      validatePassword(password) {
+        // Verificar que la contraseña cumpla con los requisitos
+        const minLength = password.length >= 8;
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecialChar = /[_!@#$%^&*(),.?":{}|<>]/.test(password);
+  
+        return minLength && hasLowerCase && hasUpperCase && hasNumber && hasSpecialChar;
       }
     }
   };
   </script>
+  
+    
   
   <style scoped>
   /* Ajustar la altura del contenedor del formulario */

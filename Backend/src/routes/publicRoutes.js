@@ -12,6 +12,9 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 
+const adminuseiService = require('../services/adminuseiService'); // Añade esta línea
+
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, '../..', 'images')); // Subir un nivel y luego entrar a la carpeta images
@@ -159,5 +162,28 @@ router.put('/updatePassword', async (req, res) => {
       message: response.message,
   });
 });
+
+
+// Ruta para crear un Administrador USEI
+router.post('/adminusei', async (req, res) => {
+  try {
+      console.log('POST request received for createAdminUSEI with data:', req.body);
+      
+      // Llama al servicio de adminuseiService y pasa los datos
+      const response = await adminuseiService.createAdminUSEI(req.body);
+
+      // Envía la respuesta
+      res.json({
+          method: 'createAdminUSEI',
+          code: response.code,
+          result: response.result,
+          message: response.message,
+      });
+  } catch (error) {
+      console.error('Error creating AdminUSEI:', error);
+      res.status(500).json({ error: error.message });
+  }
+});
+
 
 module.exports = router;

@@ -15,8 +15,10 @@ Content-Type: application/json
 
 {
     "usuario": {
-        "id": 2
-    }
+        "id": 5
+    },
+    "habilitado_ver": 1,
+    "habilitado_modific": 1,
 }
 
 ### PUT A USEI ADMIN DATA

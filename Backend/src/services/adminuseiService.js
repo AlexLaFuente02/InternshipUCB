@@ -4,6 +4,8 @@ const AdminuseiDTO = require("../DTO/AdminuseiDTO");
 const UsuarioENT = require("../ENT/UsuarioENT");
 const UsuarioDTO = require("../DTO/UsuarioDTO");
 
+const usuarioService = require('../services/usuarioService');
+
 const getAllAdminsUSEI = async () => {
   console.log("Obteniendo todos los Administradores USEI...");
   try {
@@ -79,17 +81,43 @@ const getAdminUSEIById = async (id) => {
 const createAdminUSEI = async (adminUSEIData) => {
   console.log("Creando un nuevo Administrador USEI...");
   try {
+    console.log("Creando el usuario del Administrador USEI...");
+    // Crear primero el usuario
+    const userData = {
+      idusuario: adminUSEIData.usuario.idusuario,
+      contrasenia: adminUSEIData.usuario.contrasenia,
+      tipousuario: { id: 3 },
+    };
+
+    // Llamar a la función para crear un nuevo usuario y obtener el resultado
+    const userResponse = await usuarioService.createUser(userData);
+
+    if (userResponse.code !== 'U-0000') {
+      throw new Error('Error al crear el usuario antes del Administrador USEI');
+    }
+
+    // Usar el id del usuario recién creado para asignarlo al nuevo AdminUSEI
     const nuevoAdminUSEI = await AdminuseiENT.create({
-      usuario_id: adminUSEIData.usuario.id,
+      usuario_id: userResponse.result.id, 
+      habilitado_ver: adminUSEIData.habilitado_ver,
+      habilitado_modific: adminUSEIData.habilitado_modific,
     });
+
     const usuarioDTO = new UsuarioDTO(
-      adminUSEIData.usuario.id,
-      adminUSEIData.usuario.idusuario,
-      adminUSEIData.usuario.tipousuario,
-      adminUSEIData.usuario.numero_intentos,
-      adminUSEIData.usuario.estado
+      userResponse.result.id,
+      userResponse.result.idusuario,
+      userResponse.result.tipousuario,
+      userResponse.result.numero_intentos,
+      userResponse.result.estado
     );
-    const nuevoAdminUSEIDTO = new AdminuseiDTO(nuevoAdminUSEI.id, usuarioDTO, nuevoAdminUSEI.habilitado_ver, nuevoAdminUSEI.habilitado_modific);
+
+    const nuevoAdminUSEIDTO = new AdminuseiDTO(
+      nuevoAdminUSEI.id,
+      usuarioDTO,
+      nuevoAdminUSEI.habilitado_ver,
+      nuevoAdminUSEI.habilitado_modific
+    );
+
     console.log("Administrador USEI creado correctamente.");
     return new ResponseDTO(
       "AUSEI-0000",

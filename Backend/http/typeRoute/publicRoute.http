@@ -41,6 +41,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImVtYWlsI
   "aniograduacion": 2022,
   "linkcurriculumvitae": "http://example.com/juan_perez_cv.pdf"
 }
+
+### POST de USEI
+POST {{baseURL}}/adminusei/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "usuario": {
+    "contrasenia": "ContraseñaSegura123"
+  },
+  "habilitado_ver": 1,
+  "habilitado_modific": 1
+}
+
+
 ### Envío de correo electrónico
 POST {{baseURL}}/sendEmail
 Accept: application/json
