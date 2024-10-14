@@ -56,10 +56,10 @@
               class="submitMessage"
               v-text="loginMessages.loginMessage"
             ></span>
-            <span v-if="loginMessages.manyAttempts"
-              >Alcanzaste el limite de intentos para acceder a tu cuenta, espera
-              {{ formattedTime }} minutos para volver a intentarlo.</span
-            >
+            <span v-if="loginMessages.manyAttempts">
+              Alcanzaste el limite de intentos para acceder a tu cuenta, espera
+              {{ formattedTime }} minutos para volver a intentarlo.
+              </span>
           </div>
           <Button
             text="Iniciar sesión"
@@ -122,7 +122,6 @@ export default {
         // Restablece los mensajes de error si previamente se mostraron
         this.loginMessages.userIdErrorMessage = false;
         this.loginMessages.passwordErrorMessage = false;
-
         try {
           const response = await axios.post("http://localhost:3000/auth/login", this.userData, {
             withCredentials: true,
@@ -131,10 +130,6 @@ export default {
               Accept: "application/json",
             },
           });
-          // Suponiendo que tu backend responde con un código en el cuerpo de la respuesta con el codigo de cuenta bloqueada
-          if (response.data.code === "AUTH-1004") {
-            this.loginMessages.loginMessage = "Tu cuenta esta bloqueda, contactate con un administrador para desbloquearla";
-          }
           // Suponiendo que tu backend responde con un código en el cuerpo de la respuesta
           if (response.data.code === "AUTH-0000") {
             var result = response.data.result;
@@ -162,8 +157,14 @@ export default {
             this.loginMessages.loginMessage = "Usuario o contraseña incorrectos.";
           }
         } catch (error) {
-          console.error("Error de red o servidor: ", error);
-          this.loginMessages.loginMessage = "Error al iniciar sesión. Intente de nuevo.";
+          if (error.response) {
+            if(error.response.data.code === "AUTH-1004"){
+              this.loginMessages.loginMessage = "Tu cuenta esta bloqueda, contactate con un administrador para desbloquearla";
+            }   
+          } else {
+            console.error("Error de red o servidor: ", error);
+            this.loginMessages.loginMessage = "Error de red o servidor.";
+          }
         }
       }
     },
