@@ -48,7 +48,7 @@ import UseiAnalyticsDashboard from "@/views/usei/UseiAnalyticsDashboard.vue";
 import UseiBusinessRejected  from '@/views/usei/UseiBusinessRejected.vue';
 import UseiInternshipRejected  from '@/views/usei/UseiInternshipRejected.vue';
 
-
+import AgregarUsei from "./views/adminuser/AgregarUsei.vue";
 import UnlockUsers from "@/views/adminuser/UnlockUsers.vue";
 import ModifyRole from "@/views/adminuser/ModifyRoles.vue";
 import ActivityLog from "@/views/adminuser/ShowActivity.vue";
@@ -119,6 +119,7 @@ const routes = [
     {name: 'UseiInternshipRejected', path : '/usei/Internship/Rejected', component:UseiInternshipRejected},
 
 
+    {name: "AgregarUsei", path: "/admin/add-usei", component: AgregarUsei}, 
     {name: "UnlockUsers", path: "/admin/unlock-users", component: UnlockUsers}, 
     {name: "ModifyRole", path: "/admin/modifiy-rol", component: ModifyRole}, 
     {name: "ActivityLog", path: "/admin/activity-log", component: ActivityLog},
