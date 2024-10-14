@@ -25,9 +25,11 @@
           <td>{{ usuario.numero_intentos }}</td>
           <td>{{ usuario.estado }}</td>
           <td>
-            <button @click="desbloquearUsuario(usuario.id)">Desbloquear</button>
-            <button @click="bloquearUsuario(usuario.id)">Bloquear</button>
-            <button @click="eliminarUsuario(usuario.id)">Eliminar</button>
+            <div class="center-button">
+              <button @click="desbloquearUsuario(usuario.id)">Desbloquear</button>
+              <button @click="bloquearUsuario(usuario.id)">Bloquear</button>
+              <button @click="eliminarUsuario(usuario.id)">Eliminar</button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -100,6 +102,23 @@ export default {
   align-items: center; /* Centra el contenido horizontalmente */
   padding-top: 50px;
   padding-bottom: 100px;
+}
+
+button {
+  background-color: #458bd0; /* Azul claro */
+  color: white; /* Letras blancas */
+  padding: 8px 16px; /* Aumentado un poco el padding para mayor tamaño */
+  border-radius: 12px; /* Hacer los bordes más redondeados */
+  cursor: pointer; /* Cambiar el cursor cuando pase por encima */
+  display: inline-block; /* Para alinearlos correctamente */
+  text-align: center;
+  font-size: 16px; /* Aumentar un poco el tamaño del texto */
+}
+
+.center-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .info {

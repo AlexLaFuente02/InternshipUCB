@@ -252,6 +252,35 @@ h6 {
   }
 }
 
+table {
+  color: #515c66; /* Color de texto para el tema claro */
+}
+
+.dark-theme table {
+  color: #eff3f8; /* Color de texto blanco para el tema oscuro */
+}
+
+/* Asegúrate de aplicar el color también a las celdas */
+table th,
+table td {
+  color: inherit; /* Heredar el color del tema */
+}
+
+.dark-theme table th,
+.dark-theme table td {
+  color: #eff3f8; /* Color blanco para el texto de las celdas en tema oscuro */
+}
+
+/* Si usas bordes de tabla y quieres cambiarlos en el tema oscuro, agrega esto: */
+.dark-theme table {
+  border-color: #4a5568; /* Cambia el color del borde si es necesario */
+}
+
+.dark-theme table th,
+.dark-theme table td {
+  border-color: #4a5568; /* Cambia el color del borde de las celdas en tema oscuro */
+}
+
 /**borrar si daña otras paginas, esto solo esat para modificar registro empresa*/
 .formVue10{
   padding: 5%;
