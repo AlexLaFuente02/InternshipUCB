@@ -261,9 +261,9 @@ CREATE TABLE historico_postulaciones (
 );
 
 INSERT INTO historico_postulaciones (id_p, fechapostulacion, estadopostulacion_id, estudiante_id, convocatoria_id, accion)
-VALUES (1, '2023-10-25', 1, 1, 3, 'Se postuló a la convocatoria con ID 3'),
-(2, '2012-01-11', 2, 1, 1, 'Se postuló a la convocatoria con ID 1'),
-(3, '2014-06-20', 3, 1, 2, 'Se postuló a la convocatoria con ID 2');
+VALUES (1, '2023-10-25', 1, 1, 3, 'Se creó la postulación a la convocatoria con ID: 3'),
+(2, '2012-01-11', 2, 1, 1, 'Se creó la postulación a la convocatoria con ID: 1'),
+(3, '2014-06-20', 3, 1, 2, 'Se creó la postulación a la convocatoria con ID: 2');
 
 
 CREATE TABLE historico_usuario (

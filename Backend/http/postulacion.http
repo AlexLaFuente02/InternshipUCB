@@ -22,6 +22,8 @@ Accept: application/json
     "convocatoria": { "id": 4 }  
 }
 
+//PARA USAR ESTE ENDPOINT PRIMERO DEBES CREAR UNA CONVOCATORIA
+
 ### Actualizar una postulación por ID (reemplaza {id} con un ID válido y proporciona los datos actualizados en el cuerpo de la solicitud)
 PUT http://{{host}}/postulacion/1
 Content-Type: application/json
@@ -35,5 +37,5 @@ Accept: application/json
 }
 
 ### Eliminar una postulación por ID (reemplaza {id} con un ID válido)
-DELETE http://{{host}}/postulacion/12
+DELETE http://{{host}}/postulacion/4
 Accept: application/json
