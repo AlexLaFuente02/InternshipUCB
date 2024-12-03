@@ -28,7 +28,7 @@ CREATE TABLE usuario (
 INSERT INTO `usuario` VALUES (1, 'EST-0001', '$2b$10$BiqzcypYx94lzEt8o6.9ce3y1PomOGnR.km4MOSqW0Oj.BQ53D3gu', 1, 0, 'ACTIVADO');
 INSERT INTO `usuario` VALUES (2, 'INS-0001', '$2b$10$vAno6vX3PQExYjVW1PyLWewvH1OD3xyXB7A1WPnQZy00Hl8nmtnTi', 2, 0, 'ACTIVADO');
 INSERT INTO `usuario` VALUES (3, 'USEI-0001', '$2b$10$DEi.7OFAGKj81j8Bp4gGZ.Rarf6tu1cOIZnV21I8XoiUBDxeiVPh6', 3, 0, 'ACTIVADO');
-INSERT INTO `usuario` VALUES (4, 'ADMUS-0001', '$2b$10$exiPcnlwrhG.UdK0ayArvO4k9DhumI7k4CqBWNdWkKYgoEDPeqtWC', 4 , 0,'ACTIVADO');
+INSERT INTO `usuario` VALUES (4, 'ADMINUSER-0001', '$2b$10$exiPcnlwrhG.UdK0ayArvO4k9DhumI7k4CqBWNdWkKYgoEDPeqtWC', 4 , 0,'ACTIVADO');
 
 #la contra de EST-0001 es Estudiante_1
 #la contra de INS-0001 es Institucion_1
@@ -192,14 +192,19 @@ CREATE TABLE historico_convocatorias (
     estadoconvocatoria_id int NOT NULL,
     institucion_id int NOT NULL,
     tiempoacumplir_id int NOT NULL,
-    accion ENUM('post', 'put', 'delete') NOT NULL,
+    accion varchar(255) NOT NULL,
     fecha_accion TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (estadoconvocatoria_id) REFERENCES estadoconvocatoria (id),
     FOREIGN KEY (institucion_id) REFERENCES institucion (id),
     FOREIGN KEY (tiempoacumplir_id) REFERENCES tiempoacumplir (id)
 );
 
-
+INSERT INTO historico_convocatorias
+(id_c, areapasantia, descripcionfunciones, requisitoscompetencias, horario_inicio, horario_fin, fechasolicitud, fechaseleccionpasante, estadoconvocatoria_id, institucion_id, tiempoacumplir_id, accion)
+VALUES
+(1, 'Area 1', 'Descripcion 1', 'Requisitos 1', '08:00:00', '12:00:00', '2021-01-01', '2021-01-01', 1, 1, 1, 'Se creó la convocatoria con ID 1 su área es Area 1'),
+(2, 'Area 2', 'Descripcion 2', 'Requisitos 2', '08:00:00', '12:00:00', '2021-01-01', '2021-01-01', 1, 2, 1, 'Se creó la convocatoria con ID 2 su área es Area 2'),
+(3, 'Area 3', 'Descripcion 3', 'Requisitos 3', '08:00:00', '12:00:00', '2021-01-01', '2021-01-01', 1, 3, 1, 'Se creó la convocatoria con ID 3 su área es Area 3');
 CREATE TABLE estudiante (
     id int AUTO_INCREMENT PRIMARY KEY,
     usuario_id int NOT NULL UNIQUE,
@@ -248,12 +253,17 @@ CREATE TABLE historico_postulaciones (
     estadopostulacion_id int NOT NULL,
     estudiante_id int NOT NULL,
     convocatoria_id int NOT NULL,
-    accion ENUM('post', 'put', 'delete') NOT NULL,
+    accion varchar(255) NOT NULL,
     fecha_accion TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (estadopostulacion_id) REFERENCES estadopostulacion (id),
     FOREIGN KEY (estudiante_id) REFERENCES estudiante (id),
     FOREIGN KEY (convocatoria_id) REFERENCES convocatoria (id)
 );
+
+INSERT INTO historico_postulaciones (id_p, fechapostulacion, estadopostulacion_id, estudiante_id, convocatoria_id, accion)
+VALUES (1, '2023-10-25', 1, 1, 3, 'Se postuló a la convocatoria con ID 3'),
+(2, '2012-01-11', 2, 1, 1, 'Se postuló a la convocatoria con ID 1'),
+(3, '2014-06-20', 3, 1, 2, 'Se postuló a la convocatoria con ID 2');
 
 
 CREATE TABLE historico_usuario (
@@ -268,11 +278,9 @@ CREATE TABLE historico_usuario (
     estado varchar(30) NOT NULL
 );
 
-INSERT INTO `internshipucb`.`historico_usuario` (`id_u`, `idusuario`, `contrasenia`, `tipousuario_id`, `creado`, `accion`, `numero_intentos`, `estado`) VALUES (6, 'axel@gmail.comds', '$2b$10$Qsv507iI7p7X7wEzGSzTzOl3L4x5Omgl.noKko2A5NuEgI/nsxkm6', 2, '2024-10-12 13:58:54', 'Inserción de Usuario', 0, 'Activo');
-INSERT INTO `internshipucb`.`historico_usuario` (`id_u`, `idusuario`, `contrasenia`, `tipousuario_id`, `creado`, `accion`, `numero_intentos`, `estado`) VALUES (7, 'edu@gmail.com', '$2b$10$tsdaputFZzy3MMD8Q3hkquYrpomMYUYhvlq4oAVbMalQeD7SCQptq', 2, '2024-10-12 13:59:37', 'Inserción de Usuario', 0, 'Activo');
-INSERT INTO `internshipucb`.`historico_usuario` (`id_u`, `idusuario`, `contrasenia`, `tipousuario_id`, `creado`, `accion`, `numero_intentos`, `estado`) VALUES (8, 'alex.lafuente@ucb.edu.bo', '$2b$10$PDzZZ8IS5FWCrygZyHIzEek1cggJllyhIeidaZ7Dfn0fnuq0GvEDS', 1, '2024-10-12 14:29:12', 'Inserción de Usuario', 0, 'Activo');
-INSERT INTO `internshipucb`.`historico_usuario` (`id_u`, `idusuario`, `contrasenia`, `tipousuario_id`, `creado`, `accion`, `numero_intentos`, `estado`) VALUES (8, 'alex.lafuente@ucb.edu.bo', '$2b$10$PDzZZ8IS5FWCrygZyHIzEek1cggJllyhIeidaZ7Dfn0fnuq0GvEDS', 1, '2024-10-12 14:29:12', 'Actualización de contraseña', 0, 'Activo');
-
+INSERT INTO `internshipucb`.`historico_usuario` (`id_u`, `idusuario`, `contrasenia`, `tipousuario_id`, `creado`, `accion`, `numero_intentos`, `estado`) VALUES (1, 'EST-0001', '$2b$10$Qsv507iI7p7X7wEzGSzTzOl3L4x5Omgl.noKko2A5NuEgI/nsxkm6', 2, '2024-12-03 13:58:54', 'Inserción de Usuario', 0, 'Activo');
+INSERT INTO `internshipucb`.`historico_usuario` (`id_u`, `idusuario`, `contrasenia`, `tipousuario_id`, `creado`, `accion`, `numero_intentos`, `estado`) VALUES (2, 'INS-0001','$2b$10$tsdaputFZzy3MMD8Q3hkquYrpomMYUYhvlq4oAVbMalQeD7SCQptq', 2, '2024-12-03 13:59:37', 'Inserción de Usuario', 0, 'Activo');
+INSERT INTO `internshipucb`.`historico_usuario` (`id_u`, `idusuario`, `contrasenia`, `tipousuario_id`, `creado`, `accion`, `numero_intentos`, `estado`) VALUES (3, 'USEI-0001', '$2b$10$PDzZZ8IS5FWCrygZyHIzEek1cggJllyhIeidaZ7Dfn0fnuq0GvEDS', 1, '2024-12-03 14:29:12', 'Inserción de Usuario', 0, 'Activo');
 
 CREATE TABLE aprobacionconvocatoria (
     id int AUTO_INCREMENT PRIMARY KEY,

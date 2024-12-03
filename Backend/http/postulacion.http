@@ -19,7 +19,7 @@ Accept: application/json
     "fechapostulacion": "2023-10-25",
     "estadopostulacion": { "id": 1 },
     "estudiante": { "id": 1 },
-    "convocatoria": { "id": 3 }  
+    "convocatoria": { "id": 4 }  
 }
 
 ### Actualizar una postulación por ID (reemplaza {id} con un ID válido y proporciona los datos actualizados en el cuerpo de la solicitud)
