@@ -43,53 +43,83 @@ import {useLoaderStore} from "@/store/common/loaderStore";
 import Button from '@/components/common/Button.vue';
 import InputPassword from "../common/InputPassword.vue";
 export default {
-    components:{
+    components: {
         Button,
         InputPassword
     },
-    data(){
-        return{
+    data() {
+        return {
             formStore: useFormRegisterStore(),
             loaderStore: useLoaderStore(),
             passwordlabel: '',
             confirmPasswordlabel: '',
-        }
+            blacklist: [] // Aquí guardaremos las contraseñas débiles
+        };
+    },
+    mounted() {
+    fetch("/blacklist.txt")
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("No se pudo cargar la lista de contraseñas débiles.");
+            }
+            return response.text();
+        })
+        .then((data) => {
+            this.blacklist = data
+                .split("\n")
+                .map((item) => item.trim())
+                .filter((item) => item.length > 0); // Elimina líneas vacías o entradas no válidas
+        })
+        .catch((error) => {
+            console.error("Error al cargar la lista de contraseñas débiles:", error);
+        });
     },
     methods: {
-        password(value){
+        password(value) {
             this.passwordlabel = value;
         },
-        confirmPassword(value){
+        confirmPassword(value) {
             this.confirmPasswordlabel = value;
         },
-        async newPassword(){
+        async newPassword() {
             this.formStore.updatePassword.contrasenia = this.passwordlabel;
-            //Validar que las contraseñas sean iguales
-            if (this.passwordlabel === this.confirmPasswordlabel)
-            {
-                //Validar que la contraseña cumpla con los requisitos
-                if (this.passwordlabel.length >= 8 && this.passwordlabel.match(/[a-z]/g) && this.passwordlabel.match(/[A-Z]/g) && this.passwordlabel.match(/[0-9]/g) && this.passwordlabel.match(/[_!@#$%^&*(),.?":{}|<>]/g))
-                {
+
+            if (this.passwordlabel === this.confirmPasswordlabel) {
+                if (
+                    this.passwordlabel.length >= 8 &&
+                    this.passwordlabel.match(/[a-z]/g) &&
+                    this.passwordlabel.match(/[A-Z]/g) &&
+                    this.passwordlabel.match(/[0-9]/g) &&
+                    this.passwordlabel.match(/[_!@#$%^&*(),.?":{}|<>]/g)
+                ) {
+                    // Validar que la contraseña no esté en la lista negra
+                    const normalizedPassword = this.passwordlabel.trim().toLowerCase();
+                    const isBlacklisted = this.blacklist.some(item => 
+                        normalizedPassword.includes(item.toLowerCase())
+                    );
                     
-                    this.loaderStore.activateLoader();
-                    const result=await this.formStore.putStudent();
-                    this.loaderStore.desactivateLoader();
-                    if (result){
-                        this.$emit('nextPage', true);
+                    if (isBlacklisted) {
+                        alert("La contraseña ingresada es demasiado genérica. Por favor, elija otra.");
+                        return;
                     }
+
+                    this.loaderStore.activateLoader();
+                    const result = await this.formStore.putStudent();
+                    this.loaderStore.desactivateLoader();
+                    if (result) {
+                        this.$emit("nextPage", true);
+                    }
+                } else {
+                    alert(
+                        "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial"
+                    );
                 }
-                else{
-                    alert("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un caracter especial");
-                }
-            }
-            else{
+            } else {
                 alert("Las contraseñas no coinciden");
             }
-        }
-        
+        },
 
     },
-    
 }
 </script>
 <style scoped>

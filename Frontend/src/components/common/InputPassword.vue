@@ -23,6 +23,7 @@
                     <li>Mínimo 1 número</li>
                     <li>Mínimo 1 caracter especial</li>
                     <li>Mínimo 8 caracteres</li>
+                    <li>No contrasenia debiles</li>
                 </ul>
             </template>
         </Password>
