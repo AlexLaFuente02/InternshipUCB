@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const helmet = require('helmet');
 const PORT = process.env.PORT || 3001;
 const bodyParser = require('body-parser');
 const axios = require('axios');
@@ -15,8 +16,24 @@ const { swaggerDocs: V1SwaggerDocs } = require("./swagger");
 const path = require('path');
 app.use('/images', express.static(path.join(__dirname, '..', 'images')));
 
-
-
+// Usa Helmet para mayor seguridad
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"], // Agrega dominios de scripts confiables
+        styleSrc: ["'self'", "'unsafe-inline'"], // Permite estilos internos seguros
+        imgSrc: ["'self'", "data:"], // Permite imágenes desde la app y data URIs
+        connectSrc: ["'self'"], // Conexiones como APIs
+        fontSrc: ["'self'", // Fuentes externas confiables
+        objectSrc: ["'none'"], // Evita objetos como Flash o Applets
+        frameSrc: ["'none'"], // Evita iframes
+        upgradeInsecureRequests: [], // Convierte peticiones HTTP en HTTPS
+      },
+    },
+  }),
+);
 
 // Middleware para analizar el cuerpo de las solicitudes JSON
 app.use(express.json());
@@ -113,6 +130,25 @@ app.use('/usei', useiRoutes);
 */
 
 app.use('/public', publicRoutes);
+
+app.use('/images', express.static(path.join(__dirname, '../..', 'images')));
+
+app.use((req, res, next) => {
+  const blockedHosts = ['169.254.169.254', 'localhost:5173', 'localhost:3000'];
+  const requestUrl = req.originalUrl || '';
+  const hostHeader = req.headers['host'] || '';
+
+  // Bloquea si la URL o el host están relacionados con metadatos
+  if (
+    blockedHosts.some((host) => hostHeader.includes(host)) &&
+    requestUrl.includes('meta-data')
+  ) {
+    console.log('Intento de acceso bloqueado a metadatos.');
+    return res.status(403).json({ error: 'Acceso a metadatos bloqueado.' });
+  }
+
+  next();
+});
 
 //app.use('/public', publicRoutes);
 

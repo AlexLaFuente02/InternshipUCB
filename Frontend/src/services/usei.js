@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/assets/axios';
 import { rutaApi } from '../assets/apiConfig';
 import { rutaUsei } from '../assets/apiConfig';
 import { rutaAdminUsei } from '../assets/apiConfig';

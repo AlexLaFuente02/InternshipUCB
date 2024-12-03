@@ -10,12 +10,26 @@ const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, '../..', 'images')); // Subir un nivel y luego entrar a la carpeta images
       },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
+      filename: function (req, file, cb) {
+        // Sanitiza el nombre del archivo para evitar rutas maliciosas
+        const sanitizedFilename = file.originalname.replace(/[^a-z0-9.-]/gi, '_');
+        cb(null, `file-${Date.now()}-${sanitizedFilename}`);
+      }
   });
 
-const upload = multer({ storage: storage });
+  const upload = multer({
+    storage: storage,
+    fileFilter: function (req, file, cb) {
+      const filetypes = /jpeg|jpg|png|gif/;
+      const mimetype = filetypes.test(file.mimetype);
+      const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  
+      if (mimetype && extname) {
+        return cb(null, true);
+      }
+      cb(new Error('Tipo de archivo no soportado'));
+    }
+  });
 
 /**
  * @openapi
@@ -203,6 +217,11 @@ router.get('/destacadas', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+  
     console.log(`GET request received for getInstitutionById with ID: ${req.params.id}`);
     const response = await institucionService.getInstitutionById(req.params.id);
     res.json({

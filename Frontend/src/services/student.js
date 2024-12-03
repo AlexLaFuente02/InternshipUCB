@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/assets/axios';
 import { rutaApi } from '../assets/apiConfig';
 
 //No hay API para cargar las convocatorias que tomó un estudiante
