@@ -26,7 +26,7 @@ app.use(
         styleSrc: ["'self'", "'unsafe-inline'"], // Permite estilos internos seguros
         imgSrc: ["'self'", "data:"], // Permite imágenes desde la app y data URIs
         connectSrc: ["'self'"], // Conexiones como APIs
-        fontSrc: ["'self'", // Fuentes externas confiables
+        fontSrc: ["'self'"], // Fuentes externas confiables
         objectSrc: ["'none'"], // Evita objetos como Flash o Applets
         frameSrc: ["'none'"], // Evita iframes
         upgradeInsecureRequests: [], // Convierte peticiones HTTP en HTTPS
