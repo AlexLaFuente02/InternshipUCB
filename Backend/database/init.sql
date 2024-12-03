@@ -331,3 +331,26 @@ CREATE TABLE ComentarioPostulante (
 );
 
 INSERT INTO ComentarioPostulante (comentario, postulacion_id, convocatoria_id) VALUES ('La pasantia fue buena', 2, 3);
+
+
+CREATE TABLE analisis_riesgos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    aplicativo_sistema_servicio VARCHAR(255) NOT NULL,
+    amenaza_vulnerabilidad VARCHAR(255) NOT NULL,
+    consecuencia VARCHAR(255) NOT NULL,
+    probabilidad_inherente INT NOT NULL,
+    impacto_inherente INT NOT NULL,
+    riesgo_inherente INT NOT NULL,
+    nivel_riesgo_inherente VARCHAR(50) NOT NULL,
+    tratamiento_riesgo_inherente VARCHAR(50) NOT NULL,
+    control VARCHAR(255) NOT NULL,
+    tipo_control VARCHAR(50) NOT NULL,
+    nivel_control VARCHAR(50) NOT NULL,
+    frecuencia_control VARCHAR(50) NOT NULL,
+    probabilidad_residual INT NOT NULL,
+    impacto_residual INT NOT NULL,
+    riesgo_residual INT NOT NULL,
+    nivel_riesgo_residual VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
