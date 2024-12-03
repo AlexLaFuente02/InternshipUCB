@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const helmet = require('helmet');
 const PORT = process.env.PORT || 3001;
 const bodyParser = require('body-parser');
 const axios = require('axios');
@@ -16,7 +17,8 @@ const path = require('path');
 app.use('/images', express.static(path.join(__dirname, '..', 'images')));
 
 
-
+// Usa Helmet para mayor seguridad
+app.use(helmet());
 
 // Middleware para analizar el cuerpo de las solicitudes JSON
 app.use(express.json());
