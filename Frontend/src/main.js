@@ -72,7 +72,7 @@ import Password from 'primevue/password';
 //Main
 import "./assets/main.css";
 
-import axios from "axios";
+import axios from '@/assets/axios';
 
 
 
