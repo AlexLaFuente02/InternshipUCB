@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from '@/assets/axios';
 import { institutionAPIRoute } from "../assets/apiConfig";
 import { publicAPIRoute } from "../assets/apiConfig";
 import { rutaApi } from "../assets/apiConfig";
