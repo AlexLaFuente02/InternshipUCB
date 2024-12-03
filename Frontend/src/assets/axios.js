@@ -11,7 +11,7 @@ axiosInstance.interceptors.request.use((config) => {
   // Bloquear solicitudes a endpoints de metadatos
   if (
     config.url.includes('169.254.169.254') ||
-    config.url.includes('/latest/meta-data/')
+    config.url.includes('meta-data')
   ) {
     return Promise.reject(new Error('Acceso bloqueado a endpoints de metadatos.'));
   }

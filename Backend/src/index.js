@@ -114,6 +114,25 @@ app.use('/usei', useiRoutes);
 
 app.use('/public', publicRoutes);
 
+app.use('/images', express.static(path.join(__dirname, '../..', 'images')));
+
+app.use((req, res, next) => {
+  const blockedHosts = ['169.254.169.254', 'localhost:5173', 'localhost:3000'];
+  const requestUrl = req.originalUrl || '';
+  const hostHeader = req.headers['host'] || '';
+
+  // Bloquea si la URL o el host están relacionados con metadatos
+  if (
+    blockedHosts.some((host) => hostHeader.includes(host)) &&
+    requestUrl.includes('meta-data')
+  ) {
+    console.log('Intento de acceso bloqueado a metadatos.');
+    return res.status(403).json({ error: 'Acceso a metadatos bloqueado.' });
+  }
+
+  next();
+});
+
 //app.use('/public', publicRoutes);
 
 // Ruta de inicio
