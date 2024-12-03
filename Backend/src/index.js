@@ -16,9 +16,24 @@ const { swaggerDocs: V1SwaggerDocs } = require("./swagger");
 const path = require('path');
 app.use('/images', express.static(path.join(__dirname, '..', 'images')));
 
-
 // Usa Helmet para mayor seguridad
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"], // Agrega dominios de scripts confiables
+        styleSrc: ["'self'", "'unsafe-inline'"], // Permite estilos internos seguros
+        imgSrc: ["'self'", "data:"], // Permite imágenes desde la app y data URIs
+        connectSrc: ["'self'"], // Conexiones como APIs
+        fontSrc: ["'self'", // Fuentes externas confiables
+        objectSrc: ["'none'"], // Evita objetos como Flash o Applets
+        frameSrc: ["'none'"], // Evita iframes
+        upgradeInsecureRequests: [], // Convierte peticiones HTTP en HTTPS
+      },
+    },
+  }),
+);
 
 // Middleware para analizar el cuerpo de las solicitudes JSON
 app.use(express.json());
