@@ -34,6 +34,7 @@ export const getUserByIdUsuario = async (idUsuario) => {
         throw error; // O reenviar el error para manejarlo en otro lugar
     }
 }
+
 export const logout = async () => {
     try {
         const response = await axios.get(`${rutaApi}/auth/logout`);
@@ -129,6 +130,40 @@ export const changeEstadoEliminado = async (idUsuario) => {
     } catch (error) {
         // Manejar el error aquí, por ejemplo:
         console.error("Hubo un error al cargar el usuario: ", error);
+        throw error; // O reenviar el error para manejarlo en otro lugar
+    }
+}
+
+//OBTENER HISTORICOS
+export const getAllConvocatorias = async () => {
+    try {
+        const response = await axios.get(`${rutaApi}/historicoConvocatorias`);
+        const data = response.data;
+        if (data.code === "HC-0000") {
+            return data.result;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        // Manejar el error aquí, por ejemplo:
+        console.error("Hubo un error al cargar el historico de convocatorias: ", error);
+        throw error; // O reenviar el error para manejarlo en otro lugar
+    }
+}
+
+
+export const getAllPostulaciones = async () => {
+    try {
+        const response = await axios.get(`${rutaApi}/historicoPostulaciones`);
+        const data = response.data;
+        if (data.code === "HP-0000") {
+            return data.result;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        // Manejar el error aquí, por ejemplo:
+        console.error("Hubo un error al cargar el historico de postulaciones: ", error);
         throw error; // O reenviar el error para manejarlo en otro lugar
     }
 }
