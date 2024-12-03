@@ -8,6 +8,7 @@ const UsuarioDTO = require("../DTO/UsuarioDTO");
 const sequelize = require("../../database/db");
 
 const UsuarioService = require('./usuarioService'); 
+const HistoricoUsuarioService = require('./historicoUsuarioService');
 const nodemailer = require('nodemailer');
 const accountTransport = require('../../config/account_transport.json'); 
 
@@ -993,12 +994,12 @@ const rejectInstitution = async (id) => {
 };
 
 const changeHabilitadoAgregarConvocatoria = async (id) => {
-  console.log(`Cambiando permisos de Institucion con ID: ${id}...`);
+  console.log(`Cambiando permisos de Institución con ID: ${id}...`);
   try {
     const institucion = await Institucion.findByPk(id, {
       include: [
         { model: SectorPertenencia, as: "sectorpertenencia" },
-        { model: Usuario, as: "usuario"},
+        { model: Usuario, as: "usuario" },  // Incluimos la información del usuario
       ],
     });
     if (!institucion) {
@@ -1006,16 +1007,11 @@ const changeHabilitadoAgregarConvocatoria = async (id) => {
       return new ResponseDTO("I-1004", null, "Institución no encontrada");
     }
 
-    // Actualizar los permisos de institución
-    if (institucion.habilitado_agregarconvocatoria == 0) {
-      await institucion.update({
-        habilitado_agregarconvocatoria: 1,
-      });
-    } else if (institucion.habilitado_agregarconvocatoria == 1) {
-      await institucion.update({
-        habilitado_agregarconvocatoria: 0,
-      });
-    }
+    // Actualizar el estado de habilitado_agregarconvocatoria
+    const nuevoEstado = institucion.habilitado_agregarconvocatoria == 0 ? 1 : 0;
+    await institucion.update({
+      habilitado_agregarconvocatoria: nuevoEstado,
+    });
 
     // Convertir el logoinstitucion en URL
     const imageUrl = getImageUrl(institucion.logoinstitucion);
@@ -1039,7 +1035,7 @@ const changeHabilitadoAgregarConvocatoria = async (id) => {
     }
 
     // Crear DTO para la institución, incluyendo el usuario actualizado
-    const actulizadoInstitucionDTO = new InstitucionDTO(
+    const actualizadoInstitucionDTO = new InstitucionDTO(
       institucion.id,
       institucion.nombreinstitucion,
       institucion.reseniainstitucion,
@@ -1051,23 +1047,32 @@ const changeHabilitadoAgregarConvocatoria = async (id) => {
       usuarioDTO,
       sectorPertenenciaDTO
     );
-    console.log(
-      `Permiso de Institucion con ID: '${id}' actualizado correctamente.`
-    );
+
+    console.log(`Permiso de Institución con ID: '${id}' actualizado correctamente a ${nuevoEstado}.`);
+
+    // Registrar en el histórico de usuario
+    if (institucion.usuario) {
+      await HistoricoUsuarioService.insertHistoricoUsuario(
+        institucion.usuario.dataValues,
+        `Actualización de habilitado_agregarconvocatoria a ${nuevoEstado}`
+      );
+    }
+
     return new ResponseDTO(
       "I-0000",
-      actulizadoInstitucionDTO,
-      "Institución rechazada."
+      actualizadoInstitucionDTO,
+      `Permiso de Institución con ID: '${id}' actualizado correctamente.`
     );
   } catch (error) {
-    console.error(`Error al rechazar la institución con ID: ${id}.`, error);
+    console.error(`Error al actualizar el permiso de la Institución con ID: ${id}.`, error);
     return new ResponseDTO(
       "I-1004",
       null,
-      `Error al rechazar la institución: ${error}`
+      `Error al actualizar el permiso de la Institución: ${error}`
     );
   }
 };
+
 
 const pendingInstitution = async (id) => {
   console.log(`Poniendo en pendiente la institución con ID: ${id}...`);
