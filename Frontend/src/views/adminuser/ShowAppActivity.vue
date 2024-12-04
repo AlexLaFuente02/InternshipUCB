@@ -26,6 +26,7 @@
             <td>{{ index + 1 }}</td> <!-- ID autoincremental -->
             <td>{{ fila.Usuario }}</td>
             <td v-if="tablaSeleccionada === 'convocatoria'">{{ fila.Institución }}</td> <!-- Solo para Convocatorias -->
+            <td v-if="tablaSeleccionada === 'postulaciones'">{{ fila.Nombre }}</td>
             <td>{{ fila["Fecha Acción"] }}</td>
             <td class="accion">{{ fila.Acción }}</td>
           </tr>
@@ -71,6 +72,7 @@
           if (data) {
             this.filas = data.map(item => ({
               Usuario: item.estudiante_id?.usuario_id?.idusuario || "No definido", 
+              Nombre: `${item.estudiante_id?.nombres || "No definido"} ${item.estudiante_id?.apellidopaterno || ""} ${item.estudiante_id?.apellidomaterno || ""}`,
               "Fecha Acción": item.fecha_accion || "No definida", 
               Acción: item.accion || "No definida", 
             }));
@@ -84,43 +86,42 @@
           this.columnas = ["ID", "Usuario", "Institución", "Fecha Acción", "Acción"];
           this.cargarConvocatorias();
         } else if (this.tablaSeleccionada === "postulaciones") {
-          this.columnas = ["ID", "Usuario", "Fecha Acción", "Acción"];
+          this.columnas = ["ID", "Usuario", "Nombre", "Fecha Acción", "Acción"];
           this.cargarPostulaciones();
         }
       },
       descargarJSON() {
-        // Construir los datos según la tabla seleccionada
-        const datosDescarga = this.filas.map((fila, index) => {
-            if (this.tablaSeleccionada === "convocatoria") {
-            return {
-                ID: index + 1, // ID autoincremental
-                Usuario: fila.Usuario,
-                Institución: fila.Institución,
-                "Fecha Acción": fila["Fecha Acción"],
-                Acción: fila.Acción,
-            };
-            } else if (this.tablaSeleccionada === "postulaciones") {
-            return {
-                ID: index + 1, // ID autoincremental
-                Usuario: fila.Usuario,
-                "Fecha Acción": fila["Fecha Acción"],
-                Acción: fila.Acción,
-            };
-            }
-        });
+      const datosDescarga = this.filas.map((fila, index) => {
+        if (this.tablaSeleccionada === "convocatoria") {
+          return {
+            ID: index + 1,
+            Usuario: fila.Usuario,
+            Institución: fila.Institución,
+            "Fecha Acción": fila["Fecha Acción"],
+            Acción: fila.Acción,
+          };
+        } else if (this.tablaSeleccionada === "postulaciones") {
+          return {
+            ID: index + 1,
+            Usuario: fila.Usuario,
+            Nombre: fila.Nombre,
+            "Fecha Acción": fila["Fecha Acción"],
+            Acción: fila.Acción,
+          };
+        }
+      });
 
-        // Convertir los datos a JSON
-        const datosJSON = JSON.stringify(datosDescarga, null, 2); // Espaciado para formato legible
-        const blob = new Blob([datosJSON], { type: "application/json" }); // Crear el archivo Blob
-        const url = URL.createObjectURL(blob); // Crear URL temporal
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `${this.tablaSeleccionada}.json`; // Nombre del archivo según la tabla
-        link.click();
-        URL.revokeObjectURL(url); // Liberar la URL temporal
-        },
+      const datosJSON = JSON.stringify(datosDescarga, null, 2);
+      const blob = new Blob([datosJSON], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${this.tablaSeleccionada}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
     },
-  };
+  },
+};
   </script>
   
   <style scoped>
