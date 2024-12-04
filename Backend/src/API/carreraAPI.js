@@ -57,6 +57,11 @@ router.get("/", async (req, res) => {
  *               $ref: "#/components/schemas/ResponseDTO"
  */
 router.get("/:id", async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   const { id } = req.params;
   try {
     const response = await carreraService.getCarreraById(id);
@@ -147,6 +152,11 @@ router.post("/", async (req, res) => {
  *               $ref: "#/components/schemas/ResponseDTO"
  */
 router.put("/:id", async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   const { id } = req.params;
   const { nombrecarrera } = req.body;
   try {
@@ -181,6 +191,11 @@ router.put("/:id", async (req, res) => {
  *         description: Carrera eliminada
  */
 router.delete("/:id", async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+  
   const { id } = req.params;
   console.log(`DELETE request received for deleteCarrera with ID: ${req.params.id}`);
   try {

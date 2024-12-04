@@ -129,14 +129,21 @@ app.use('/usei', useiRoutes);
 
 app.use('/public', publicRoutes);
 
-app.use('/images', express.static(path.join(__dirname, '../..', 'images')));
+app.use('/images', express.static(path.join(__dirname, '../..', 'images'), {
+  index: false, // Deshabilita el índice del directorio
+  dotfiles: 'deny' // Bloquea archivos ocultos
+}));
+
 
 app.use((req, res, next) => {
-  const blockedHosts = ['169.254.169.254', 'localhost:5173', 'localhost:3000'];
+  const blockedHosts = ['169.254.169.254', '127.0.0.1', 'localhost'];
   const requestUrl = req.originalUrl || '';
   const hostHeader = req.headers['host'] || '';
 
   // Bloquea si la URL o el host están relacionados con metadatos
+  if (req.url.includes('../')) {
+    return res.status(400).json({ error: 'Ruta no válida.' });
+  }
   if (
     blockedHosts.some((host) => hostHeader.includes(host)) &&
     requestUrl.includes('meta-data')
