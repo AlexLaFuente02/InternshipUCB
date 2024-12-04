@@ -10,17 +10,45 @@
     </div>
     <nav class="container__nav">
       <div class="nav__links">
-        <!-- Desbloqueo de usuarios -->
-        <router-link class="link" to="/admin/unlock-users">
-          <font-awesome-icon :icon="['fas', 'lock-open']" size="xl" />
-          <span class="nav-direction">Acciones para Usuarios</span>
-        </router-link>
 
-        <!-- Modificar roles with dropdown -->
-        <router-link class="link" to="/admin/modifiy-rol">
-          <font-awesome-icon :icon="['fas', 'user-edit']" size="xl" />
-          <span class="nav-direction">Modificar roles</span>
-        </router-link>
+        
+        <span class="link" @click="showDropdownCallListUser" style="position: relative;">
+        <font-awesome-icon :icon="['fas', 'user']" size="xl" />
+        <span class="nav-direction">Gestión de usuarios</span>
+        </span>
+        <ul class="dropdown-menu-user" v-if="dropdownButtonUser.showDropdownMenuUser">
+          <router-link
+            to="/admin/unlock-users"
+            class="dropdown-link-user"
+            @click="showDropdownCallListUser"
+          >
+            <li class="dropdown-item-user">
+              <font-awesome-icon :icon="['fas', 'lock-open']" /> 
+              Acciones para Usuarios
+            </li>
+          </router-link>
+          <router-link
+            to="/admin/modifiy-rol"
+            class="dropdown-link-user"
+            @click="showDropdownCallListUser"
+          >
+            <li class="dropdown-item-user">
+              <font-awesome-icon :icon="['fas', 'user-edit']" /> 
+              Modificar roles
+            </li>
+          </router-link>
+          <router-link
+            to="/admin/add-usei"
+            class="dropdown-link-user"
+            @click="showDropdownCallListUser"
+          >
+            <li class="dropdown-item-user">
+              <font-awesome-icon :icon="['fas', 'file-pen']" /> 
+              Agregar Administrador USEI
+            </li>
+          </router-link>
+        </ul>
+
 
         <!-- Mostrar actividad -->
         <span class="link" @click="showDropdownCallList" style="position: relative;">
@@ -50,11 +78,34 @@
           </router-link>
         </ul>
 
-        <!-- Agregar USEI -->
-        <router-link class="link" to="/admin/add-usei">
-          <font-awesome-icon :icon="['fas', 'file-pen']" size="xl" />
-          <span class="nav-direction">Agregar Administrador USEI</span>
-        </router-link>
+        <!-- Analisis de riesgos -->
+        <span class="link" @click="showDropdownCallListRisk" style="position: relative;">
+        <font-awesome-icon :icon="['fas', 'clipboard']" size="xl" />
+        <span class="nav-direction">Análisis de riesgos</span>
+        </span>
+        <ul class="dropdown-menu-risk" v-if="dropdownButtonRisk.showDropdownMenuRisk">
+          <router-link
+            to="/admin/add-risk"
+            class="dropdown-link"
+            @click="showDropdownCallListRisk"
+          >
+            <li class="dropdown-item">
+              <font-awesome-icon :icon="['fas', 'user']" /> 
+              Agregar riesgos
+            </li>
+          </router-link>
+          <router-link
+            to="/admin/view-risk"
+            class="dropdown-link"
+            @click="showDropdownCallListRisk"
+          >
+            <li class="dropdown-item">
+              <font-awesome-icon :icon="['fas', 'clipboard']" /> 
+              Ver riesgos
+            </li>
+          </router-link>
+        </ul>
+
       </div>
       <div class="navbar__buttons">
         <input
@@ -94,6 +145,12 @@ export default {
       dropdownButton: {
         showDropdownMenu: false,
       },
+      dropdownButtonUser: {
+        showDropdownMenuUser: false,
+      },
+      dropdownButtonRisk: {
+        showDropdownMenuRisk: false,
+      },
     };
   },
   methods: {
@@ -113,12 +170,17 @@ export default {
       this.closeMobileMenu();
       /*Fin del logout*/
     },
-    showDropdownRolesList() {
-      this.dropdownButton.showRolesDropdownMenu = !this.dropdownButton.showRolesDropdownMenu;
+    showDropdownCallListUser() {
+      this.dropdownButtonUser.showDropdownMenuUser =
+        !this.dropdownButtonUser.showDropdownMenuUser;
     },
     showDropdownCallList() {
       this.dropdownButton.showDropdownMenu =
         !this.dropdownButton.showDropdownMenu;
+    },
+    showDropdownCallListRisk() {
+      this.dropdownButtonRisk.showDropdownMenuRisk =
+        !this.dropdownButtonRisk.showDropdownMenuRisk;
     },
   },
 };
@@ -141,7 +203,7 @@ export default {
   color: #515c67;
 }
 
-.dropdown-menu {
+.dropdown-menu-risk {
   position: absolute;
   top: 60%; /* Aparece justo debajo del botón */
   left: 50%; /* Centrado respecto al botón */
@@ -154,13 +216,41 @@ export default {
   text-align: center;
   border: 1px solid black;
   z-index: 100; /* Asegura que quede sobre otros elementos */
-  
-  
+}
+
+.dropdown-menu-user {
+  position: absolute;
+  top: 60%; /* Aparece justo debajo del botón */
+  left: 20%; /* Centrado respecto al botón */
+  transform: translateX(-50%); /* Ajusta el centrado horizontal */
+  width: 13%;
+  background-color: white;
+  border-radius: 20px;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+  border: 1px solid black;
+  z-index: 100; /* Asegura que quede sobre otros elementos */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60%; /* Aparece justo debajo del botón */
+  left: 35%; /* Centrado respecto al botón */
+  transform: translateX(-50%); /* Ajusta el centrado horizontal */
+  width: 13%;
+  background-color: white;
+  border-radius: 20px;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+  border: 1px solid black;
+  z-index: 100; /* Asegura que quede sobre otros elementos */
 }
 
 
-.dropdown-menu-components,
-.dropdown-menu-requests {
+.dropdown-menu-components,.dropdown-menu-requests, 
+.dropdown-menu-user-components, .dropdown-menu-user-requests {
     position: absolute;
     top: 50%; /* Justo debajo del botón */
     left: 50%; /* Centrado respecto al contenedor */
@@ -176,32 +266,34 @@ export default {
 }
 
 
-.dropdown-menu-components {
+.dropdown-menu-components, .dropdown-menu-components-user {
   left: 18%;
 }
-.dropdown-menu-requests {
+.dropdown-menu-requests, .dropdown-menu-requests-user {
   left: 29%;
 }
 
-.dropdown-item {
+.dropdown-item, .dropdown-item-user {
   padding: 7% 10%;
   border-radius: 20px;
   margin: 0;
 }
 
-.dropdown-link {
+.dropdown-link, .dropdown-link-user {
   color: black;
   text-decoration: none;
 }
 
-.dropdown-item:hover {
+.dropdown-item:hover, .dropdown-item-user:hover {
   background-color: rgba(90, 97, 106, 0.7);
   color: #fff;
 }
 
-.dropdown-link:active {
+.dropdown-link:active, .dropdown-link-user:active {
   background-color: aqua;
 }
+
+
 
 /*Modo oscuro*/
 .dark-theme header {

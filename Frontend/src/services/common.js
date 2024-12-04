@@ -167,3 +167,24 @@ export const getAllPostulaciones = async () => {
         throw error; // O reenviar el error para manejarlo en otro lugar
     }
 }
+
+
+export const postAnalisisRiesgos = async (analisisData) => {
+    try {
+        const response = await axios.post(`${rutaApi}/analisisRiesgos`, analisisData, {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+        });
+        const data = response.data;
+        if (data.code === "AR-0000") {
+            return data.result;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error("Hubo un error al enviar el análisis de riesgos: ", error);
+        throw error; // Reenviar el error para manejarlo en otro lugar
+    }
+};

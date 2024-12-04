@@ -54,6 +54,9 @@ import ModifyRole from "@/views/adminuser/ModifyRoles.vue";
 import ActivityUserLog from "@/views/adminuser/ShowUserActivity.vue";
 import ActivityAppLog from "@/views/adminuser/ShowAppActivity.vue"
 
+import ViewRisks from "@/views/adminuser/ViewRisk.vue"
+import AddRisks from "@/views/adminuser/CreateRisk.vue"
+
 // Librerías de Animate & SweetAlert2
 import "../node_modules/animate.css/animate.min.css";
 import "sweetalert2/dist/sweetalert2.min.css";
@@ -125,6 +128,9 @@ const routes = [
     {name: "ModifyRole", path: "/admin/modifiy-rol", component: ModifyRole}, 
     {name: "ActivityUserLog", path: "/admin/activity-userlog", component: ActivityUserLog},
     {name: "ActivityAppLog", path: "/admin/activity-applog", component: ActivityAppLog},
+
+    {name: "ViewRisks", path: "/admin/view-risk", component: ViewRisks},
+    {name: "AddRisks", path: "/admin/add-risk", component: AddRisks},
 ];
 
 // Router
