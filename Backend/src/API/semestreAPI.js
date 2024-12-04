@@ -57,6 +57,11 @@ router.get("/", async (req, res) => {
 
 // GET SEMESTER BY ID
 router.get("/:id", async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   console.log(`GET request received for getting semester by ID: '${req.params.id}'`);
   const response = await semestreService.getById(req.params.id);
   res.json({
@@ -143,6 +148,11 @@ router.post("/", async (req, res) => {
 
 //UPDATE A REGISTERED SEMESTER
 router.put("/:id", async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   console.log(`PUT request received for updating the semester with ID: '${req.params.id}', code: '${req.body.codigosemestre}'`);
   const response = await semestreService.update(
     req.params.id,
@@ -177,6 +187,11 @@ router.put("/:id", async (req, res) => {
 
 //DELETE A REGISTERED SEMESTER
 router.delete("/:id", async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+  
   console.log(`DELETE request received for deleting the semester with ID: '${req.params.id}'`);
   const response = await semestreService.remove(req.params.id);
   res.json({

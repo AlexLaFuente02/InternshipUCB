@@ -149,6 +149,11 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`GET request received for getConvocatoriaById with ID: ${req.params.id}`);
     const response = await convocatoriaService.getConvocatoriaById(req.params.id);
     res.json({
@@ -171,6 +176,11 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`PUT request received for updateConvocatoria with ID: ${req.params.id} and data:`, req.body);
     const response = await convocatoriaService.updateConvocatoria(req.params.id, req.body);
     res.json({
@@ -182,6 +192,11 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`DELETE request received for deleteConvocatoria with ID: ${req.params.id}`);
     const response = await convocatoriaService.deleteConvocatoria(req.params.id);
     res.json({

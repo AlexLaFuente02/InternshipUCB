@@ -1,24 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const institucionService = require('../services/institucionService');
+const sanitizeFilename = require('sanitize-filename');
 
 //Fotos
 const multer = require('multer');
 const path = require('path');
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../..', 'images')); // Subir un nivel y luego entrar a la carpeta images
-      },
-      filename: function (req, file, cb) {
-        // Sanitiza el nombre del archivo para evitar rutas maliciosas
-        const sanitizedFilename = file.originalname.replace(/[^a-z0-9.-]/gi, '_');
-        cb(null, `file-${Date.now()}-${sanitizedFilename}`);
-      }
-  });
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../..', 'images'));
+  },
+  filename: function (req, file, cb) {
+    const sanitizedFilename = sanitizeFilename(file.originalname);
+    if (!sanitizedFilename.match(/\.(jpeg|jpg|png|gif)$/)) {
+      return cb(new Error('Extensión de archivo no permitida'));
+    }
+    cb(null, `file-${Date.now()}-${sanitizedFilename}`);
+  }
+});
 
   const upload = multer({
     storage: storage,
+    limits: {
+      fileSize: 2 * 1024 * 1024, // Limita el tamaño del archivo a 2 MB
+    },
     fileFilter: function (req, file, cb) {
       const filetypes = /jpeg|jpg|png|gif/;
       const mimetype = filetypes.test(file.mimetype);
@@ -29,7 +35,7 @@ const storage = multer.diskStorage({
       }
       cb(new Error('Tipo de archivo no soportado'));
     }
-  });
+  });  
 
 /**
  * @openapi
@@ -255,6 +261,11 @@ router.post('/', upload.single('logoinstitucion'), async (req, res) => {
   
 
 router.put('/:id', async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
     console.log(`PUT request received for updateInstitution with ID: ${req.params.id} and data:`, req.body);
     const response = await institucionService.updateInstitution(req.params.id, req.body);
     res.json({
@@ -266,6 +277,11 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
     console.log(`DELETE request received for deleteInstitution with ID: ${req.params.id}`);
     const response = await institucionService.deleteInstitution(req.params.id);
     res.json({
@@ -277,6 +293,11 @@ router.delete('/:id', async (req, res) => {
 });
 
 router.put('/changeHabilitadoAgregarConvocatoria/:id', async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
     console.log(
       `PUT request received to update the data of a Institucion with ID: '${req.params.id}'`);
     const response = await institucionService.changeHabilitadoAgregarConvocatoria(req.params.id);

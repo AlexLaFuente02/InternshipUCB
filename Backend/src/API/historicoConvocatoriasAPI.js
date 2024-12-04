@@ -52,6 +52,11 @@ router.get('/', async (req, res) => {
  *               $ref: "#/components/schemas/ResponseDTO"
  */
 router.get('/:id_h', async (req, res) => {
+    const institutionId = parseInt(req.params.id_h, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`GET request received for getHistoricoConvocatoriaById with ID: ${req.params.id_h}`);
     const response = await historicoConvocatoriasService.getHistoricoById(req.params.id_h);
     res.json({

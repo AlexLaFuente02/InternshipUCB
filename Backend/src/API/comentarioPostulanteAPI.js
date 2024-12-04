@@ -13,6 +13,11 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const response = await comentarioPostulanteService.getComentarioById(req.params.id);
     res.json({
         method: 'getComentariosPostulanteById',
@@ -33,6 +38,11 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const response = await comentarioPostulanteService.updateComentario(req.params.id, req.body);
     res.json({
         method: 'updateComentariosPostulante',
@@ -43,6 +53,11 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const response = await comentarioPostulanteService.deleteComentario(req.params.id);
     res.json({
         method: 'deleteComentariosPostulante',
