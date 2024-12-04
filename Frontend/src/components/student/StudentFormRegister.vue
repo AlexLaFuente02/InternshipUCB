@@ -1,101 +1,84 @@
 <template>
-    
     <!--Form de registro de Estudiantes-->
     <div class="formVue">
-        
         <div class="form__tittle">
             <h1>REGISTRO DE ESTUDIANTE</h1>
         </div>
         <div class="form__description">
-            <p>Estamos emocionados de ayudarte a encontrar oportunidades profesionales. Por favor,
-completa el siguiente formulario para registrarte como estudiante o graduado.</p>
+            <p>Estamos emocionados de ayudarte a encontrar oportunidades profesionales. Por favor, completa el siguiente formulario para registrarte como estudiante o graduado.</p>
         </div>
         <div class="form__container">
             <div class="container__field">
                 <label>Nombre *:</label>
-                <input placeholder="Introduzca su nombre"
-                
-                v-model="formStore.student.nombres" type="text" class="field">
+                <input placeholder="Introduzca su nombre" v-model="formStore.student.nombres" type="text" class="field">
             </div>
             <div class="container__field">
                 <label>Apellido paterno *:</label>
-                <input placeholder="Introduzca su primer apellido"
-                
-                v-model="formStore.student.apellidopaterno" type="text" class="field">
+                <input placeholder="Introduzca su primer apellido" v-model="formStore.student.apellidopaterno" type="text" class="field">
             </div>
             <div class="container__field">
                 <label>Apellido materno *:</label>
-                <input placeholder="Introduzca su primer apellido"
-                
-                v-model="formStore.student.apellidomaterno" type="text" class="field">
+                <input placeholder="Introduzca su primer apellido" v-model="formStore.student.apellidomaterno" type="text" class="field">
             </div>
-            <!--INPUT-->
+            <!-- INPUT -->
             <div class="container__field">
                 <label>Cédula de Identidad *:</label>
-                <input placeholder="Introduzca su cédula de identidad"
-                
-                v-model="formStore.student.carnetidentidad" type="text" class="field">
+                <input placeholder="Introduzca su cédula de identidad" v-model="formStore.student.carnetidentidad" type="text" class="field">
             </div>
-            <!--INPUT-->
+            <!-- INPUT -->
             <div class="container__field">
                 <label>Celular *:</label>
-                <input placeholder="Introduzca su número de celular"
-                
-                v-model="formStore.student.celularcontacto" type="number" class="field">
+                <input placeholder="Introduzca su número de celular" v-model="formStore.student.celularcontacto" type="number" class="field">
             </div>
             <div class="container__">
                 <label>Validación *:</label>
-                <CheckBox 
-                :options="checkboxOptions" 
-                :initOption="selectedOption"
-                
-                @selected="handleSelectedOption"
-                />
+                <CheckBox :options="checkboxOptions" :initOption="selectedOption" @selected="handleSelectedOption" />
                 <p>La opción seleccionada es: {{ selectedOption }}</p>
             </div>
             <div class="container__select">
                 <label>Sede *:</label>
-                <Dropdown :options="this.listCampus" :selectedValue="campus"
-                placeholderValue="Seleccione una sede"
-                @option-selected="updateCampus" />
+                <Dropdown :options="this.listCampus" :selectedValue="campus" placeholderValue="Seleccione una sede" @option-selected="updateCampus" />
             </div>
             <div class="container__select">
                 <label>Carrera *:</label>
-                <Dropdown :options="this.listCareers" :selectedValue="career"
-                placeholderValue="Seleccione una carrera"
-                @option-selected="updateCareer" />
+                <Dropdown :options="this.listCareers" :selectedValue="career" placeholderValue="Seleccione una carrera" @option-selected="updateCareer" />
             </div>
             <div class="container__select">
                 <label>Semestre de ingreso *:</label>
-                <Dropdown :options="this.listSemester" 
-                :selectedValue="semester"
-                placeholderValue="Seleccione un semestre"
-                @option-selected="updateSemester" />
+                <Dropdown :options="this.listSemester" :selectedValue="semester" placeholderValue="Seleccione un semestre" @option-selected="updateSemester" />
             </div>
+
+            <!-- Nuevo campo de Curriculum Vitae -->
+            <div class="container__field">
+                <label>Curriculum Vitae (Link):</label>
+                <input placeholder="Introduzca el link de su Curriculum Vitae" v-model="formStore.student.linkcurriculumvitae" type="text" class="field">
+            </div>
+
+            <!-- Año de graduación (si es graduado) -->
             <div class="container__field" v-if="formStore.student.graduado">
                 <label>Año de graduación *:</label>
-                <input placeholder="Introduzca su año de graduación"
-                    v-model="formStore.student.aniograduacion"
-                    type="number" min="1900" max="2099" step="1" class="field">
+                <input placeholder="Introduzca su año de graduación" v-model="formStore.student.aniograduacion" type="number" min="1900" max="2099" step="1" class="field">
             </div>
         </div>
     </div>
 </template>
+
 <script>
 import { useFormRegisterStore } from "@/store/student/formRegisterStore";
 import { useCampusStore } from "@/store/common/campusStore";
 import { useCareersStore } from "@/store/common/careersStore";
 import { useSemesterStore } from "@/store/common/semesterStore";
-import {useLoaderStore} from "@/store/common/loaderStore";
+import { useLoaderStore } from "@/store/common/loaderStore";
 import Dropdown from '../common/Dropdown.vue';
 import CheckBox from '@/components/common/CheckBox.vue';
+
 export default {
-    components:{
+    components: {
         Dropdown,
         CheckBox,
     },
-    data(){
-        return{
+    data() {
+        return {
             formStore: useFormRegisterStore(),
             campusStore: useCampusStore(),
             careerStore: useCareersStore(),
@@ -108,87 +91,64 @@ export default {
             campus: "",
             career: "",
             semester: "",
-        }
+        };
     },
-    methods:{
+    methods: {
         //Obtener todas las sedes
-        async getCampus(){
+        async getCampus() {
             await this.campusStore.loadCampuse();
-            this.listCampus= this.campusStore.campuses.result;
-            //Convertir el array de sedes en un array de objetos con id y label
-            this.listCampus = this.listCampus.map((campus) => {
-                return {
-                    id: campus.id,
-                    label: campus.nombresede,
-                };
-            });
+            this.listCampus = this.campusStore.campuses.result.map((campus) => ({
+                id: campus.id,
+                label: campus.nombresede,
+            }));
         },
         //Obtener todas las carreras
-        async getCareers(){
+        async getCareers() {
             await this.careerStore.loadCareer();
-            this.listCareers= this.careerStore.careers.result;
-            //Convertir el array de carreras en un array de objetos con id y label
-            this.listCareers = this.listCareers.map((career) => {
-                return {
-                    id: career.id,
-                    label: career.nombrecarrera,
-                };
-            });
+            this.listCareers = this.careerStore.careers.result.map((career) => ({
+                id: career.id,
+                label: career.nombrecarrera,
+            }));
         },
-        async getSemester(){
+        async getSemester() {
             await this.semesterStore.loadSemester();
-            this.listSemester= this.semesterStore.semesters.result;
-            //Convertir el array de carreras en un array de objetos con id y label
-            this.listSemester = this.listSemester.map((semester) => {
-                return {
-                    id: semester.id,
-                    label: semester.codigosemestre,
-                };
-            });
+            this.listSemester = this.semesterStore.semesters.result.map((semester) => ({
+                id: semester.id,
+                label: semester.codigosemestre,
+            }));
         },
-        updateCampus (option) {
+        updateCampus(option) {
             this.formStore.student.sede.id = option.id;
             this.formStore.campus = option.label;
             this.campus = option.label;
         },
-        updateCareer (option) {
+        updateCareer(option) {
             this.formStore.student.carrera.id = option.id;
-            this.formStore.career= option.label;
+            this.formStore.career = option.label;
             this.career = option.label;
         },
-        updateSemester (option) {
+        updateSemester(option) {
             this.formStore.student.semestre.id = option.id;
             this.formStore.semester = option.label;
             this.semester = option.label;
         },
         handleSelectedOption(option) {
             this.selectedOption = option;
-            if (option === "Graduado") {
-                this.formStore.student.graduado = true;
-            } else {
-                this.formStore.student.graduado = false;
-            }
+            this.formStore.student.graduado = option === "Graduado";
         },
     },
-    //Tercer paso, obtener todas las sedes cuando se crea el componente
-    async mounted(){
+    async mounted() {
         useLoaderStore().activateLoader();
         await this.getCampus();
         await this.getCareers();
         await this.getSemester();
-        if(this.formStore.student.graduado){
-            this.selectedOption = "Graduado";
-        }else{
-            this.selectedOption = "Estudiante";
-        }
+        this.selectedOption = this.formStore.student.graduado ? "Graduado" : "Estudiante";
         this.campus = this.formStore.campus;
         this.career = this.formStore.career;
         this.semester = this.formStore.semester;
-
         useLoaderStore().desactivateLoader();
-    }
-    
-}
+    },
+};
 </script>
 <style scoped>
 .formVue{

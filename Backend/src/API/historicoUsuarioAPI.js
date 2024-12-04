@@ -54,6 +54,10 @@ router.get("/", async (req, res) => {
  */
 
 router.get("/:id", async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
   console.log(
     `GET request received to get a user history by ID: '${req.params.id}'.`
   );

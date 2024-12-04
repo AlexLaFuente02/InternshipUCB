@@ -52,6 +52,11 @@ router.get('/', async (req, res) => {
  *               $ref: "#/components/schemas/ResponseDTO"
  */
 router.get('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`GET request received for getUserById with ID: ${req.params.id}`);
     const response = await usuarioService.getUserById(req.params.id);
     res.json({
@@ -154,6 +159,11 @@ router.post('/', async (req, res) => {
 
 //PUT DE USUARIO
 router.put('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`PUT request received for updateUser with ID: ${req.params.id}`);
     const response = await usuarioService.updateUser(req.params.id, req.body);
     res.json({
@@ -166,6 +176,11 @@ router.put('/:id', async (req, res) => {
 );
 
 router.put('/changeEstadoActivado/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`PUT request received for changeEstado with ID: ${req.params.id}`);
     const response = await usuarioService.changeEstadoActivado(req.params.id);
     res.json({
@@ -177,6 +192,11 @@ router.put('/changeEstadoActivado/:id', async (req, res) => {
 })
 
 router.put('/changeEstadoBloqueado/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`PUT request received for changeEstado with ID: ${req.params.id}`);
     const response = await usuarioService.changeEstadoBloqueado(req.params.id);
     res.json({
@@ -188,6 +208,11 @@ router.put('/changeEstadoBloqueado/:id', async (req, res) => {
 })
 
 router.put('/changeEstadoEliminado/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`PUT request received for changeEstado with ID: ${req.params.id}`);
     const response = await usuarioService.changeEstadoEliminado(req.params.id);
     res.json({
@@ -238,6 +263,11 @@ router.put('/updatePassword', async (req, res) => {
  *               $ref: "#/components/schemas/ResponseDTO"
  */
 router.delete('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`DELETE request received for deleteUser with ID: ${req.params.id}`);
     const response = await usuarioService.deleteUser(req.params.id);
     res.json({
@@ -249,6 +279,11 @@ router.delete('/:id', async (req, res) => {
 });
 /*Obtener los datos de usuario por idUsuario*/
 router.get('/getUsuarioByIdUsuario/:idUsuario', async (req, res) => {
+    const institutionId = parseInt(req.params.idUsuario, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     console.log(`GET request received for getUsuarioByIdUsuario with ID: ${req.params.idUsuario}`);
     const response = await usuarioService.getUserByIdUsuario(req.params.idUsuario);
     res.json({

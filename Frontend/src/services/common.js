@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/assets/axios';
 import { rutaApi } from '../assets/apiConfig';
 //Primer paso, que se comunica con el backend
 export const loadCampuses = async () => {
@@ -34,6 +34,7 @@ export const getUserByIdUsuario = async (idUsuario) => {
         throw error; // O reenviar el error para manejarlo en otro lugar
     }
 }
+
 export const logout = async () => {
     try {
         const response = await axios.get(`${rutaApi}/auth/logout`);
@@ -132,3 +133,123 @@ export const changeEstadoEliminado = async (idUsuario) => {
         throw error; // O reenviar el error para manejarlo en otro lugar
     }
 }
+
+//OBTENER HISTORICOS
+export const getAllConvocatorias = async () => {
+    try {
+        const response = await axios.get(`${rutaApi}/historicoConvocatorias`);
+        const data = response.data;
+        if (data.code === "HC-0000") {
+            return data.result;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        // Manejar el error aquí, por ejemplo:
+        console.error("Hubo un error al cargar el historico de convocatorias: ", error);
+        throw error; // O reenviar el error para manejarlo en otro lugar
+    }
+}
+
+
+export const getAllPostulaciones = async () => {
+    try {
+        const response = await axios.get(`${rutaApi}/historicoPostulaciones`);
+        const data = response.data;
+        if (data.code === "HP-0000") {
+            return data.result;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        // Manejar el error aquí, por ejemplo:
+        console.error("Hubo un error al cargar el historico de postulaciones: ", error);
+        throw error; // O reenviar el error para manejarlo en otro lugar
+    }
+}
+
+
+export const postAnalisisRiesgos = async (analisisData) => {
+    try {
+        const response = await axios.post(`${rutaApi}/analisisRiesgos`, analisisData, {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+        });
+        const data = response.data;
+        if (data.code === "AR-0000") {
+            return data.result;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error("Hubo un error al enviar el análisis de riesgos: ", error);
+        throw error; // Reenviar el error para manejarlo en otro lugar
+    }
+};
+
+
+export const getAllAnalisisRiesgos = async () => {
+    try {
+      const response = await axios.get(`${rutaApi}/analisisRiesgos`);
+      const data = response.data;
+      if (data.code === "AR-0000") {
+        return data.result; // Retorna solo el resultado (lista de análisis)
+      } else {
+        console.error("Error en el código de respuesta:", data.message);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error al obtener los análisis de riesgos:", error);
+      throw error;
+    }
+  };
+
+  export const deleteAnalisisRiesgos = async (id) => {
+    try {
+      const response = await axios.delete(`${rutaApi}/analisisRiesgos/${id}`);
+      return response.data; // Retorna la respuesta completa
+    } catch (error) {
+      console.error(`Error al eliminar el análisis de riesgo con ID ${id}:`, error);
+      throw error;
+    }
+  };
+  
+
+  export const putAnalisisRiesgos = async (id, payload) => {
+    try {
+      const response = await axios.put(`${rutaApi}/analisisRiesgos/${id}`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      if (response.data.code === "AR-0000") {
+        return response.data.result; // Devolver el resultado actualizado
+      } else {
+        console.error("Error en la respuesta del servidor:", response.data.message);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error al realizar la actualización:", error);
+      throw error;
+    }
+  };
+
+  export const getAnalisisRiesgosById = async (id) => {
+    try {
+      const response = await axios.get(`${rutaApi}/analisisRiesgos/${id}`);
+      const data = response.data;
+      if (data.code === "AR-0000") {
+        return data.result; // Retorna solo el resultado (lista de análisis)
+      } else {
+        console.error("Error en el código de respuesta:", data.message);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error al obtener el análisis de riesgo:", error);
+      throw error;
+    }
+  };
+  
