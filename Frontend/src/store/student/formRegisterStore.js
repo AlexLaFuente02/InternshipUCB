@@ -2,91 +2,72 @@ import { defineStore } from "pinia";
 import { postStudent } from "@/services/student";
 import { postCode } from "@/services/student";
 import { verifyCode } from "@/services/student";
-import {putStudent} from "@/services/student";
+import { putStudent } from "@/services/student";
+
 export const useFormRegisterStore = defineStore({
-    id: "formRegister",
-    state: () => ({
-        student: {
-            usuario_id: 0,
-            nombres: "",
-            apellidopaterno: "",
-            apellidomaterno: "",
-            carnetidentidad: "",
-            correoelectronico: "",
-            celularcontacto: "",
-            graduado: false,
-            carrera: {
-                id:0,
-            },
-            semestre: {
-                id:0,
-            },
-            sede:{
-                id:0,
-            },
-            aniograduacion: 0,
-            linkcurriculumvitae: "",
-        },
-        codeVerification: "",
-        career: "",
-        semester: "",
-        campus: "",
-        updatePassword: {
-            contrasenia: "",
+  id: "formRegister",
+  state: () => ({
+    student: {
+      usuario_id: 0,
+      nombres: "",
+      apellidopaterno: "",
+      apellidomaterno: "",
+      carnetidentidad: "",
+      correoelectronico: "",
+      celularcontacto: "",
+      graduado: false,
+      carrera: { id: 0 },
+      semestre: { id: 0 },
+      sede: { id: 0 },
+      aniograduacion: 0,
+      linkcurriculumvitae: "", // Asegúrate de que este campo está en el estado
+    },
+    codeVerification: "",
+    career: "",
+    semester: "",
+    campus: "",
+    updatePassword: {
+      contrasenia: "",
+    },
+  }),
+  actions: {
+    // Función para registrar el estudiante
+    async postStudent() {
+      try {
+        const token = $cookies.get("token");
+        const response = await postStudent(this.student, token);
+        if (response == null) {
+          return false;
         }
-    }),
-    actions: {
-        //Funcion para eliminar los datos del estudiante
-        clearStudent() {
-            this.student = {
-                usuario_id: 0,
-                nombres: "",
-                apellidopaterno: "",
-                apellidomaterno: "",
-                carnetidentidad: "",
-                correoelectronico: "",
-                celularcontacto: "",
-                graduado: false,
-                carrera: {
-                    id:0,
-                },
-                semestre: {
-                    id:0,
-                },
-                sede:{
-                    id:0,
-                },
-                aniograduacion: 0,
-                linkcurriculumvitae: "",
-                updatePassword: {
-                    contrasenia: "",
-                }
-
-            };
-            this.codeVerification = "";
-            this.career = "";
-            this.semester = "";
-            this.campus = "";
-        },
-
-        async postStudent() {
-            try {
-                /*Obtener el token de las cookies*/
-                const token = $cookies.get("token");
-                const response = await postStudent(this.student, token);
-                if (response == null) {
-                    return false;
-                }
-                $cookies.remove("token");
-                this.clearStudent();
-                return true;
-            } catch (error) {
-                // Manejar el error aquí
-                console.error("Hubo un error al crear el estudiante: ", error);
-                // Puedes lanzar el error nuevamente si es necesario
-                throw error;
-            }
-        },
+        $cookies.remove("token");
+        this.clearStudent();
+        return true;
+      } catch (error) {
+        console.error("Hubo un error al crear el estudiante: ", error);
+        throw error;
+      }
+    },
+    clearStudent() {
+      this.student = {
+        usuario_id: 0,
+        nombres: "",
+        apellidopaterno: "",
+        apellidomaterno: "",
+        carnetidentidad: "",
+        correoelectronico: "",
+        celularcontacto: "",
+        graduado: false,
+        carrera: { id: 0 },
+        semestre: { id: 0 },
+        sede: { id: 0 },
+        aniograduacion: 0,
+        linkcurriculumvitae: "", // Limpiar también el campo de curriculum
+      };
+      this.codeVerification = "";
+      this.career = "";
+      this.semester = "";
+      this.campus = "";
+    },
         //Funcion para solicitar el codigo de verificacion
         async postCode() {
             
