@@ -23,10 +23,32 @@
         </router-link>
 
         <!-- Mostrar actividad -->
-        <router-link class="link" to="/admin/activity-log">
-          <font-awesome-icon :icon="['fas', 'clipboard-list']" size="xl" />
-          <span class="nav-direction">Mostrar Actividad</span>
-        </router-link>
+        <span class="link" @click="showDropdownCallList" style="position: relative;">
+            <font-awesome-icon :icon="['fas', 'clipboard-list']" size="xl" />
+            <span class="nav-direction">Mostrar Actividad</span>
+        </span>
+        <ul class="dropdown-menu" v-if="dropdownButton.showDropdownMenu">
+          <router-link
+            to="/admin/activity-userlog"
+            class="dropdown-link"
+            @click="showDropdownCallList"
+          >
+            <li class="dropdown-item">
+              <font-awesome-icon :icon="['fas', 'user']" /> 
+              Logs de usuarios
+            </li>
+          </router-link>
+          <router-link
+            to="/admin/activity-applog"
+            class="dropdown-link"
+            @click="showDropdownCallList"
+          >
+            <li class="dropdown-item">
+              <font-awesome-icon :icon="['fas', 'clipboard']" /> 
+              Logs de aplicación
+            </li>
+          </router-link>
+        </ul>
 
         <!-- Agregar USEI -->
         <router-link class="link" to="/admin/add-usei">
@@ -69,6 +91,9 @@ export default {
   data() {
     return {
       isDarkMode: false,
+      dropdownButton: {
+        showDropdownMenu: false,
+      },
     };
   },
   methods: {
@@ -91,6 +116,10 @@ export default {
     showDropdownRolesList() {
       this.dropdownButton.showRolesDropdownMenu = !this.dropdownButton.showRolesDropdownMenu;
     },
+    showDropdownCallList() {
+      this.dropdownButton.showDropdownMenu =
+        !this.dropdownButton.showDropdownMenu;
+    },
   },
 };
 </script>
@@ -112,10 +141,11 @@ export default {
   color: #515c67;
 }
 
-.dropdown-menu-components,
-.dropdown-menu-requests {
+.dropdown-menu {
   position: absolute;
-  top: 50%;
+  top: 60%; /* Aparece justo debajo del botón */
+  left: 50%; /* Centrado respecto al botón */
+  transform: translateX(-50%); /* Ajusta el centrado horizontal */
   width: 13%;
   background-color: white;
   border-radius: 20px;
@@ -123,7 +153,28 @@ export default {
   list-style: none;
   text-align: center;
   border: 1px solid black;
+  z-index: 100; /* Asegura que quede sobre otros elementos */
+  
+  
 }
+
+
+.dropdown-menu-components,
+.dropdown-menu-requests {
+    position: absolute;
+    top: 50%; /* Justo debajo del botón */
+    left: 50%; /* Centrado respecto al contenedor */
+    transform: translateX(-50%); /* Ajuste para centrar */
+    width: 13%;
+    background-color: white;
+    border-radius: 20px;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    border: 1px solid black;
+    z-index: 10; /* Asegura que quede por encima de otros elementos */
+}
+
 
 .dropdown-menu-components {
   left: 18%;
@@ -135,6 +186,7 @@ export default {
 .dropdown-item {
   padding: 7% 10%;
   border-radius: 20px;
+  margin: 0;
 }
 
 .dropdown-link {
