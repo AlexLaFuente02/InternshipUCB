@@ -23,10 +23,10 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"], // Agrega dominios de scripts confiables
-        styleSrc: ["'self'", "'unsafe-inline'"], // Permite estilos internos seguros
+        styleSrc: ["'self'", "https://fonts.googleapis.com"],
         imgSrc: ["'self'", "data:"], // Permite imágenes desde la app y data URIs
         connectSrc: ["'self'"], // Conexiones como APIs
-        fontSrc: ["'self'", // Fuentes externas confiables
+        fontSrc: ["'self'", "https://fonts.gstatic.com"], // Fuentes externas confiables
         objectSrc: ["'none'"], // Evita objetos como Flash o Applets
         frameSrc: ["'none'"], // Evita iframes
         upgradeInsecureRequests: [], // Convierte peticiones HTTP en HTTPS
