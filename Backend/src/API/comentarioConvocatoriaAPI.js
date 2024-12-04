@@ -16,6 +16,11 @@ router.get('/', async (req, res) => {
 
 // Obtener un comentario por ID
 router.get('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const response = await comentarioConvocatoriaService.getComentarioById(req.params.id);
     res.json({
         method: 'getComentarioConvocatoria',
@@ -38,6 +43,11 @@ router.post('/', async (req, res) => {
 
 // Actualizar un comentario por ID
 router.put('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const response = await comentarioConvocatoriaService.updateComentario(req.params.id, req.body);
     res.json({
         method: 'updateComentarioConvocatoria',
@@ -49,6 +59,11 @@ router.put('/:id', async (req, res) => {
 
 // Eliminar un comentario por ID
 router.delete('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const response = await comentarioConvocatoriaService.deleteComentario(req.params.id);
     res.json({
         method: 'deleteComentarioConvocatoria',

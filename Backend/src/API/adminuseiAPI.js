@@ -54,6 +54,11 @@ router.get("/", async (req, res) => {
  */
 
 router.get("/:id", async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   console.log(
     `GET request received to get a USEI Administrator by ID: '${req.params.id}'.`
   );
@@ -67,6 +72,11 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/usuarioAdmin/:userId", async (req, res) => {
+  const institutionId = parseInt(req.params.userId, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   console.log(
     `GET request received to get a USEI Administrator by ID: '${req.params.userId}'.`
   );
@@ -155,6 +165,11 @@ router.post("/", async (req, res) => {
  */
 
 router.put("/:id", async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   console.log(
     `PUT request received to update the data of a USEI Administrator with ID: '${req.params.id}', with data: "${req.body}".`
   );
@@ -171,6 +186,11 @@ router.put("/:id", async (req, res) => {
 });
 
 router.put('/changeHabilitadoVer/:id', async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   console.log(
     `PUT request received to update the data of a USEI Administrator with ID: '${req.params.id}'`);
   const response = await adminuseiService.changeHabilitadoVer(req.params.id);
@@ -183,6 +203,11 @@ router.put('/changeHabilitadoVer/:id', async (req, res) => {
 })
 
 router.put('/changeHabilitadoModific/:id', async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   console.log(
     `PUT request received to update the data of a USEI Administrator with ID: '${req.params.id}'`);
   const response = await adminuseiService.changeHabilitadoModific(req.params.id);
@@ -214,6 +239,11 @@ router.put('/changeHabilitadoModific/:id', async (req, res) => {
  */
 
 router.delete("/:id", async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+  
   console.log(
     `DELETE request received to delete a USEI Administrator with ID: '${req.params.id}'.`
   );

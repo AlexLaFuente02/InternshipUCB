@@ -123,6 +123,11 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   console.log(`GET request received for getById with ID: ${req.params.id}`);
   const response = await sectorPertenenciaService.getById(req.params.id);
   res.json({
@@ -145,6 +150,11 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+
   console.log(`PUT request received for update with ID: ${req.params.id}, nombresectorpertenencia: ${req.body.nombresectorpertenencia}`);
   const response = await sectorPertenenciaService.update(req.params.id, req.body.nombresectorpertenencia);
   res.json({
@@ -156,6 +166,11 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
+  const institutionId = parseInt(req.params.id, 10);
+  if (isNaN(institutionId) || institutionId <= 0) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
+  
   console.log(`DELETE request received for remove with ID: ${req.params.id}`);
   const response = await sectorPertenenciaService.remove(req.params.id);
   res.json({

@@ -126,6 +126,11 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const response = await estadoConvocatoriaService.getEstadoConvocatoriaById(req.params.id);
     res.json(response);
 });
@@ -136,11 +141,21 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const response = await estadoConvocatoriaService.updateEstadoConvocatoria(req.params.id, req.body);
     res.json(response);
 });
 
 router.delete('/:id', async (req, res) => {
+    const institutionId = parseInt(req.params.id, 10);
+    if (isNaN(institutionId) || institutionId <= 0) {
+        return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const response = await estadoConvocatoriaService.deleteEstadoConvocatoria(req.params.id);
     res.json(response);
 });

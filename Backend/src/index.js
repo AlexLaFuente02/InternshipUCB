@@ -23,10 +23,10 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"], // Agrega dominios de scripts confiables
-        styleSrc: ["'self'", "'unsafe-inline'"], // Permite estilos internos seguros
+        styleSrc: ["'self'", "https://fonts.googleapis.com"],
         imgSrc: ["'self'", "data:"], // Permite imágenes desde la app y data URIs
         connectSrc: ["'self'"], // Conexiones como APIs
-        fontSrc: ["'self'"], // Fuentes externas confiables
+        fontSrc: ["'self'", "https://fonts.gstatic.com"], // Fuentes externas confiables
         objectSrc: ["'none'"], // Evita objetos como Flash o Applets
         frameSrc: ["'none'"], // Evita iframes
         upgradeInsecureRequests: [], // Convierte peticiones HTTP en HTTPS
@@ -131,14 +131,21 @@ app.use('/usei', useiRoutes);
 
 app.use('/public', publicRoutes);
 
-app.use('/images', express.static(path.join(__dirname, '../..', 'images')));
+app.use('/images', express.static(path.join(__dirname, '../..', 'images'), {
+  index: false, // Deshabilita el índice del directorio
+  dotfiles: 'deny' // Bloquea archivos ocultos
+}));
+
 
 app.use((req, res, next) => {
-  const blockedHosts = ['169.254.169.254', 'localhost:5173', 'localhost:3000'];
+  const blockedHosts = ['169.254.169.254', '127.0.0.1', 'localhost'];
   const requestUrl = req.originalUrl || '';
   const hostHeader = req.headers['host'] || '';
 
   // Bloquea si la URL o el host están relacionados con metadatos
+  if (req.url.includes('../')) {
+    return res.status(400).json({ error: 'Ruta no válida.' });
+  }
   if (
     blockedHosts.some((host) => hostHeader.includes(host)) &&
     requestUrl.includes('meta-data')
