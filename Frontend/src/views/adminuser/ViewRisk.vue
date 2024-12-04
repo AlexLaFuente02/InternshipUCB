@@ -1,206 +1,205 @@
 <template>
-    <div class="container">
-      <div class="header">
-        <h1>Actividad de Aplicación</h1>
-        <button @click="descargarJSON" class="btn-descargar">Descargar en JSON</button>
-      </div>
-  
-      <!-- Combobox para seleccionar la tabla -->
-      <div class="combobox-container">
-        <label for="tabla-select">Seleccionar tabla:</label>
-        <select id="tabla-select" v-model="tablaSeleccionada" @change="cambiarTabla">
-          <option value="convocatoria">Convocatoria</option>
-          <option value="postulaciones">Postulaciones</option>
-        </select>
-      </div>
-  
-      <!-- Tabla dinámica -->
-      <table>
-        <thead>
-          <tr>
-            <th v-for="(columna, index) in columnas" :key="index">{{ columna }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(fila, index) in filas" :key="index">
-            <td>{{ index + 1 }}</td> <!-- ID autoincremental -->
-            <td>{{ fila.Usuario }}</td>
-            <td v-if="tablaSeleccionada === 'convocatoria'">{{ fila.Institución }}</td> <!-- Solo para Convocatorias -->
-            <td>{{ fila["Fecha Acción"] }}</td>
-            <td class="accion">{{ fila.Acción }}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="container">
+    <div class="header">
+      <h1>Lista de Análisis de Riesgos</h1>
     </div>
-  </template>
-  
-  <script>
-  import { getAllConvocatorias, getAllPostulaciones } from "@/services/common.js";
-  
-  export default {
-    name: "ShowActivity",
-    data() {
-      return {
-        tablaSeleccionada: "convocatoria", 
-        columnas: ["ID", "Usuario", "Institución", "Fecha Acción", "Acción"], 
-        filas: [], 
-      };
-    },
-    mounted() {
-      this.cambiarTabla(); 
-    },
-    methods: {
-      async cargarConvocatorias() {
-        try {
-          const data = await getAllConvocatorias();
-          if (data) {
-            this.filas = data.map(item => ({
-              Usuario: item.institucion_id?.usuario?.idusuario || "No definido", 
-              Institución: item.institucion_id?.nombreinstitucion || "No definida", 
-              "Fecha Acción": item.fecha_accion || "No definida", 
-              Acción: item.accion || "No definida", 
-            }));
-          }
-        } catch (error) {
-          console.error("Error al cargar las convocatorias: ", error);
-        }
-      },
-      async cargarPostulaciones() {
-        try {
-          const data = await getAllPostulaciones();
-          if (data) {
-            this.filas = data.map(item => ({
-              Usuario: item.estudiante_id?.usuario_id?.idusuario || "No definido", 
-              "Fecha Acción": item.fecha_accion || "No definida", 
-              Acción: item.accion || "No definida", 
-            }));
-          }
-        } catch (error) {
-          console.error("Error al cargar las postulaciones: ", error);
-        }
-      },
-      cambiarTabla() {
-        if (this.tablaSeleccionada === "convocatoria") {
-          this.columnas = ["ID", "Usuario", "Institución", "Fecha Acción", "Acción"];
-          this.cargarConvocatorias();
-        } else if (this.tablaSeleccionada === "postulaciones") {
-          this.columnas = ["ID", "Usuario", "Fecha Acción", "Acción"];
-          this.cargarPostulaciones();
-        }
-      },
-      descargarJSON() {
-        // Construir los datos según la tabla seleccionada
-        const datosDescarga = this.filas.map((fila, index) => {
-            if (this.tablaSeleccionada === "convocatoria") {
-            return {
-                ID: index + 1, // ID autoincremental
-                Usuario: fila.Usuario,
-                Institución: fila.Institución,
-                "Fecha Acción": fila["Fecha Acción"],
-                Acción: fila.Acción,
-            };
-            } else if (this.tablaSeleccionada === "postulaciones") {
-            return {
-                ID: index + 1, // ID autoincremental
-                Usuario: fila.Usuario,
-                "Fecha Acción": fila["Fecha Acción"],
-                Acción: fila.Acción,
-            };
-            }
-        });
 
-        // Convertir los datos a JSON
-        const datosJSON = JSON.stringify(datosDescarga, null, 2); // Espaciado para formato legible
-        const blob = new Blob([datosJSON], { type: "application/json" }); // Crear el archivo Blob
-        const url = URL.createObjectURL(blob); // Crear URL temporal
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `${this.tablaSeleccionada}.json`; // Nombre del archivo según la tabla
-        link.click();
-        URL.revokeObjectURL(url); // Liberar la URL temporal
-        },
+    <table>
+      <thead>
+        <tr>
+          <th>Aplicativo</th>
+          <th>Vulnerabilidad</th>
+          <th>Riesgo Inherente</th>
+          <th>Nivel de Riesgo</th>
+          <th>Tratamiento</th>
+          <th>Controles</th>
+          <th>Riesgo Residual</th>
+          <th>Nivel de Riesgo Residual</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(riesgo, index) in riesgos" :key="riesgo.id">
+          <td>{{ riesgo.aplicativo }}</td>
+          <td>{{ riesgo.vulnerabilidad }}</td>
+          <td>{{ riesgo.riesgoInherente }}</td>
+          <td>{{ riesgo.nivelRiesgo }}</td>
+          <td>{{ riesgo.tratamiento }}</td>
+          <td>{{ riesgo.controles }}</td>
+          <td>{{ riesgo.riesgoResidual }}</td>
+          <td>{{ riesgo.nivelRiesgoResidual }}</td>
+          <td class="actions">
+            <font-awesome-icon
+              icon="eye"
+              class="action-icon view"
+              @click="abrirModalVer(riesgo)"
+            />
+            <font-awesome-icon
+              icon="edit"
+              class="action-icon edit"
+              @click="abrirModalEditar(riesgo)"
+            />
+            <font-awesome-icon
+              icon="trash"
+              class="action-icon delete"
+              @click="eliminarItem(riesgo.id)"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ModalEdit
+      v-if="modalVisible"
+      :visible="modalVisible"
+      :id="riesgoSeleccionado?.id"
+      :viewOnly="soloVista"
+      @cerrar-modal="cerrarModal"
+      @guardar-cambios="guardarCambios"
+    />
+
+  </div>
+</template>
+
+<script>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { getAllAnalisisRiesgos, deleteAnalisisRiesgos } from "@/services/common.js";
+import ModalEdit from "../../components/adminuser/modalEdit.vue";
+
+export default {
+  components: {
+    FontAwesomeIcon,
+    ModalEdit,
+  },
+  data() {
+    return {
+      riesgos: [], // Lista dinámica de riesgos
+      modalVisible: false, // Controla la visibilidad del modal
+      riesgoSeleccionado: null, // Riesgo actualmente seleccionado para editar
+      soloVista: true,
+    };
+  },
+  methods: {
+    async cargarRiesgos() {
+      try {
+        const data = await getAllAnalisisRiesgos();
+        if (data) {
+          this.riesgos = data.map((item) => ({
+            id: item.id,
+            aplicativo: item.aplicativo_sistema_servicio || "No definido",
+            vulnerabilidad: item.amenaza_vulnerabilidad || "No definida",
+            riesgoInherente: item.riesgo_inherente || 0,
+            nivelRiesgo: item.nivel_riesgo_inherente || "No definido",
+            tratamiento: item.tratamiento_riesgo_inherente || "No definido",
+            controles: item.control || "No definido",
+            riesgoResidual: item.riesgo_residual || 0,
+            nivelRiesgoResidual: item.nivel_riesgo_residual || "No definido",
+          }));
+        }
+      } catch (error) {
+        console.error("Error al cargar los riesgos:", error);
+      }
     },
-  };
-  </script>
-  
-  <style scoped>
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 50px;
-    padding-bottom: 100px;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 80%;
-  }
-  
-  .header h1 {
-    flex: 1;
-    text-align: center;
-    margin: 0;
-  }
-  
-  .btn-descargar {
-    padding: 10px 15px;
-    background-color: #458bd0;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .btn-descargar:hover {
-    background-color: #336aa8;
-  }
-  
-  .combobox-container {
-    width: 80%;
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 20px;
-    align-items: center;
-  }
-  
-  .combobox-container label {
-    margin-right: 10px;
-  }
-  
-  .combobox-container select {
-    padding: 5px 10px;
-    font-size: 14px;
-  }
-  
-  table {
-    width: 80%;
-    border-collapse: collapse;
-    margin: 20px 0;
-  }
-  
-  th {
-    background-color: #458bd0;
-    color: white;
-    padding: 8px;
-    border: 2px solid black;
-  }
-  
-  td {
-    border: 2px solid black;
-    padding: 8px;
-    text-align: left;
-    color: black;
-  }
-  
-  td.accion {
-    max-width: 300px;
-    word-wrap: break-word;
-    word-break: break-word;
-    white-space: normal;
-  }
-  </style>
-  
+    abrirModalVer(id) {
+      console.log("ID del riesgo seleccionado:", id);
+      this.soloVista = true;
+      this.riesgoSeleccionado = id; // Pasa el ID del riesgo al modal
+      this.modalVisible = true;
+    },
+    abrirModalEditar(id) {
+      console.log("ID del riesgo seleccionado:", id); // Verifica que se está pasando el ID
+      this.soloVista = false;
+      this.riesgoSeleccionado = id; // Solo guarda el ID seleccionado
+      this.modalVisible = true; // Abre el modal
+    },
+    cerrarModal() {
+      this.modalVisible = false; 
+    },
+    async guardarCambios(riesgoEditado) {
+      const index = this.riesgos.findIndex((r) => r.id === riesgoEditado.id);
+      if (index !== -1) {
+        this.riesgos[index] = riesgoEditado; // Actualiza la tabla localmente
+      }
+      this.modalVisible = false; // Cierra el modal
+      await this.cargarRiesgos(); // Actualiza la lista completa desde el servidor
+    },
+    async eliminarItem(id) {
+      if (confirm("¿Deseas eliminar este análisis de riesgo?")) {
+        try {
+          const response = await deleteAnalisisRiesgos(id);
+          if (response && response.code === "AR-0000") {
+            alert("Análisis de riesgo eliminado correctamente.");
+            await this.cargarRiesgos();
+          } else {
+            alert("No se pudo eliminar el análisis de riesgo.");
+          }
+        } catch (error) {
+          console.error("Error al eliminar el análisis de riesgo:", error);
+          alert("Ocurrió un error al intentar eliminar el análisis de riesgo.");
+        }
+      }
+    },
+  },
+  mounted() {
+    this.cargarRiesgos(); // Carga los riesgos al montar el componente
+  },
+};
+</script>
+
+<style scoped>
+.container {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 40px;
+}
+
+h1 {
+  font-size: 24px;
+  color: #515c67;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #458bd0;
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.actions {
+  text-align: match-parent;
+}
+
+.action-icon {
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.action-icon.view {
+  color: #4c4caf;
+}
+
+.action-icon.edit {
+  color: #4caf50;
+}
+
+.action-icon.delete {
+  color: #f44336;
+}
+
+.action-icon:hover {
+  transform: scale(1.2);
+}
+</style>

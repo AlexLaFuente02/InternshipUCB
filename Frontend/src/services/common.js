@@ -188,3 +188,68 @@ export const postAnalisisRiesgos = async (analisisData) => {
         throw error; // Reenviar el error para manejarlo en otro lugar
     }
 };
+
+
+export const getAllAnalisisRiesgos = async () => {
+    try {
+      const response = await axios.get(`${rutaApi}/analisisRiesgos`);
+      const data = response.data;
+      if (data.code === "AR-0000") {
+        return data.result; // Retorna solo el resultado (lista de análisis)
+      } else {
+        console.error("Error en el código de respuesta:", data.message);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error al obtener los análisis de riesgos:", error);
+      throw error;
+    }
+  };
+
+  export const deleteAnalisisRiesgos = async (id) => {
+    try {
+      const response = await axios.delete(`${rutaApi}/analisisRiesgos/${id}`);
+      return response.data; // Retorna la respuesta completa
+    } catch (error) {
+      console.error(`Error al eliminar el análisis de riesgo con ID ${id}:`, error);
+      throw error;
+    }
+  };
+  
+
+  export const putAnalisisRiesgos = async (id, payload) => {
+    try {
+      const response = await axios.put(`${rutaApi}/analisisRiesgos/${id}`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      if (response.data.code === "AR-0000") {
+        return response.data.result; // Devolver el resultado actualizado
+      } else {
+        console.error("Error en la respuesta del servidor:", response.data.message);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error al realizar la actualización:", error);
+      throw error;
+    }
+  };
+
+  export const getAnalisisRiesgosById = async (id) => {
+    try {
+      const response = await axios.get(`${rutaApi}/analisisRiesgos/${id}`);
+      const data = response.data;
+      if (data.code === "AR-0000") {
+        return data.result; // Retorna solo el resultado (lista de análisis)
+      } else {
+        console.error("Error en el código de respuesta:", data.message);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error al obtener el análisis de riesgo:", error);
+      throw error;
+    }
+  };
+  
