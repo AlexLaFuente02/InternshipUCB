@@ -3,6 +3,7 @@ const sequelize = require("../../database/db");
 const CarreraENT = require("./CarreraENT");
 const SedeENT = require("./SedeENT");
 const SemestreENT = require("./semestreENT");
+const UsuarioENT = require("./UsuarioENT");
 
 const EstudianteENT = sequelize.define(
   "Estudiante",
@@ -88,6 +89,11 @@ EstudianteENT.belongsTo(SedeENT, {
   foreignKey: "sede_id",
   as: "sede",
   targetKey: "id",
+});
+
+EstudianteENT.belongsTo(UsuarioENT, {
+  foreignKey: "usuario_id",
+  as: "usuario", 
 });
 
 module.exports = EstudianteENT;

@@ -151,7 +151,7 @@ const createConvocatoria = async (data) => {
             tiempoacumplir_id: data.tiempoacumplir.id
         });
         // Insertar en historico después de crear la convocatoria
-        await historicoService.insertHistoricoConvocatoria(convocatoria.dataValues, 'POST');
+        await historicoService.insertHistoricoConvocatoria(convocatoria.dataValues, 'Se creo la convocatoria con ID ' + convocatoria.id + " su área es '" + convocatoria.areapasantia + "'");
         console.log('Convocatoria creada correctamente.');
         return new ResponseDTO('C-0000', new ConvocatoriaDTO(
             convocatoria.id,
@@ -195,7 +195,7 @@ const updateConvocatoria = async (id, data) => {
             tiempoacumplir_id: data.tiempoacumplir.id
         });
         // Insertar en historico después de actualizar una convocatoria
-        await historicoService.insertHistoricoConvocatoria(convocatoria.dataValues, 'PUT');
+        await historicoService.insertHistoricoConvocatoria(convocatoria.dataValues, 'Se actualizo la convocatoria con ID ' + convocatoria.id + " su área es '" + convocatoria.areapasantia + "'");
         console.log('Convocatoria actualizada correctamente.');
         return new ResponseDTO('C-0000', new ConvocatoriaDTO(
             convocatoria.id,
@@ -226,7 +226,7 @@ const deleteConvocatoria = async (id) => {
             return new ResponseDTO('C-1005', null, 'Convocatoria no encontrada');
         }
         // Insertar en historico antes de eliminar la convocatoria
-        await historicoService.insertHistoricoConvocatoria(convocatoria.dataValues, 'DELETE');
+        await historicoService.insertHistoricoConvocatoria(convocatoria.dataValues, 'Se elimino la convocatoria con ID ' + convocatoria.id + " su área es '" + convocatoria.areapasantia + "'");
         await convocatoria.destroy();
         console.log('Convocatoria eliminada correctamente.');
         return new ResponseDTO('C-0000', convocatoria, 'Convocatoria eliminada correctamente');
@@ -600,6 +600,9 @@ const activateConvocatoria = async (idConvocatoria) => {
         
         // Actualiza el estado de la convocatoria
         await convocatoria.update({ estadoconvocatoria_id: estadoActivaId });
+
+        // Agrega al historico
+        await historicoService.insertHistoricoConvocatoria(convocatoria.dataValues, 'Se ACTIVÓ la convocatoria con ID ' + convocatoria.id + " su área es '" + convocatoria.areapasantia + "'");
         
         // Vuelve a buscar la convocatoria para obtener datos actualizados
         const updatedConvocatoria = await ConvocatoriaENT.findByPk(idConvocatoria, {
@@ -660,6 +663,9 @@ const rejectConvocatoria = async (idConvocatoria) => {
         
         // Actualiza el estado de la convocatoria
         await convocatoria.update({ estadoconvocatoria_id: estadoInactivaId });
+
+        // Agrega al historico
+        await historicoService.insertHistoricoConvocatoria(convocatoria.dataValues, 'Se RECHAZÓ la convocatoria con ID ' + convocatoria.id + " su área es '" + convocatoria.areapasantia + "'");
         
         // Vuelve a buscar la convocatoria para obtener datos actualizados
         const updatedConvocatoria = await ConvocatoriaENT.findByPk(idConvocatoria, {
@@ -720,6 +726,9 @@ const pendingConvocatoria = async (idConvocatoria) => {
         
         // Actualiza el estado de la convocatoria
         await convocatoria.update({ estadoconvocatoria_id: estadoPendienteId });
+
+        // Agrega al historico
+        await historicoService.insertHistoricoConvocatoria(convocatoria.dataValues, 'Se actualizó a PENDIENTE la convocatoria con ID ' + convocatoria.id + " su área es '" + convocatoria.areapasantia + "'");
         
         // Vuelve a buscar la convocatoria para obtener datos actualizados
         const updatedConvocatoria = await ConvocatoriaENT.findByPk(idConvocatoria, {

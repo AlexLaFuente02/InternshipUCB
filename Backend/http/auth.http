@@ -6,8 +6,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "idusuario": "estudiante1",
-  "password": "estudiante1"
+  "idusuario": "EST-0001",
+  "password": "Estudiante_1"
 }
 
 ### Inicio de Sesión INSTITUCION
@@ -16,8 +16,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "idusuario": "institucion1",
-  "password": "institucion1"
+  "idusuario": "INS-0001",
+  "password": "Institucion_1"
 }
 
 
@@ -27,8 +27,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "idusuario": "usei1",
-  "password": "usei1"
+  "idusuario": "USEI-0001",
+  "password": "Useiadmin_1"
 }
 
 ### Cierre de Sesión

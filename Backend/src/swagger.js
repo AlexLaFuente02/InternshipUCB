@@ -31,6 +31,9 @@ const options = {
     "src/API/sedeAPI.js",
     "src/API/semestreAPI.js",
     "src/API/historicoUsuarioAPI.js",
+    "src/API/comentarioConvocatoriaAPI.js",
+    "src/API/comentarioPostulanteAPI.js",
+    "src/API/analisisRiesgosAPI.js",
     "src/DTO/ResponseDTO.js",
     "src/DTO/UsuarioDTO.js",
     "src/DTO/CarreraDTO.js",
@@ -51,6 +54,9 @@ const options = {
     "src/DTO/EstadoPostulacionDTO.js",
     "src/DTO/SedeDTO.js",
     "src/DTO/SemestreDTO.js",
+    "src/DTO/ComentarioConvocatoriaDTO.js",
+    "src/DTO/ComentarioPostulanteDTO.js",
+    "src/DTO/AnalisisRiesgosDTO.js",
     
     // Add more API and service pairs as needed
   ],

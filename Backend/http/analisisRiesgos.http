@@ -1,0 +1,61 @@
+@base_url = http://localhost:3000/analisisRiesgos
+
+### GET ALL DE AnalisisRiesgos
+GET {{base_url}}/
+Accept: application/json
+
+### GET BY ID DE AnalisisRiesgos
+GET {{base_url}}/1
+Accept: application/json
+
+### POST DE AnalisisRiesgos
+POST {{base_url}}/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "aplicativo_sistema_servicio": "Gestión de Usuarios",
+  "amenaza_vulnerabilidad": "Almacenamiento de Contraseñas en Texto Plano",
+  "consecuencia": "Compromiso de Seguridad de Contraseñas",
+  "probabilidad_inherente": 4,
+  "impacto_inherente": 5,
+  "riesgo_inherente": 20,
+  "nivel_riesgo_inherente": "Extremo",
+  "tratamiento_riesgo_inherente": "Eliminar",
+  "control": "Hash de Contraseñas",
+  "tipo_control": "Preventivo",
+  "nivel_control": "Automático",
+  "frecuencia_control": "Por Evento",
+  "probabilidad_residual": 1,
+  "impacto_residual": 2,
+  "riesgo_residual": 2,
+  "nivel_riesgo_residual": "Bajo"
+}
+
+### PUT DE AnalisisRiesgos
+PUT {{base_url}}/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "aplicativo_sistema_servicio": "Gestión de Contraseñas",
+  "amenaza_vulnerabilidad": "Uso de Contraseñas Débiles",
+  "consecuencia": "Acceso No Autorizado a Sistemas Críticos",
+  "probabilidad_inherente": 3,
+  "impacto_inherente": 4,
+  "riesgo_inherente": 12,
+  "nivel_riesgo_inherente": "Alto",
+  "tratamiento_riesgo_inherente": "Mitigar",
+  "control": "Políticas de Contraseñas Fuertes",
+  "tipo_control": "Preventivo",
+  "nivel_control": "Manual",
+  "frecuencia_control": "Mensual",
+  "probabilidad_residual": 1,
+  "impacto_residual": 1,
+  "riesgo_residual": 1,
+  "nivel_riesgo_residual": "Bajo"
+}
+
+### DELETE DE AnalisisRiesgos
+DELETE {{base_url}}/1
+Accept: application/json
