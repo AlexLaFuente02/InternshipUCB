@@ -40,9 +40,8 @@ const HistoricoConvocatoriasENT = sequelize.define("historico_convocatorias", {
     },
     fechaseleccionpasante: DataTypes.DATEONLY,
     accion: {
-        type: DataTypes.ENUM,
-        values: ['post', 'put', 'delete'],
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     fecha_accion: {
         type: DataTypes.DATE,

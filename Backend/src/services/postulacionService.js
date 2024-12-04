@@ -394,7 +394,7 @@ const createPostulacion = async (postulationData) => {
             convocatoriaDTO
         );
         // Insertar en historico después de crear la postulación
-        await historicoService.insertHistoricoPostulacion(postulation.dataValues, 'POST');
+        await historicoService.insertHistoricoPostulacion(postulation.dataValues, 'Se creó la postulación a la convocatoria con ID: ' + postulationData.convocatoria.id);
         console.log('Postulación creada correctamente.');
         return new ResponseDTO('P-0000', postulacionDTO,'Postulación creada correctamente');
 
@@ -414,7 +414,7 @@ const updatePostulacion = async (id, postulacionData) => {
     }
     await postulacion.update(postulacionData);
     // Insertar en historico después de actualizar una postulación
-    await historicoService.insertHistoricoPostulacion(postulacion.dataValues, 'PUT');
+    await historicoService.insertHistoricoPostulacion(postulacion.dataValues, 'Se actualizó la postulación a la convocatoria con ID: ' + postulacionData.convocatoria_id);
     console.log("Postulación actualizada correctamente.");
     return new ResponseDTO(
       "P-0000",
@@ -444,7 +444,7 @@ const updatePostulacionAprobadas = async (id) => {
     await postulacion.update({ estadopostulacion_id: 1 });
 
     // Insertar en histórico después de actualizar el estado de una postulación
-    await historicoService.insertHistoricoPostulacion({ ...postulacion.dataValues, estadopostulacion_id: 1 }, 'PUT');
+    await historicoService.insertHistoricoPostulacion({ ...postulacion.dataValues, estadopostulacion_id: 1 }, 'Se aprobó la postulación a la convocatoria con ID: ' + postulacion.convocatoria_id);
 
     console.log("Estado de la postulación actualizado a Activo correctamente.");
     return new ResponseDTO(
@@ -475,7 +475,7 @@ const updatePostulacionRechazadas = async (id) => {
     await postulacion.update({ estadopostulacion_id: 3 });
 
     // Insertar en histórico después de actualizar el estado de una postulación
-    await historicoService.insertHistoricoPostulacion({ ...postulacion.dataValues, estadopostulacion_id: 3 }, 'PUT');
+    await historicoService.insertHistoricoPostulacion({ ...postulacion.dataValues, estadopostulacion_id: 3 }, 'Se rechazó la postulación a la convocatoria con ID: ' + postulacion.convocatoria_id);
 
     console.log("Estado de la postulación actualizado a Inactivo correctamente.");
     return new ResponseDTO(
@@ -502,7 +502,7 @@ const deletePostulacion = async (id) => {
       return new ResponseDTO("P-1005", null, "Postulación no encontrada");
     }
     // Insertar en historico después de eliminar una postulación
-    await historicoService.insertHistoricoPostulacion(postulacion.dataValues, 'DELETE');
+    await historicoService.insertHistoricoPostulacion(postulacion.dataValues, 'Se eliminó la postulación a la convocatoria con ID: ' + postulacion.convocatoria_id);
     await postulacion.destroy();
     console.log("Postulación eliminada correctamente.");
     return new ResponseDTO(

@@ -17,6 +17,15 @@ const HistoricoPostulacionesENT = sequelize.define("historico_postulaciones", {
     fechapostulacion: {
         type: DataTypes.DATEONLY,
         allowNull: false
+    },
+    accion: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    fecha_accion: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: false
     }
 }, {
     tableName: "historico_postulaciones",

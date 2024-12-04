@@ -61,5 +61,5 @@ Accept: application/json
 
 
 ### DELETE Convocatoria
-DELETE http://{{host}}/convocatoria/18
+DELETE http://{{host}}/convocatoria/4
 Accept: application/json

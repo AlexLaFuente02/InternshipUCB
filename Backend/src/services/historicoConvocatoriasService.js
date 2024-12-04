@@ -9,6 +9,8 @@ const TiempoAcumplirENT = require("../ENT/TiempoACumplirENT");
 const EstadoConvocatoriaDTO = require("../DTO/EstadoConvocatoriaDTO");
 const InstitucionDTO = require("../DTO/InstitucionDTO");
 const TiempoAcumplirDTO = require("../DTO/TiempoACumplirDTO");
+const Usuario = require("../ENT/UsuarioENT");
+const UsuarioDTO = require("../DTO/UsuarioDTO");
 
 const insertHistoricoConvocatoria = async (convocatoriaData, accion) => {
     console.log('Insertando en historico_convocatorias...');
@@ -39,28 +41,56 @@ const getAllHistoricos = async () => {
         const historicos = await HistoricoConvocatoriasENT.findAll({
             include: [
                 { model: EstadoConvocatoriaENT, as: 'estadoconvocatoria' },
-                { model: InstitucionENT, as: 'institucion' },
+                { 
+                    model: InstitucionENT, 
+                    as: 'institucion',
+                    include: [
+                        { model: Usuario, as: 'usuario' } // Incluir datos de Usuario dentro de Institucion
+                    ]
+                },
                 { model: TiempoAcumplirENT, as: 'tiempoacumplir' }
             ]
         });
         return {
             code: 'HC-0000',
-            result: historicos.map(historico => new HistoricoConvocatoriasDTO(
-                historico.id_h,
-                historico.id_c,
-                historico.areapasantia,
-                historico.descripcionfunciones,
-                historico.requisitoscompetencias,
-                historico.horario_inicio,
-                historico.horario_fin,
-                historico.fechasolicitud,
-                historico.fechaseleccionpasante,
-                historico.accion,
-                historico.fecha_accion,
-                new EstadoConvocatoriaDTO(historico.estadoconvocatoria.id, historico.estadoconvocatoria.nombreestadoconvocatoria),
-                new InstitucionDTO(historico.institucion.id, historico.institucion.nombreinstitucion),
-                new TiempoAcumplirDTO(historico.tiempoacumplir.id, historico.tiempoacumplir.descripcion)
-            )),
+            result: historicos.map(historico => {
+                let usuarioDTO = null;
+                if (historico.institucion.usuario) {
+                    usuarioDTO = new UsuarioDTO(
+                        historico.institucion.usuario.id,
+                        historico.institucion.usuario.idusuario,
+                        historico.institucion.usuario.tipousuario,
+                        historico.institucion.usuario.numero_intentos,
+                        historico.institucion.usuario.estado
+                    );
+                }
+                return new HistoricoConvocatoriasDTO(
+                    historico.id_h,
+                    historico.id_c,
+                    historico.areapasantia,
+                    historico.descripcionfunciones,
+                    historico.requisitoscompetencias,
+                    historico.horario_inicio,
+                    historico.horario_fin,
+                    historico.fechasolicitud,
+                    historico.fechaseleccionpasante,
+                    historico.accion,
+                    historico.fecha_accion,
+                    new EstadoConvocatoriaDTO(historico.estadoconvocatoria.id, historico.estadoconvocatoria.nombreestadoconvocatoria),
+                    new InstitucionDTO(
+                        historico.institucion.id,
+                        historico.institucion.nombreinstitucion,
+                        historico.institucion.reseniainstitucion,
+                        historico.institucion.logoinstitucion,
+                        historico.institucion.nombrecontacto,
+                        historico.institucion.correocontacto,
+                        historico.institucion.celularcontacto,
+                        historico.institucion.estado,
+                        usuarioDTO // Usuario dentro de Institucion
+                    ),
+                    new TiempoAcumplirDTO(historico.tiempoacumplir.id, historico.tiempoacumplir.descripcion)
+                );
+            }),
             message: 'Registros históricos obtenidos correctamente.'
         };
     } catch (error) {
@@ -74,7 +104,13 @@ const getHistoricoById = async (id_h) => {
         const historico = await HistoricoConvocatoriasENT.findByPk(id_h, {
             include: [
                 { model: EstadoConvocatoriaENT, as: 'estadoconvocatoria' },
-                { model: InstitucionENT, as: 'institucion' },
+                { 
+                    model: InstitucionENT, 
+                    as: 'institucion',
+                    include: [
+                        { model: Usuario, as: 'usuario' } // Incluir datos de Usuario dentro de Institucion
+                    ]
+                },
                 { model: TiempoAcumplirENT, as: 'tiempoacumplir' }
             ]
         });
@@ -82,6 +118,18 @@ const getHistoricoById = async (id_h) => {
         if (!historico) {
             return new ResponseDTO('H-1003', null, 'Registro histórico no encontrado');
         }
+
+        let usuarioDTO = null;
+        if (historico.institucion.usuario) {
+            usuarioDTO = new UsuarioDTO(
+                historico.institucion.usuario.id,
+                historico.institucion.usuario.idusuario,
+                historico.institucion.usuario.tipousuario,
+                historico.institucion.usuario.numero_intentos,
+                historico.institucion.usuario.estado
+            );
+        }
+
         return {
             code: 'HC-0000',
             result: new HistoricoConvocatoriasDTO(
@@ -97,7 +145,17 @@ const getHistoricoById = async (id_h) => {
                 historico.accion,
                 historico.fecha_accion,
                 new EstadoConvocatoriaDTO(historico.estadoconvocatoria.id, historico.estadoconvocatoria.nombreestadoconvocatoria),
-                new InstitucionDTO(historico.institucion.id, historico.institucion.nombreinstitucion),
+                new InstitucionDTO(
+                    historico.institucion.id,
+                    historico.institucion.nombreinstitucion,
+                    historico.institucion.reseniainstitucion,
+                    historico.institucion.logoinstitucion,
+                    historico.institucion.nombrecontacto,
+                    historico.institucion.correocontacto,
+                    historico.institucion.celularcontacto,
+                    historico.institucion.estado,
+                    usuarioDTO // Usuario dentro de Institucion
+                ),
                 new TiempoAcumplirDTO(historico.tiempoacumplir.id, historico.tiempoacumplir.descripcion)
             ),
             message: 'Registro histórico obtenido correctamente.'
